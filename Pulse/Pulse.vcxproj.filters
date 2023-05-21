@@ -27,9 +27,15 @@
     <ClInclude Include="src\Pulse\EntryPoint.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Log.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Log.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
