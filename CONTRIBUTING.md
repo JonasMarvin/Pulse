@@ -8,7 +8,7 @@ If you've noticed a bug or have a feature request, make one! It's generally best
 
 If you have a trivial fix or improvement, go ahead and create a pull request, addressing (with `@`) a maintainer (someone with commit access) in the description of the pull request.
 
-If you've started to work on a longer, more involved feature, start a conversation on the [mailing list](https://groups.google.com/forum/#!forum/pulse) first.
+If you've started to work on a longer, more involved feature, feel free to do so.
 
 ## Fork & create a branch
 
