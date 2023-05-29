@@ -44,12 +44,6 @@
     <ClCompile Include="src\Pulse\Events\EventHandler.cpp">
       <Filter>Pulse\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Events\IEvent.cpp">
-      <Filter>Pulse\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Pulse\Events\IEventListener.cpp">
-      <Filter>Pulse\Events</Filter>
-    </ClCompile>
     <ClCompile Include="src\Pulse\Log.cpp">
       <Filter>Pulse</Filter>
     </ClCompile>
