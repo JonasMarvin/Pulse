@@ -4,6 +4,9 @@
     <Filter Include="Pulse">
       <UniqueIdentifier>{6EABE80D-DABF-10BF-A341-B41E0F150DF0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pulse\Events">
+      <UniqueIdentifier>{926FD9A1-7ED2-6846-2758-A1FC139A34C9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pulse.h" />
@@ -16,13 +19,36 @@
     <ClInclude Include="src\Pulse\EntryPoint.h">
       <Filter>Pulse</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Events\EventHandler.h">
+      <Filter>Pulse\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Events\EventListener.h">
+      <Filter>Pulse\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Events\IEvent.h">
+      <Filter>Pulse\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Events\IEventListener.h">
+      <Filter>Pulse\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pulse\Log.h">
       <Filter>Pulse</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Utility\IDManager.h" />
+    <ClInclude Include="src\Pulse\Utility\EnsureIntergralType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
       <Filter>Pulse</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Events\EventHandler.cpp">
+      <Filter>Pulse\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Events\IEvent.cpp">
+      <Filter>Pulse\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Events\IEventListener.cpp">
+      <Filter>Pulse\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Log.cpp">
       <Filter>Pulse</Filter>

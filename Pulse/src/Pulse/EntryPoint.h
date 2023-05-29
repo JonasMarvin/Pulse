@@ -5,7 +5,7 @@
 extern Pulse::Application* Pulse::CreateApplication();
 
 int main(int argc, char** argv) {
-	
+
 	Pulse::Log::Init();
 	PLS_CORE_WARN("Initialized Log");
 	int a = 5;
