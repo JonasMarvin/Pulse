@@ -3,9 +3,9 @@
 #include <unordered_map>
 #include <memory>
 
-#include "Pulse/Events/EventListener.h"
+#include "Pulse/Modules/Events/EventListener.h"
 
-namespace Pulse::Events{
+namespace Pulse::Modules::Events{
 
 	template <typename... Args>
 	class IEvent {
@@ -47,4 +47,4 @@ namespace Pulse::Events{
 
 	}; // class IEvent
 
-} // namespace Pulse::Events
+} // namespace Pulse::Modules::Events

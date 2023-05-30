@@ -3,14 +3,23 @@
 #include <vector>
 #include <unordered_set>
 
-#include "Pulse/Events/IEvent.h"
+#include "Pulse/Modules/Events/IEvent.h"
 
-namespace Pulse::Events {
+namespace Pulse::Modules::Events {
 
     template<typename Derived>
     class IEventListener {
     public:
-        inline IEventListener() = default;
+        // Declarations
+        IEventListener() = default;
+        inline virtual ~IEventListener();
+
+        template <typename... Args>
+        uint64_t AddListener(IEvent<Args...>& iEvent, void(Derived::* callback)(Args...));
+
+        inline bool RemoveListener(uint64_t completeEventListenerID);
+
+        // Implementations
         inline virtual ~IEventListener() {
             // Remove in this classes declared Listeners from all Events
         }
@@ -31,9 +40,9 @@ namespace Pulse::Events {
         }
 
         inline bool RemoveListener(uint64_t completeEventListenerID) {
-            
+
             if (completeEventListenerIDs_.find(completeEventListenerID) != completeEventListenerIDs_.end()) {
-				completeEventListenerIDs_.erase(completeEventListenerID);
+                completeEventListenerIDs_.erase(completeEventListenerID);
 
                 uint32_t eventID = static_cast<uint32_t>(completeEventListenerID >> 32);
                 uint32_t listenerID = static_cast<uint32_t>(completeEventListenerID);
@@ -42,8 +51,8 @@ namespace Pulse::Events {
                 PLS_INFO(listenerID);
                 // TODO: Remove from manager
 
-				return true;
-			}
+                return true;
+            }
 
             return false;
         }
@@ -52,4 +61,4 @@ namespace Pulse::Events {
         std::unordered_set<uint64_t> completeEventListenerIDs_;
     }; // class EventListener
 
-} // namespace Pulse
+} // namespace Pulse::Modules::Events

@@ -2,7 +2,7 @@
 
 #include "Pulse/Utility/IDManager.h"
 
-namespace Pulse::Events {
+namespace Pulse::Modules::Events {
 
 	template <typename... Args>
 	class EventListenerBase {
@@ -43,4 +43,4 @@ namespace Pulse::Events {
 
 	}; // class EventListener
 
-} // namespace Pulse::Events
+} // namespace Pulse::Modules::Events

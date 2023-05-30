@@ -1,6 +1,6 @@
 #include <Pulse.h>
 
-class Player : public Pulse::Events::IEventListener<Player> {
+class Player : public Pulse::Modules::Events::IEventListener<Player> {
 public:
 	void ChangeHealth(int health = 1) {
 		health_ += health;
@@ -16,7 +16,7 @@ private:
 	int health_ = 0;
 };
 
-class Player2 : public Pulse::Events::IEventListener<Player2> {
+class Player2 : public Pulse::Modules::Events::IEventListener<Player2> {
 public:
 	void ChangeHealth(int health = 1) {
 		health_ += health;
@@ -36,7 +36,7 @@ class Sandbox : public Pulse::Application {
 	public:
 		Sandbox() {
 			Player player{};
-			Pulse::Events::IEvent<int> Hit{};
+			Pulse::Modules::Events::IEvent<int> Hit{};
 
 			// Add listeners
 			uint64_t listener1 = player.AddListener(Hit, &Player::ChangeHealth);
@@ -55,7 +55,7 @@ class Sandbox : public Pulse::Application {
 
 			Hit.Trigger(100);
 
-			Pulse::Events::IEvent<int> Hit2{};
+			Pulse::Modules::Events::IEvent<int> Hit2{};
 
 			uint64_t listener5 = player.AddListener(Hit2, &Player::ChangeHealth);
 			uint64_t listener6 = player.AddListener(Hit2, &Player::ChangeKarsten);
