@@ -2,15 +2,15 @@
 
 #include <stack>
 
-#include "Pulse/Utility/EnsureIntergralType.h"
+#include "Pulse/Utility/NumberConstraints.h"
 
 namespace Pulse::Utility {
-	template<typename IDType>
+	template<typename IntergralIDType>
 	class IDManager : private EnsureIntergralType<IDType> {
 	public:
 		IDManager() : counter_(0) {}
 
-		inline IDType GenerateID() {
+		inline IntergralIDType GenerateID() {
 			if (!freeIDs_.empty()) {
 				IDType id = freeIDs_.top();
 				freeIDs_.pop();
@@ -30,7 +30,7 @@ namespace Pulse::Utility {
 
 	private:
 		std::stack<IDType> freeIDs_;
-		IDType counter_;
+		IntergralIDType counter_;
 
 	}; // class IDManager
 

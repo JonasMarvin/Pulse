@@ -4,10 +4,11 @@
 #include <unordered_set>
 
 #include "Pulse/Modules/Events/IEvent.h"
+#include "Pulse/Utility/TypeConstraints.h"
 
 namespace Pulse::Modules::Events {
 
-    template<typename Derived>
+    template<IsCRTPConform Derived>
     class IEventListener {
     public:
         // Declarations
@@ -19,11 +20,11 @@ namespace Pulse::Modules::Events {
 
         inline bool RemoveListener(uint64_t completeEventListenerID);
 
-        // Implementations
         inline virtual ~IEventListener() {
             // Remove in this classes declared Listeners from all Events
         }
 
+        // Implementations
         template <typename... Args>
         uint64_t AddListener(IEvent<Args...>& iEvent, void(Derived::* callback)(Args...)) {
             uint32_t eventListenerID = iEvent.AddListener(std::make_unique<EventListener<Derived, Args...>>(static_cast<Derived*>(this), callback));
