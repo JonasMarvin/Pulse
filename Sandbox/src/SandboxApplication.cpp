@@ -1,6 +1,6 @@
 #include <Pulse.h>
 
-class Player : public Pulse::Modules::Events::IEventListener<Player> {
+class Player : public Pulse::Events::IEventListener<Player> {
 public:
 	void ChangeHealth(int health = 1) {
 		health_ += health;
@@ -16,7 +16,7 @@ private:
 	int health_ = 0;
 };
 
-class Player2 : public Pulse::Modules::Events::IEventListener<Player2> {
+class Player2 : public Pulse::Events::IEventListener<Player2> {
 public:
 	void ChangeHealth(int health = 1) {
 		health_ += health;
@@ -35,12 +35,12 @@ private:
 class Sandbox : public Pulse::Application {
 	public:
 		Sandbox() {
+			
+			Pulse::Events::Event<int> Hit{};
 			Player player{};
-			Pulse::Modules::Events::IEvent<int> Hit{};
-
 			// Add listeners
-			uint64_t listener1 = player.AddListener(Hit, &Player::ChangeHealth);
-			uint64_t listener2 = player.AddListener(Hit, &Player::ChangeKarsten);
+			uint32_t listener1 = player.AddListener(Hit, &Player::ChangeHealth);
+			uint32_t listener2 = player.AddListener(Hit, &Player::ChangeKarsten);
 
 			Hit.Trigger(1);
 
@@ -50,17 +50,18 @@ class Sandbox : public Pulse::Application {
 
 			Hit.Trigger(10);
 
-			uint64_t listener3 = player.AddListener(Hit, &Player::ChangeHealth);
-			uint64_t listener4 = player.AddListener(Hit, &Player::ChangeKarsten);
+			uint32_t listener3 = player.AddListener(Hit, &Player::ChangeHealth);
+			uint32_t listener4 = player.AddListener(Hit, &Player::ChangeKarsten);
 
 			Hit.Trigger(100);
 
-			Pulse::Modules::Events::IEvent<int> Hit2{};
+			Pulse::Events::Event<int> Hit2{};
 
-			uint64_t listener5 = player.AddListener(Hit2, &Player::ChangeHealth);
-			uint64_t listener6 = player.AddListener(Hit2, &Player::ChangeKarsten);
+			uint32_t listener5 = player.AddListener(Hit2, &Player::ChangeHealth);
+			uint32_t listener6 = player.AddListener(Hit2, &Player::ChangeKarsten);
 		}
 		~Sandbox() {
+
 		}
 };
 

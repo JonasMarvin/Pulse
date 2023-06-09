@@ -1,16 +1,20 @@
 #pragma once
 
 #include <stack>
+#include <stdexcept>
 
-#include "Pulse/Utility/NumberConstraints.h"
+#include "Pulse/Utility/Constraints.h"
 
 namespace Pulse::Utility {
-	template<typename IntergralIDType>
-	class IDManager : private EnsureIntergralType<IDType> {
+	template<UnsignedIntegralWithNumericLimits IDType>
+	class IDManager {
 	public:
-		IDManager() : counter_(0) {}
+		IDManager(size_t maximalMemory = 0) : maximalMemory_(maximalMemory), counter_(0) {}
 
-		inline IntergralIDType GenerateID() {
+		IDManager(const IDManager&) = delete;
+		IDManager& operator=(const IDManager&) = delete;
+
+		inline IDType GenerateID() {
 			if (!freeIDs_.empty()) {
 				IDType id = freeIDs_.top();
 				freeIDs_.pop();
@@ -26,11 +30,27 @@ namespace Pulse::Utility {
 
 		inline void FreeID(IDType id) {
 			freeIDs_.push(id);
+			if (maximalMemory_ != 0 && StackMemoryUsage() > maximalMemory_) {
+				throw std::runtime_error("Memory limit reached!");
+			}
+			if (IDsInUsage() == 0) {
+				std::stack<IDType>().swap(freeIDs_);
+				counter_ = 0;
+			}
 		}
 
 	private:
 		std::stack<IDType> freeIDs_;
-		IntergralIDType counter_;
+		IDType counter_;
+		size_t maximalMemory_;
+
+		inline size_t StackMemoryUsage() const {
+			return freeIDs_.size() * sizeof(IDType);
+		}
+
+		inline IDType IDsInUsage() const {
+			return static_cast<IDType>(counter_ - freeIDs_.size());
+		}
 
 	}; // class IDManager
 

@@ -157,18 +157,18 @@
     <ClInclude Include="src\Pulse\Application.h" />
     <ClInclude Include="src\Pulse\Core.h" />
     <ClInclude Include="src\Pulse\EntryPoint.h" />
-    <ClInclude Include="src\Pulse\Modules\Events\EventHandler.h" />
-    <ClInclude Include="src\Pulse\Modules\Events\EventListener.h" />
-    <ClInclude Include="src\Pulse\Modules\Events\IEvent.h" />
-    <ClInclude Include="src\Pulse\Modules\Events\IEventListener.h" />
+    <ClInclude Include="src\Pulse\Events\EventListener.h" />
+    <ClInclude Include="src\Pulse\Events\Event.h" />
+    <ClInclude Include="src\Pulse\Events\IEventListener.h" />
     <ClInclude Include="src\Pulse\Log.h" />
     <ClInclude Include="src\Pulse\Utility\EnsureIntergralType.h" />
     <ClInclude Include="src\Pulse\Utility\IDManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
+    <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Application.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Events\EventHandler.cpp" />
     <ClCompile Include="src\Pulse\Log.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

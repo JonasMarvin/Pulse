@@ -15,7 +15,10 @@ namespace Pulse::Modules {
 		ModuleManager& operator=(const ModuleManager&) = delete;
 		ModuleManager& operator=(ModuleManager&&) = delete;
 
-		static inline ModuleManager& GetInstance();
+		static inline ModuleManager& GetInstance() {
+			static ModuleManager instance;
+			return instance;
+		}
 
 		template <typename T>
 		void RegisterModule();
@@ -34,12 +37,6 @@ namespace Pulse::Modules {
 		void ShutdownModule();
 
 		void ShutdownModules();
-
-		// Implementations
-		static inline ModuleManager& GetInstance() {
-			static ModuleManager instance;
-			return instance;
-		}
 
 	private:
 		ModuleManager() = default;
