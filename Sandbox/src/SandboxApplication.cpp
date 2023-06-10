@@ -28,9 +28,8 @@ private:
 	int health_ = 0;
 };
 
- void TestFunction(int health, float test) {
-	 static int a = 0;
-	 a += health;
+ void TestFunction(int health, float test, int health2, float test2) {
+
 }
 
  class Sandbox : public Pulse::Application {
@@ -39,7 +38,7 @@ private:
 		 Pulse::Events::Event<int> Hit{};
 		 std::shared_ptr<Player> player = std::make_shared<Player>();
 		 Pulse::Events::Event<int> Hit2{};
-		 Pulse::Events::Event<int, float> Hit3{};
+		 Pulse::Events::Event<int, float,int, float> Hit3{};
 		 Pulse::Events::Event<int, const std::string&> Hit4{};
 
 		 // Measure time for adding listeners
@@ -47,7 +46,7 @@ private:
 
 		 // Add listeners
 		 for (int i = 0; i < 1000000; ++i) {
-			 EventListenerID listener1 = player->AddListener(Hit, &Player::ChangeHealth);
+			 EventListenerID listener1 = player->AddListener(Hit3, TestFunction);
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();
@@ -59,7 +58,7 @@ private:
 
 		 // Trigger events multiple times
 		 for (int i = 0; i < 1; ++i) {
-			 Hit.Trigger(1);
+			 Hit3.Trigger(1, 1.0f, 1, 1.0f);
 		 }
 
 		 // Calculate elapsed time for triggering events
@@ -67,22 +66,11 @@ private:
 		 auto durationTriggeringEvents = std::chrono::duration_cast<std::chrono::milliseconds>(endTriggeringEvents - startTriggeringEvents).count();
 		 PLS_TRACE("Event triggering time: {0} milliseconds", durationTriggeringEvents);
 
-
-		 EventListenerID listener3 = player->AddListener(Hit, &Player::ChangeHealth);
-		 EventListenerID listener4 = player->AddListener(Hit, &Player::ChangeKarsten);
-
-		 // Trigger event again
-		 Hit.Trigger(100);
-
-		 EventListenerID listener5 = player->AddListener(Hit2, &Player::ChangeHealth);
-		 EventListenerID listener6 = player->AddListener(Hit2, &Player::ChangeKarsten);
-
-		 // Print the total time taken for both adding listeners and triggering events
-		 auto totalTime = durationAddingListeners + durationTriggeringEvents;
-		 PLS_TRACE("Total time: {0} milliseconds", totalTime);
+		 
 	 }
 
 	 ~Sandbox() {
+		 
 	 }
  };
 

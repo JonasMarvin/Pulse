@@ -55,7 +55,7 @@ namespace Pulse::Events {
 		EventListenerNoMember(const Callback& callback)
 			: callback_(callback) {}
 
-		void Invoke(Args... args) override {
+		void Invoke(Args&&... args) override {
 			callback_(std::forward<Args>(args)...);
 		}
 

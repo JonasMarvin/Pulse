@@ -73,9 +73,10 @@ namespace Pulse::Events{
 			}
 		}
 
-		void Trigger(Args&&... args) {
+		template<typename... ArgsType>
+		void Trigger(ArgsType&&... args) {
 			for (auto& [eventListenerID, eventListener] : eventListeners_) {
-				eventListener->Invoke(std::forward<Args>(args)...);
+				eventListener->Invoke(std::forward<ArgsType>(args)...);
 			}
 		}
 
