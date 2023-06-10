@@ -7,7 +7,7 @@
 
 namespace Pulse::Events{
 
-	class EventBase {
+	class PLS_API EventBase {
 	public:
 		inline EventBase() : eventID_(eventIDManager_.GenerateID()) {}
 		virtual inline ~EventBase() {
@@ -71,6 +71,6 @@ namespace Pulse::Events{
 	private:
 		std::unordered_map<uint32_t, std::unique_ptr<EventListenerBase<Args...>>> eventListeners_;
 
-	}; // class IEvent
+	}; // class Event
 
 } // namespace Pulse::Events
