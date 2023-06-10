@@ -41,6 +41,9 @@ namespace Pulse::Events{
 			for(auto& eventListenerBase : eventListeners_) {
 				eventListenerBase.second->RemoveEventFromConnectedIEventListener(eventID_);
 			}
+#ifdef PLS_DEBUG
+			PLS_CORE_INFO("Event {0} destroyed.", eventID_);
+#endif // PLS_DEBUG
 		}
 
 		uint32_t AddListener(std::unique_ptr<EventListenerBase<Args...>> eventListener) {

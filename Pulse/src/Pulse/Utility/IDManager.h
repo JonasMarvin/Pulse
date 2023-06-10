@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "Pulse/Utility/Constraints.h"
+#include "Pulse/Log.h"
 
 namespace Pulse::Utility {
 	template<UnsignedIntegralWithNumericLimits IDType>
@@ -37,6 +38,7 @@ namespace Pulse::Utility {
 				std::stack<IDType>().swap(freeIDs_);
 				counter_ = 0;
 			}
+
 		}
 
 	private:

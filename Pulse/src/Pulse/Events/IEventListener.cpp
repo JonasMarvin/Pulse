@@ -29,7 +29,6 @@ namespace Pulse::Events {
     }
 
     void IEventListenerBase::OnEventRemoval(uint32_t eventID) {
-
         auto listenersIterator = eventToListeners_.find(eventID);
         if (listenersIterator != eventToListeners_.end()) {
 #ifdef PLS_DEBUG

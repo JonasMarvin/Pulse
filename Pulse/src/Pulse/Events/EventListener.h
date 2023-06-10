@@ -23,9 +23,16 @@ namespace Pulse::Events {
 	class EventListenerBase : public OnEventRemovalHandler {
 	public:
 		EventListenerBase(std::shared_ptr<IEventListenerBase> iEventListenerBase)
-			: OnEventRemovalHandler(iEventListenerBase), eventListenerID_(eventIDManager_.GenerateID()) { }
+			: OnEventRemovalHandler(iEventListenerBase), eventListenerID_(eventIDManager_.GenerateID()) {
+#ifdef PLS_DEBUG
+			PLS_CORE_INFO("EventListener {0} created", eventListenerID_);
+#endif // PLS_DEBUG
+		}
 		virtual ~EventListenerBase() {
 			eventIDManager_.FreeID(eventListenerID_);
+#ifdef PLS_DEBUG
+			PLS_CORE_INFO("EventListener {0} removed", eventListenerID_);
+#endif // PLS_DEBUG
 		}
 
 		virtual void Invoke(Args... args) = 0;

@@ -10,10 +10,19 @@ namespace Pulse::Events {
 
     class PLS_API IEventListenerBase {
     public:
+        inline IEventListenerBase() {
+#ifdef PLS_DEBUG
+            PLS_CORE_INFO("IEventListener created");
+#endif // PLS_DEBUG
+        }
         inline virtual ~IEventListenerBase() {
             for (auto& eventIterator : eventPointers_) {
                 eventIterator.second->RemoveListener(eventIterator.first);
 			}
+#ifdef PLS_DEBUG
+            PLS_CORE_INFO("IEventListener removed");
+#endif // PLS_DEBUG
+
         }
 
         void RemoveListener(uint32_t eventListenerID);
@@ -29,7 +38,6 @@ namespace Pulse::Events {
     template<Pulse::Utility::CRTPConform Derived>
     class IEventListener : public IEventListenerBase, public std::enable_shared_from_this<IEventListenerBase> {
     public:
-
         template <typename... Args>
         uint32_t AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...)) {
             uint32_t eventListenerID = Event.AddListener(std::make_unique<EventListener<Derived, Args...>>(shared_from_this(), static_cast<Derived*>(this), callback));
@@ -40,15 +48,12 @@ namespace Pulse::Events {
             eventPointers_[eventID] = eventPointer;
             listenersAndEvents_[eventListenerID] = eventID;
 
-            PLS_CORE_INFO("Listener {0} succesfully added to the event", eventListenerID);
-
 #ifdef PLS_DEBUG
             PLS_CORE_INFO("Listener {0} succesfully added to the event {1}.", eventListenerID, eventID);
 #endif // PLS_DEBUG
 
             return eventListenerID;
         }
-
     }; // class IEventListener
 
 } // namespace Pulse::Events
