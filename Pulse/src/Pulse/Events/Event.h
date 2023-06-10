@@ -1,7 +1,8 @@
 #pragma once
 
-#include <unordered_map>
+#include <vector>
 #include <memory>
+#include <algorithm>
 
 #include "Pulse/Events/EventListener.h"
 #include "Pulse/Core.h"
@@ -48,7 +49,6 @@ namespace Pulse::Events{
 	template <typename... Args>
 	class Event : public EventBase{
 	public:
-
 		virtual ~Event() {
 			RemoveEventFromConnectedIEventListeners();
 		}
@@ -57,27 +57,31 @@ namespace Pulse::Events{
 			IncrementListenerCount(iEventListenerBase);
 
 			EventListenerID newEventListenerID = eventListener->GetEventListenerID();
-			eventListeners_[newEventListenerID] = std::move(eventListener);
+			eventListeners_.emplace_back(newEventListenerID, std::move(eventListener));
 			return newEventListenerID;
 		}
 
 		void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override {
 			DecrementListenerCount(iEventListenerBase);
 
-			auto eventListenerIterator = eventListeners_.find(eventListenerID);
+			auto eventListenerIterator = std::find_if(eventListeners_.begin(), eventListeners_.end(),
+				[&](const auto& pair) { return pair.first == eventListenerID; });
+
 			if (eventListenerIterator != eventListeners_.end()) {
-				eventListeners_.erase(eventListenerIterator);
+				std::iter_swap(eventListenerIterator, eventListeners_.end() - 1);
+				eventListeners_.pop_back();
 			}
 		}
 
-		void Trigger(Args... args) {
-			for (auto& eventListener : eventListeners_) {
-				eventListener.second->Invoke(std::forward<Args>(args)...);
+		void Trigger(Args&&... args) {
+			for (auto& [eventListenerID, eventListener] : eventListeners_) {
+				eventListener->Invoke(std::forward<Args>(args)...);
 			}
 		}
+
 
 	private:
-		std::unordered_map<EventListenerID, std::unique_ptr<EventListenerBase<Args...>>> eventListeners_;
+		std::vector<std::pair<EventListenerID, std::unique_ptr<EventListenerBase<Args...>>>> eventListeners_;
 
 	}; // class Event
 

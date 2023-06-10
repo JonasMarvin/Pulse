@@ -29,6 +29,8 @@ private:
 };
 
  void TestFunction(int health, float test) {
+	 static int a = 0;
+	 a += health;
 }
 
  class Sandbox : public Pulse::Application {
@@ -44,13 +46,8 @@ private:
 		 auto startAddingListeners = std::chrono::high_resolution_clock::now();
 
 		 // Add listeners
-		 for (int i = 0; i < 10000000; ++i) {
+		 for (int i = 0; i < 1000000; ++i) {
 			 EventListenerID listener1 = player->AddListener(Hit, &Player::ChangeHealth);
-			 EventListenerID listener2 = player->AddListener(Hit, &Player::ChangeKarsten);
-			 EventListenerID listener8 = player->AddListener(Hit, &Player::ChangeHealth);
-			 EventListenerID listener7 = player->AddListener(Hit, &Player::ChangeKarsten);
-			 EventListenerID listener9 = player->AddListener(Hit3, &TestFunction);
-			 EventListenerID listener10 = player->AddListener(Hit4, [](int a, const std::string& b) {});
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();
@@ -61,11 +58,8 @@ private:
 		 auto startTriggeringEvents = std::chrono::high_resolution_clock::now();
 
 		 // Trigger events multiple times
-		 for (int i = 0; i < 10; ++i) {
-			 Hit.Trigger(i);
-			 Hit3.Trigger(i, 2.0f);
-			 Hit4.Trigger(200, "LOL");
-			 Hit.Trigger(i + 10);
+		 for (int i = 0; i < 1; ++i) {
+			 Hit.Trigger(1);
 		 }
 
 		 // Calculate elapsed time for triggering events
