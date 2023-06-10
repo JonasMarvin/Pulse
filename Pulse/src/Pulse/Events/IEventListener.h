@@ -38,9 +38,35 @@ namespace Pulse::Events {
 
         template <typename... Args>
         EventListenerID AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...)) {
-            EventListenerID eventListenerID = Event.AddListener(get_shared_from_this(),std::make_unique<EventListener<Derived, Args...>>(static_cast<Derived*>(this), callback));
+            EventListenerID eventListenerID = Event.AddListener(get_shared_from_this(),std::make_unique<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback));
             EventID eventID = Event.GetEventID();
             EventBase* eventPointer = &Event;
+
+            eventToListeners_[eventID].insert(eventListenerID);
+            eventPointers_[eventID] = eventPointer;
+            listenersAndEvents_[eventListenerID] = eventID;
+
+            return eventListenerID;
+        }
+
+        template <typename... Args>
+        EventListenerID AddListener(Event<Args...>& event, void(*callback)(Args...)) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(callback));
+            EventID eventID = event.GetEventID();
+            EventBase* eventPointer = &event;
+
+            eventToListeners_[eventID].insert(eventListenerID);
+            eventPointers_[eventID] = eventPointer;
+            listenersAndEvents_[eventListenerID] = eventID;
+
+            return eventListenerID;
+        }
+
+        template <typename... Args, typename Functor>
+        EventListenerID AddListener(Event<Args...>& event, Functor&& callback) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(std::forward<Functor>(callback)));
+            EventID eventID = event.GetEventID();
+            EventBase* eventPointer = &event;
 
             eventToListeners_[eventID].insert(eventListenerID);
             eventPointers_[eventID] = eventPointer;

@@ -3,6 +3,7 @@
 #include "Pulse/Utility/IDManager.h"
 
 #include <memory>
+#include <functional>
 
 namespace Pulse::Events {
 
@@ -29,21 +30,38 @@ namespace Pulse::Events {
 	}; // class EventListenerBase
 
 	template <typename T, typename... Args>
-	class EventListener : public EventListenerBase<Args...> {
+	class EventListenerMember : public EventListenerBase<Args...> {
 	public:
 		typedef void(T::* Callback)(Args...);
 
-		EventListener(T* objectInstance, const Callback callback)
+		EventListenerMember(T* objectInstance, const Callback callback)
 			: objectInstance_(objectInstance), callback_(callback) { }
 
 		void Invoke(Args... args) override {
-			(objectInstance_->*callback_)(args...);
+			(objectInstance_->*callback_)(std::forward<Args>(args)...);
 		}
 
 	private:
 		T* objectInstance_;
 		Callback callback_;
 
-	}; // class EventListener
+	}; // class EventListenerMember
+
+	template <typename... Args>
+	class EventListenerNoMember : public EventListenerBase<Args...> {
+	public:
+		typedef std::function<void(Args...)> Callback;
+
+		EventListenerNoMember(const Callback& callback)
+			: callback_(callback) {}
+
+		void Invoke(Args... args) override {
+			callback_(std::forward<Args>(args)...);
+		}
+
+	private:
+		Callback callback_;
+
+	}; // class EventListenerNoMember
 
 } // namespace Pulse::Events

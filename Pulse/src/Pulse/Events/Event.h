@@ -72,7 +72,7 @@ namespace Pulse::Events{
 
 		void Trigger(Args... args) {
 			for (auto& eventListener : eventListeners_) {
-				eventListener.second->Invoke(args...);
+				eventListener.second->Invoke(std::forward<Args>(args)...);
 			}
 		}
 
