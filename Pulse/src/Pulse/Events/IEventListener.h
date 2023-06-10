@@ -10,50 +10,54 @@ namespace Pulse::Events {
 
     class PLS_API IEventListenerBase {
     public:
-        inline IEventListenerBase() {
-#ifdef PLS_DEBUG
-            PLS_CORE_INFO("IEventListener created");
-#endif // PLS_DEBUG
-        }
-        inline virtual ~IEventListenerBase() {
-            for (auto& eventIterator : eventPointers_) {
-                eventIterator.second->RemoveListener(eventIterator.first);
-			}
-#ifdef PLS_DEBUG
-            PLS_CORE_INFO("IEventListener removed");
-#endif // PLS_DEBUG
+        
+        void RemoveListener(EventListenerID eventListenerID);
+        void OnEventRemoval(EventID eventID);
 
-        }
-
-        void RemoveListener(uint32_t eventListenerID);
-        void OnEventRemoval(uint32_t eventID);
+        virtual std::shared_ptr<IEventListenerBase> get_shared_from_this() = 0;
 
     protected:
-        std::unordered_map<uint32_t, std::unordered_set<uint32_t>> eventToListeners_;
-        std::unordered_map<uint32_t, EventBase*> eventPointers_;
-        std::unordered_map<uint32_t, uint32_t> listenersAndEvents_;
+        std::unordered_map<EventID, std::unordered_set<EventListenerID>> eventToListeners_;
+        std::unordered_map<EventID, EventBase*> eventPointers_;
+        std::unordered_map<EventListenerID, EventID> listenersAndEvents_;
 
     }; // class IEventListenerBase
 
     template<Pulse::Utility::CRTPConform Derived>
-    class IEventListener : public IEventListenerBase, public std::enable_shared_from_this<IEventListenerBase> {
+    class IEventListener : public IEventListenerBase, public std::enable_shared_from_this<Derived> {
     public:
+
+        virtual ~IEventListener() {
+            auto self_shared_ptr = this->get_shared_from_this();
+            if (self_shared_ptr) {
+                for (auto& eventIterator : eventPointers_) {
+                    eventIterator.second->RemoveListener(self_shared_ptr, eventIterator.first);
+                }
+            }
+        }
+
         template <typename... Args>
-        uint32_t AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...)) {
-            uint32_t eventListenerID = Event.AddListener(std::make_unique<EventListener<Derived, Args...>>(shared_from_this(), static_cast<Derived*>(this), callback));
-            uint32_t eventID = Event.GetEventID();
+        EventListenerID AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...)) {
+            EventListenerID eventListenerID = Event.AddListener(get_shared_from_this(),std::make_unique<EventListener<Derived, Args...>>(static_cast<Derived*>(this), callback));
+            EventID eventID = Event.GetEventID();
             EventBase* eventPointer = &Event;
 
             eventToListeners_[eventID].insert(eventListenerID);
             eventPointers_[eventID] = eventPointer;
             listenersAndEvents_[eventListenerID] = eventID;
 
-#ifdef PLS_DEBUG
-            PLS_CORE_INFO("Listener {0} succesfully added to the event {1}.", eventListenerID, eventID);
-#endif // PLS_DEBUG
-
             return eventListenerID;
         }
+
+        virtual std::shared_ptr<IEventListenerBase> get_shared_from_this() override {
+            try {
+                return std::static_pointer_cast<IEventListenerBase>(std::enable_shared_from_this<Derived>::shared_from_this());
+            }
+            catch (...) {
+                return nullptr;
+            }
+        }
+
     }; // class IEventListener
 
 } // namespace Pulse::Events

@@ -15,3 +15,7 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+// Type for EventListener ID's and Event ID's.
+typedef unsigned int EventID;
+typedef unsigned int EventListenerID;

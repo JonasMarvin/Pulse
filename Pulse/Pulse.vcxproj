@@ -165,7 +165,7 @@
     <ClInclude Include="src\Pulse\Utility\IDManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
+    <ClCompile Include="src\Pulse\Events\Event.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Application.cpp" />

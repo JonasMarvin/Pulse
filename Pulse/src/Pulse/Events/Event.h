@@ -4,65 +4,70 @@
 #include <memory>
 
 #include "Pulse/Events/EventListener.h"
+#include "Pulse/Core.h"
 
 namespace Pulse::Events{
 
+	class IEventListenerBase;
+
 	class PLS_API EventBase {
 	public:
+		using ListenerCount = uint32_t;
 		inline EventBase() : eventID_(eventIDManager_.GenerateID()) {}
 		inline virtual ~EventBase() {
 			eventIDManager_.FreeID(eventID_);
 		};
 		
-		inline uint32_t GetEventID() const { 
+		inline EventID GetEventID() const {
 			return eventID_;
 		}
 
-		virtual void RemoveListener(uint32_t eventListenerID) = 0;
+		void RemoveEventFromConnectedIEventListeners();
+
+		virtual void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) = 0;
+		void IncrementListenerCount(const std::shared_ptr<IEventListenerBase>& iEventListenerBase);
+		void DecrementListenerCount(const std::shared_ptr<IEventListenerBase>& iEventListenerBase);
+
+		struct WeakPtrHasher {
+			std::size_t operator()(const std::weak_ptr<IEventListenerBase>& wp) const;
+		};
+
+		struct WeakPtrEqual {
+			bool operator()(const std::weak_ptr<IEventListenerBase>& wp1, const std::weak_ptr<IEventListenerBase>& wp2) const;
+		};
 
 	protected:
-		uint32_t eventID_;
+		EventID eventID_;
+		std::unordered_map<std::weak_ptr<IEventListenerBase>, ListenerCount, WeakPtrHasher, WeakPtrEqual> listeningIEventListeners_;
 
 	private:
-		static inline Pulse::Utility::IDManager<uint32_t> eventIDManager_{};
+		static inline Pulse::Utility::IDManager<EventID> eventIDManager_{};
 
 	}; // class EventBase
 
 	template <typename... Args>
 	class Event : public EventBase{
 	public:
-		Event() {
-#ifdef PLS_DEBUG
-			PLS_CORE_INFO("Event {0} created.", eventID_);
-#endif // PLS_DEBUG
-		}
 
 		virtual ~Event() {
-			for(auto& eventListenerBase : eventListeners_) {
-				eventListenerBase.second->RemoveEventFromConnectedIEventListener(eventID_);
-			}
-#ifdef PLS_DEBUG
-			PLS_CORE_INFO("Event {0} destroyed.", eventID_);
-#endif // PLS_DEBUG
+			RemoveEventFromConnectedIEventListeners();
 		}
 
-		uint32_t AddListener(std::unique_ptr<EventListenerBase<Args...>> eventListener) {
-			uint32_t newEventListenerID = eventListener->GetEventListenerID();
+		EventListenerID AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::unique_ptr<EventListenerBase<Args...>> eventListener) {
+			IncrementListenerCount(iEventListenerBase);
+
+			EventListenerID newEventListenerID = eventListener->GetEventListenerID();
 			eventListeners_[newEventListenerID] = std::move(eventListener);
 			return newEventListenerID;
 		}
 
-		void RemoveListener(uint32_t eventListenerID) override {
-			auto iterator = eventListeners_.find(eventListenerID);
+		void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override {
+			DecrementListenerCount(iEventListenerBase);
 
-			if (iterator != eventListeners_.end()) {
-				eventListeners_.erase(iterator);
+			auto eventListenerIterator = eventListeners_.find(eventListenerID);
+			if (eventListenerIterator != eventListeners_.end()) {
+				eventListeners_.erase(eventListenerIterator);
 			}
-#ifdef PLS_DEBUG
-			else {
-				PLS_CORE_WARN("Tried to remove non existing Listener {0} from event {1}!", eventListenerID, eventID_);
-			}
-#endif // PLS_DEBUG
 		}
 
 		void Trigger(Args... args) {
@@ -72,7 +77,7 @@ namespace Pulse::Events{
 		}
 
 	private:
-		std::unordered_map<uint32_t, std::unique_ptr<EventListenerBase<Args...>>> eventListeners_;
+		std::unordered_map<EventListenerID, std::unique_ptr<EventListenerBase<Args...>>> eventListeners_;
 
 	}; // class Event
 

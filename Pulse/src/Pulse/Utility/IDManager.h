@@ -4,13 +4,12 @@
 #include <stdexcept>
 
 #include "Pulse/Utility/Constraints.h"
-#include "Pulse/Log.h"
 
 namespace Pulse::Utility {
 	template<UnsignedIntegralWithNumericLimits IDType>
 	class IDManager {
 	public:
-		IDManager(size_t maximalMemory = 0) : maximalMemory_(maximalMemory), counter_(0) {}
+		IDManager() : counter_(0) {}
 
 		IDManager(const IDManager&) = delete;
 		IDManager& operator=(const IDManager&) = delete;
@@ -31,20 +30,15 @@ namespace Pulse::Utility {
 
 		inline void FreeID(IDType id) {
 			freeIDs_.push(id);
-			if (maximalMemory_ != 0 && StackMemoryUsage() > maximalMemory_) {
-				throw std::runtime_error("Memory limit reached!");
-			}
 			if (IDsInUsage() == 0) {
 				std::stack<IDType>().swap(freeIDs_);
 				counter_ = 0;
 			}
-
 		}
 
 	private:
 		std::stack<IDType> freeIDs_;
 		IDType counter_;
-		size_t maximalMemory_;
 
 		inline size_t StackMemoryUsage() const {
 			return freeIDs_.size() * sizeof(IDType);

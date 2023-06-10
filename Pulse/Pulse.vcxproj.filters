@@ -43,6 +43,6 @@
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
-    <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
+    <ClCompile Include="src\Pulse\Events\Event.cpp" />
   </ItemGroup>
 </Project>
