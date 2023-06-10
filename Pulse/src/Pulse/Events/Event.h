@@ -75,7 +75,12 @@ namespace Pulse::Events{
 
 		void Trigger(const Args&... args) {
 			for (auto& [eventListenerID, eventListener] : eventListeners_) {
-				eventListener->Invoke(args...);
+				if (eventListener->IsThreadSafe()) {
+
+				}
+				else {
+					eventListener->Invoke(args...);
+				}
 			}
 		}
 

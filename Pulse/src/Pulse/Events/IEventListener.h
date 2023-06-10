@@ -37,8 +37,8 @@ namespace Pulse::Events {
         }
 
         template <typename... Args>
-        EventListenerID AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...)) {
-            EventListenerID eventListenerID = Event.AddListener(get_shared_from_this(),std::make_unique<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback));
+        EventListenerID AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
+            EventListenerID eventListenerID = Event.AddListener(get_shared_from_this(),std::make_unique<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
             EventID eventID = Event.GetEventID();
             EventBase* eventPointer = &Event;
 
@@ -50,8 +50,8 @@ namespace Pulse::Events {
         }
 
         template <typename... Args>
-        EventListenerID AddListener(Event<Args...>& event, void(*callback)(Args...)) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(callback));
+        EventListenerID AddListener(Event<Args...>& event, void(*callback)(Args...), bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(callback, isThreadsafe));
             EventID eventID = event.GetEventID();
             EventBase* eventPointer = &event;
 
@@ -63,8 +63,8 @@ namespace Pulse::Events {
         }
 
         template <typename... Args, typename Functor>
-        EventListenerID AddListener(Event<Args...>& event, Functor&& callback) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(std::forward<Functor>(callback)));
+        EventListenerID AddListener(Event<Args...>& event, Functor&& callback, bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
             EventID eventID = event.GetEventID();
             EventBase* eventPointer = &event;
 

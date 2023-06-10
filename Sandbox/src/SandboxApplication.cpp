@@ -7,7 +7,7 @@
 class Player : public Pulse::Events::IEventListener<Player> {
 public:
 	void ChangeHealth(int health , float test, int health2, float test2) {
-		health_++;
+		
 	}
 
 	void ChangeKarsten(int health) {
@@ -47,7 +47,7 @@ private:
 
 		 // Add listeners
 		 for (int i = 0; i < 1000000; ++i) {
-			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth); 
+			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, true); 
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();
