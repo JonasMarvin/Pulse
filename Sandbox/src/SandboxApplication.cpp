@@ -6,7 +6,8 @@
 
 class Player : public Pulse::Events::IEventListener<Player> {
 public:
-	void ChangeHealth(int health = 1) {
+	void ChangeHealth(int health , float test, int health2, float test2) {
+		health_++;
 	}
 
 	void ChangeKarsten(int health) {
@@ -18,7 +19,7 @@ private:
 
 class Player2 : public Pulse::Events::IEventListener<Player2> {
 public:
-	void ChangeHealth(int health = 1) {
+	void ChangeHealth(int health ,float test, int health2, float test2) {
 	}
 
 	void ChangeKarsten(int health) {
@@ -46,7 +47,7 @@ private:
 
 		 // Add listeners
 		 for (int i = 0; i < 1000000; ++i) {
-			 EventListenerID listener1 = player->AddListener(Hit3, TestFunction);
+			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth); 
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();
@@ -57,7 +58,7 @@ private:
 		 auto startTriggeringEvents = std::chrono::high_resolution_clock::now();
 
 		 // Trigger events multiple times
-		 for (int i = 0; i < 1; ++i) {
+		 for (int i = 0; i < 100; ++i) {
 			 Hit3.Trigger(1, 1.0f, 1, 1.0f);
 		 }
 

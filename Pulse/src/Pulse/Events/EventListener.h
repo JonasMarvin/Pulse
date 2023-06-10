@@ -15,7 +15,7 @@ namespace Pulse::Events {
 			eventIDManager_.FreeID(eventListenerID_);
 		}
 
-		virtual void Invoke(Args&&... args) = 0;
+		virtual void Invoke(const Args&... args) = 0;
 		
 		uint32_t GetEventListenerID() const {
 			return eventListenerID_;
@@ -37,8 +37,8 @@ namespace Pulse::Events {
 		EventListenerMember(T* objectInstance, const Callback callback)
 			: objectInstance_(objectInstance), callback_(callback) { }
 
-		void Invoke(Args&&... args) override {
-			(objectInstance_->*callback_)(std::forward<Args>(args)...);
+		void Invoke(const Args&... args) override {
+			(objectInstance_->*callback_)(args...);
 		}
 
 	private:
@@ -55,8 +55,8 @@ namespace Pulse::Events {
 		EventListenerNoMember(const Callback& callback)
 			: callback_(callback) {}
 
-		void Invoke(Args&&... args) override {
-			callback_(std::forward<Args>(args)...);
+		void Invoke(const Args&... args) override {
+			callback_(args...);
 		}
 
 	private:
