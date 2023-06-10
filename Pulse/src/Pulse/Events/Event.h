@@ -10,7 +10,7 @@ namespace Pulse::Events{
 	class PLS_API EventBase {
 	public:
 		inline EventBase() : eventID_(eventIDManager_.GenerateID()) {}
-		virtual inline ~EventBase() {
+		inline virtual ~EventBase() {
 			eventIDManager_.FreeID(eventID_);
 		};
 		
@@ -18,7 +18,7 @@ namespace Pulse::Events{
 			return eventID_;
 		}
 
-		virtual inline void RemoveListener(uint32_t eventListenerID) = 0;
+		virtual void RemoveListener(uint32_t eventListenerID) = 0;
 
 	protected:
 		uint32_t eventID_;
@@ -37,19 +37,19 @@ namespace Pulse::Events{
 #endif // PLS_DEBUG
 		}
 
-		virtual inline ~Event() {
+		virtual ~Event() {
 			for(auto& eventListenerBase : eventListeners_) {
 				eventListenerBase.second->RemoveEventFromConnectedIEventListener(eventID_);
 			}
 		}
 
-		inline uint32_t AddListener(std::unique_ptr<EventListenerBase<Args...>> eventListener) {
+		uint32_t AddListener(std::unique_ptr<EventListenerBase<Args...>> eventListener) {
 			uint32_t newEventListenerID = eventListener->GetEventListenerID();
 			eventListeners_[newEventListenerID] = std::move(eventListener);
 			return newEventListenerID;
 		}
 
-		inline void RemoveListener(uint32_t eventListenerID) override {
+		void RemoveListener(uint32_t eventListenerID) override {
 			auto iterator = eventListeners_.find(eventListenerID);
 
 			if (iterator != eventListeners_.end()) {
@@ -62,7 +62,7 @@ namespace Pulse::Events{
 #endif // PLS_DEBUG
 		}
 
-		inline void Trigger(Args... args) {
+		void Trigger(Args... args) {
 			for (auto& eventListener : eventListeners_) {
 				eventListener.second->Invoke(args...);
 			}

@@ -3,32 +3,34 @@
 #include "Pulse/Utility/IDManager.h"
 #include "Pulse/Log.h"
 
+#include <memory>
+
 namespace Pulse::Events {
 
 	class IEventListenerBase;
 
 	class PLS_API OnEventRemovalHandler {
 	public:
-		OnEventRemovalHandler(IEventListenerBase* iEventListenerBase)
+		inline OnEventRemovalHandler(std::shared_ptr<IEventListenerBase> iEventListenerBase)
 			: iEventListenerBase_(iEventListenerBase) { }
 		void RemoveEventFromConnectedIEventListener(uint32_t eventID_);
 
 	protected:
-		IEventListenerBase* iEventListenerBase_;
+		std::weak_ptr<IEventListenerBase> iEventListenerBase_;
 	}; // class OnEventRemovalHandler
 
 	template <typename... Args>
 	class EventListenerBase : public OnEventRemovalHandler {
 	public:
-		EventListenerBase(IEventListenerBase* iEventListenerBase)
+		EventListenerBase(std::shared_ptr<IEventListenerBase> iEventListenerBase)
 			: OnEventRemovalHandler(iEventListenerBase), eventListenerID_(eventIDManager_.GenerateID()) { }
-		virtual inline ~EventListenerBase() {
+		virtual ~EventListenerBase() {
 			eventIDManager_.FreeID(eventListenerID_);
 		}
 
-		virtual inline void Invoke(Args... args) = 0;
+		virtual void Invoke(Args... args) = 0;
 		
-		inline uint32_t GetEventListenerID() const {
+		uint32_t GetEventListenerID() const {
 			return eventListenerID_;
 		}
 
@@ -45,10 +47,10 @@ namespace Pulse::Events {
 	public:
 		typedef void(T::* Callback)(Args...);
 
-		EventListener(IEventListenerBase* iEventListenerBase, T* objectInstance, const Callback callback)
+		EventListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, T* objectInstance, const Callback callback)
 			: EventListenerBase<Args...>(iEventListenerBase), objectInstance_(objectInstance), callback_(callback) { }
 
-		inline void Invoke(Args... args) override {
+		void Invoke(Args... args) override {
 			(objectInstance_->*callback_)(args...);
 		}
 

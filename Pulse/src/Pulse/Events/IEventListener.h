@@ -27,12 +27,12 @@ namespace Pulse::Events {
     }; // class IEventListenerBase
 
     template<Pulse::Utility::CRTPConform Derived>
-    class IEventListener : public IEventListenerBase {
+    class IEventListener : public IEventListenerBase, public std::enable_shared_from_this<IEventListenerBase> {
     public:
 
         template <typename... Args>
         uint32_t AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...)) {
-            uint32_t eventListenerID = Event.AddListener(std::make_unique<EventListener<Derived, Args...>>(this, static_cast<Derived*>(this), callback));
+            uint32_t eventListenerID = Event.AddListener(std::make_unique<EventListener<Derived, Args...>>(shared_from_this(), static_cast<Derived*>(this), callback));
             uint32_t eventID = Event.GetEventID();
             EventBase* eventPointer = &Event;
 

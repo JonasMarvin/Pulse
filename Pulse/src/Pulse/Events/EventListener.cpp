@@ -5,7 +5,9 @@
 namespace Pulse::Events {
 
 	void OnEventRemovalHandler::RemoveEventFromConnectedIEventListener(uint32_t eventID_) {
-		iEventListenerBase_->OnEventRemoval(eventID_);
+		if (auto iEventListenerBase = iEventListenerBase_.lock()) {
+			iEventListenerBase->OnEventRemoval(eventID_);
+		}
 	}
 
 } // namespace Pulse::Events
