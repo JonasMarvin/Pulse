@@ -16,11 +16,13 @@ namespace Pulse::Events {
 
         virtual std::shared_ptr<IEventListenerBase> get_shared_from_this() = 0;
 
+        inline bool IsClean() const { return isClean_; }
+
     protected:
         std::unordered_map<EventID, std::unordered_set<EventListenerID>> eventToListeners_;
         std::unordered_map<EventID, EventBase*> eventPointers_;
         std::unordered_map<EventListenerID, EventID> listenersAndEvents_;
-
+        bool isClean_ = false;
     }; // class IEventListenerBase
 
     template<Pulse::Utility::CRTPConform Derived>
@@ -28,22 +30,31 @@ namespace Pulse::Events {
     public:
 
         virtual ~IEventListener() {
+			if (!isClean_) {
+#pragma warning(push)
+#pragma warning(disable: 4297)
+                throw std::runtime_error("IEventListener is not clean. Please call Cleanup() before destroying the object."); // TODO: automate this in a parent script that is like MonoBehaviour in Unity
+#pragma warning(pop)
+            }
+		}
+
+        void Cleanup() {
             auto self_shared_ptr = this->get_shared_from_this();
             if (self_shared_ptr) {
                 for (auto& eventIterator : eventPointers_) {
                     eventIterator.second->RemoveListener(self_shared_ptr, eventIterator.first);
                 }
             }
+            isClean_ = true;
         }
 
         template <typename... Args>
-        EventListenerID AddListener(Event<Args...>& Event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
-            EventListenerID eventListenerID = Event.AddListener(get_shared_from_this(),std::make_unique<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
-            EventID eventID = Event.GetEventID();
-            EventBase* eventPointer = &Event;
+        EventListenerID AddListener(Event<Args...>& event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(),std::make_shared<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
+            EventID eventID = event.GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
-            eventPointers_[eventID] = eventPointer;
+            eventPointers_[eventID] = &event;
             listenersAndEvents_[eventListenerID] = eventID;
 
             return eventListenerID;
@@ -51,12 +62,11 @@ namespace Pulse::Events {
 
         template <typename... Args>
         EventListenerID AddListener(Event<Args...>& event, void(*callback)(Args...), bool isThreadsafe = false) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(callback, isThreadsafe));
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<EventListenerNoMember<Args...>>(callback, isThreadsafe));
             EventID eventID = event.GetEventID();
-            EventBase* eventPointer = &event;
 
             eventToListeners_[eventID].insert(eventListenerID);
-            eventPointers_[eventID] = eventPointer;
+            eventPointers_[eventID] = &event;
             listenersAndEvents_[eventListenerID] = eventID;
 
             return eventListenerID;
@@ -64,13 +74,12 @@ namespace Pulse::Events {
 
         template <typename... Args, typename Functor>
         EventListenerID AddListener(Event<Args...>& event, Functor&& callback, bool isThreadsafe = false) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_unique<EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
             EventID eventID = event.GetEventID();
-            EventBase* eventPointer = &event;
 
             eventToListeners_[eventID].insert(eventListenerID);
-            eventPointers_[eventID] = eventPointer;
-            listenersAndEvents_[eventListenerID] = eventID;
+            eventPointers_[eventID] = &event;
+            listenersAndEvents_[eventListenerID] = event.GetEventID();
 
             return eventListenerID;
         }
@@ -83,6 +92,9 @@ namespace Pulse::Events {
                 return nullptr;
             }
         }
+
+    private:
+        std::weak_ptr<Derived> selfWeakPointer_;
 
     }; // class IEventListener
 

@@ -15,7 +15,7 @@ namespace Pulse::Events {
 			eventIDManager_.FreeID(eventListenerID_);
 		}
 
-		virtual void Invoke(const Args&... args) = 0;
+		virtual void Invoke(Args... args) = 0;
 		
 		uint32_t GetEventListenerID() const {
 			return eventListenerID_;
@@ -25,11 +25,20 @@ namespace Pulse::Events {
 			return isThreadSafe_;
 		}
 
+		void SetEnqeuedInThread(bool isEnqeuedInThread) {
+			isEnqeuedInThread_ = isEnqeuedInThread;
+		}
+
+		bool IsEnqeuedInThread() const {
+			return isEnqeuedInThread_;
+		}
+
 	protected:
 		uint32_t eventListenerID_;
 
 	private:
-		bool isThreadSafe_;
+		bool isThreadSafe_ = false;
+		bool isEnqeuedInThread_ = false;
 		static inline Pulse::Utility::IDManager<uint32_t> eventIDManager_{};
 
 	}; // class EventListenerBase
@@ -42,8 +51,8 @@ namespace Pulse::Events {
 		EventListenerMember(T* objectInstance, const Callback callback, bool isThreadSafe)
 			: EventListenerBase<Args...>(isThreadSafe), objectInstance_(objectInstance), callback_(callback) { }
 
-		void Invoke(const Args&... args) override {
-			(objectInstance_->*callback_)(args...);
+		void Invoke(Args... args) override {
+			(objectInstance_->*callback_)(std::move(args)...);
 		}
 
 	private:
@@ -60,8 +69,8 @@ namespace Pulse::Events {
 		EventListenerNoMember(const Callback& callback, bool isThreadSafe)
 			: EventListenerBase<Args...>(isThreadSafe), callback_(callback) {}
 
-		void Invoke(const Args&... args) override {
-			callback_(args...);
+		void Invoke(Args... args) override {
+			callback_(std::move(args)...);
 		}
 
 	private:

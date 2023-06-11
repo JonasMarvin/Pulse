@@ -3,8 +3,9 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <thread>
 
-#include "Pulse/Events/EventListener.h"
+#include "Pulse/Events/ListenerPool.h"
 #include "Pulse/Core.h"
 
 namespace Pulse::Events{
@@ -53,11 +54,11 @@ namespace Pulse::Events{
 			RemoveEventFromConnectedIEventListeners();
 		}
 
-		EventListenerID AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::unique_ptr<EventListenerBase<Args...>> eventListener) {
+		EventListenerID AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener) {
 			IncrementListenerCount(iEventListenerBase);
 
 			EventListenerID newEventListenerID = eventListener->GetEventListenerID();
-			eventListeners_.emplace_back(newEventListenerID, std::move(eventListener));
+			eventListeners_.emplace_back(newEventListenerID, eventListener);
 			return newEventListenerID;
 		}
 
@@ -68,15 +69,21 @@ namespace Pulse::Events{
 				[&](const auto& pair) { return pair.first == eventListenerID; });
 
 			if (eventListenerIterator != eventListeners_.end()) {
+				auto eventListener = eventListenerIterator->second;
+				
+				while (eventListener->IsEnqeuedInThread()) {
+					std::this_thread::yield();
+				}
+
 				std::iter_swap(eventListenerIterator, eventListeners_.end() - 1);
 				eventListeners_.pop_back();
 			}
 		}
 
-		void Trigger(const Args&... args) {
+		void Trigger(Args... args) {
 			for (auto& [eventListenerID, eventListener] : eventListeners_) {
 				if (eventListener->IsThreadSafe()) {
-
+					listenerPool_.Enqueue(eventListener, args...);
 				}
 				else {
 					eventListener->Invoke(args...);
@@ -86,7 +93,8 @@ namespace Pulse::Events{
 
 
 	private:
-		std::vector<std::pair<EventListenerID, std::unique_ptr<EventListenerBase<Args...>>>> eventListeners_;
+		std::vector<std::pair<EventListenerID, std::shared_ptr<EventListenerBase<Args...>>>> eventListeners_;
+		ListenerPool listenerPool_;
 
 	}; // class Event
 

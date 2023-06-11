@@ -168,6 +168,7 @@
     <ClInclude Include="src\Pulse\Log.h" />
     <ClInclude Include="src\Pulse\Utility\EnsureIntergralType.h" />
     <ClInclude Include="src\Pulse\Utility\IDManager.h" />
+    <ClInclude Include="src\Pulse\Events\ListenerPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Events\Event.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Application.cpp" />
     <ClCompile Include="src\Pulse\Log.cpp" />
+    <ClCompile Include="src\Pulse\Events\ListenerPool.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

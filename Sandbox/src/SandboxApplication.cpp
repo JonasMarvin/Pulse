@@ -46,8 +46,8 @@ private:
 		 auto startAddingListeners = std::chrono::high_resolution_clock::now();
 
 		 // Add listeners
-		 for (int i = 0; i < 1000000; ++i) {
-			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, true); 
+		 for (int i = 0; i < 10000; ++i) {
+			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, false); 
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();
@@ -67,7 +67,7 @@ private:
 		 auto durationTriggeringEvents = std::chrono::duration_cast<std::chrono::milliseconds>(endTriggeringEvents - startTriggeringEvents).count();
 		 PLS_TRACE("Event triggering time: {0} milliseconds", durationTriggeringEvents);
 
-		 
+		 player->Cleanup();
 	 }
 
 	 ~Sandbox() {
