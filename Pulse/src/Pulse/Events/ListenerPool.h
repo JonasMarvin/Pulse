@@ -5,6 +5,8 @@
 #include <condition_variable>
 #include <queue>
 #include <mutex>
+#include <vector>
+#include <tuple>
 
 #include "Pulse/Events/EventListener.h"
 #include "Pulse/Core.h"
@@ -16,32 +18,36 @@ namespace Pulse::Events {
 		~ListenerPool();
 
 		
-		template <typename... Args>
-		void Enqueue(std::shared_ptr<EventListenerBase<Args...>> eventListener, Args... args) {
-			eventListener->SetEnqeuedInThread(true);
-			{
-				std::unique_lock<std::mutex> lock(mutex_);
-				++activeAndQueuedTasks_;
-			}
-			
-			auto task = [this, eventListener, args...]() mutable {
-				eventListener->Invoke(std::move(args)...);
-				eventListener->SetEnqeuedInThread(false);
+        template <typename... Args>
+        void Enqueue(std::vector<std::shared_ptr<EventListenerBase<Args...>>> eventListeners, std::vector<std::tuple<Args...>> argsList) {
+            {
+                std::unique_lock<std::mutex> lock(mutex_);
+                activeAndQueuedTasks_ += eventListeners.size();
+            }
 
-				{
-					std::unique_lock<std::mutex> lock(mutex_);
-					--activeAndQueuedTasks_;
-					if (activeAndQueuedTasks_ == 0) {
-						conditionEmpty_.notify_one();
-					}
-				}
-			};
+            for (size_t i = 0; i < eventListeners.size(); ++i) {
+                auto& eventListener = eventListeners[i];
+                auto& args = argsList[i];
 
-			{
-				std::unique_lock<std::mutex> lock(mutex_);
-				tasks_.emplace(std::move(task));
-				condition_.notify_one();
-			}
+                auto task = [this, eventListener, args]() mutable {
+                    std::apply([eventListener](auto&&... args) { eventListener->Invoke(std::forward<decltype(args)>(args)...); }, args);
+
+                    {
+                        std::unique_lock<std::mutex> lock(mutex_);
+                        --activeAndQueuedTasks_;
+                        if (activeAndQueuedTasks_ == 0) {
+                            conditionEmpty_.notify_one();
+                        }
+                    }
+                };
+
+                {
+                    std::unique_lock<std::mutex> lock(mutex_);
+                    tasks_.emplace(std::move(task));
+                }
+            }
+
+            condition_.notify_all();
         }
 		
 	private:

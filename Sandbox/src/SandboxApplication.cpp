@@ -47,7 +47,7 @@ private:
 
 		 // Add listeners
 		 for (int i = 0; i < 10000; ++i) {
-			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, false); 
+			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, true); 
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();

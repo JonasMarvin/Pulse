@@ -8,6 +8,10 @@
 #include "Pulse/Events/ListenerPool.h"
 #include "Pulse/Core.h"
 
+#include <vector>
+#include <memory>
+#include <tuple>
+
 namespace Pulse::Events{
 
 	class IEventListenerBase;
@@ -81,13 +85,22 @@ namespace Pulse::Events{
 		}
 
 		void Trigger(Args... args) {
+			std::vector<std::shared_ptr<EventListenerBase<Args...>>> batchedListeners;
+			std::vector<std::tuple<Args...>> batchedArgs;
+
 			for (auto& [eventListenerID, eventListener] : eventListeners_) {
 				if (eventListener->IsThreadSafe()) {
-					listenerPool_.Enqueue(eventListener, args...);
+					eventListener->SetEnqeuedInThread(true);
+					batchedListeners.push_back(eventListener);
+					batchedArgs.push_back(std::make_tuple(args...));
 				}
 				else {
 					eventListener->Invoke(args...);
 				}
+			}
+
+			if (!batchedListeners.empty()) {
+				listenerPool_.Enqueue(batchedListeners, batchedArgs);
 			}
 		}
 
