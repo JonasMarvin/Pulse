@@ -41,13 +41,19 @@ private:
 		 Pulse::Events::Event<int> Hit2{};
 		 Pulse::Events::Event<int, float,int, float> Hit3{};
 		 Pulse::Events::Event<int, const std::string&> Hit4{};
-
+		 auto startAddingEvents = std::chrono::high_resolution_clock::now();
+		 for (int i = 0; i < 1000; ++i) {
+			 Pulse::Events::Event<int> Hit22{};
+		 }
+		 // Calculate elapsed time for adding and removing events
+		 auto endAddingRemovingvents = std::chrono::high_resolution_clock::now();
+		 auto durationAddingRemovingEvents = std::chrono::duration_cast<std::chrono::milliseconds>(endAddingRemovingvents - startAddingEvents).count();
+		 PLS_TRACE("event adding and removing time: {0} milliseconds", durationAddingRemovingEvents);
 		 // Measure time for adding listeners
 		 auto startAddingListeners = std::chrono::high_resolution_clock::now();
-
 		 // Add listeners
 		 for (int i = 0; i < 10000; ++i) {
-			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, true); 
+			 EventListenerID listener1 = player->AddListener(Hit3, &Player::ChangeHealth, false); 
 		 }
 		 // Calculate elapsed time for adding listeners
 		 auto endAddingListeners = std::chrono::high_resolution_clock::now();
@@ -58,7 +64,7 @@ private:
 		 auto startTriggeringEvents = std::chrono::high_resolution_clock::now();
 
 		 // Trigger events multiple times
-		 for (int i = 0; i < 100; ++i) {
+		 for (int i = 0; i < 1000; ++i) {
 			 Hit3.Trigger(1, 1.0f, 1, 1.0f);
 		 }
 
