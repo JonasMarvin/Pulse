@@ -2,7 +2,16 @@
 
 #include "Pulse/Events/IEventListener.h"
 
-namespace Pulse::Events {
+namespace Pulse::Events::Internal {
+
+	EventBase::EventBase() : eventID_(eventIDManager_.GenerateID()) {}
+	EventBase::~EventBase() {
+		eventIDManager_.FreeID(eventID_);
+	};
+		
+	EventID EventBase::GetEventID() const {
+		return eventID_;
+	}
 
 	void EventBase::RemoveEventFromConnectedIEventListeners() {
 		for (auto& [listener, id] : listeningIEventListeners_) {
@@ -45,4 +54,4 @@ namespace Pulse::Events {
 		return wp1.lock() == wp2.lock();
 	}
 
-} // namespace Pulse::Events
+} // namespace Pulse::Events::Internal
