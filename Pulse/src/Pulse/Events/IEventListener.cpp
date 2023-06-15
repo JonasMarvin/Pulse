@@ -2,7 +2,7 @@
 
 namespace Pulse::Events::Internal {
 
-    void IEventListenerBase::RemoveListener(EventListenerID eventListenerID) {
+    void IEventListenerBase::_RemoveListener(EventListenerID eventListenerID) {
         auto iterator = listenersAndEvents_.find(eventListenerID);
         if (iterator != listenersAndEvents_.end()) {
             EventID eventID = iterator->second;
@@ -16,7 +16,7 @@ namespace Pulse::Events::Internal {
         }
     }
 
-    void IEventListenerBase::OnEventRemoval(EventID eventID) {
+    void IEventListenerBase::_OnEventRemoval(EventID eventID) {
         auto listenersIterator = eventToListeners_.find(eventID);
         if (listenersIterator != eventToListeners_.end()) {
             for (EventListenerID listenerID : listenersIterator->second) {

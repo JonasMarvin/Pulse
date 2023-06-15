@@ -48,7 +48,7 @@ namespace Pulse::Events {
         template <typename Functor, typename... Args>
         EventListenerID AddListener(std::shared_ptr<Event<Args...>> event, Functor&& callback, bool isThreadsafe = false);
 
-        virtual std::shared_ptr<Internal::IEventListenerBase> _get_shared_from_this() override;
+        std::shared_ptr<Internal::IEventListenerBase> _get_shared_from_this() override;
     
     protected:
         IEventListener() = default;

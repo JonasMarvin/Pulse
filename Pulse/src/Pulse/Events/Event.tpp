@@ -10,7 +10,7 @@ namespace Pulse::Events{
 	}
 
     template<typename... Args>
-	EventListenerID Event<Args...>::_AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener) {
+	EventListenerID Event<Args...>::_AddListener(std::shared_ptr<Internal::IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListener<Args...>> eventListener) {
 		IncrementListenerCount(iEventListenerBase);
 
 		EventListenerID newEventListenerID = eventListener->GetEventListenerID();
@@ -19,7 +19,7 @@ namespace Pulse::Events{
 	}
 
     template<typename... Args>
-	void Event<Args...>::_RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) {
+	void Event<Args...>::_RemoveListener(std::shared_ptr<Internal::IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) {
 		DecrementListenerCount(iEventListenerBase);
 
 		auto eventListenerIterator = std::find_if(eventListeners_.begin(), eventListeners_.end(),
@@ -39,7 +39,7 @@ namespace Pulse::Events{
 
     template<typename... Args>
 	void Event<Args...>::Trigger(Args... args) {
-		std::vector<std::shared_ptr<EventListenerBase<Args...>>> batchedListeners;
+		std::vector<std::shared_ptr<EventListener<Args...>>> batchedListeners;
 		std::vector<std::tuple<Args...>> batchedArgs;
 
 		for (auto& [eventListenerID, eventListener] : eventListeners_) {
@@ -60,7 +60,13 @@ namespace Pulse::Events{
 
 	template <typename... Args>
 	std::shared_ptr<Event<Args...>> Event<Args...>::Create() {
-		return std::make_shared<Event<Args...>>();
+		auto deleter = [](Event<Args...>* pointer) { delete pointer; };
+		return std::shared_ptr<Event<Args...>>(new Event<Args...>, deleter);
+	}
+
+	template <typename... Args>
+	static std::shared_ptr<Event<Args...>> CreatePulseEvent() {
+		return Event<Args...>::Create();
 	}
 
 } // namespace Pulse::Events

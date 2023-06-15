@@ -11,14 +11,12 @@
 
 namespace Pulse::Events{
 
-	class IEventListenerBase;
-
 	namespace Internal{
+
+		class IEventListenerBase;
 
 		class PLS_API EventBase {
 		public:
-			using ListenerCount = uint32_t;
-
 			virtual ~EventBase();
 		
 			EventID _GetEventID() const;
@@ -42,7 +40,7 @@ namespace Pulse::Events{
 			void RemoveEventFromConnectedIEventListeners();
 
 			EventID eventID_;
-			std::unordered_map<std::weak_ptr<IEventListenerBase>, ListenerCount, WeakPtrHasher, WeakPtrEqual> listeningIEventListeners_;
+			std::unordered_map<std::weak_ptr<IEventListenerBase>, size_t, WeakPtrHasher, WeakPtrEqual> listeningIEventListeners_;
 
 		private:
 			static inline Pulse::Utility::IDManager<EventID> eventIDManager_{};
@@ -58,16 +56,19 @@ namespace Pulse::Events{
 
 		static std::shared_ptr<Event<Args...>> Create();
 
-		EventListenerID _AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener);
-		void _RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override;
+		EventListenerID _AddListener(std::shared_ptr<Internal::IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListener<Args...>> eventListener);
+		void _RemoveListener(std::shared_ptr<Internal::IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override;
 		void Trigger(Args... args);
 
 	private:
 		Event() = default;
-		std::vector<std::pair<EventListenerID, std::shared_ptr<EventListenerBase<Args...>>>> eventListeners_;
+		std::vector<std::pair<EventListenerID, std::shared_ptr<EventListener<Args...>>>> eventListeners_;
 		Internal::ListenerPool listenerPool_;
 
 	}; // class Event
+
+	template <typename... Args>
+	static std::shared_ptr<Event<Args...>> CreatePulseEvent();
 
 } // namespace Pulse::Events
 

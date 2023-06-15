@@ -1,7 +1,7 @@
 namespace Pulse::Events::Internal {
         
     template <typename... Args>
-    void Enqueue(std::vector<std::shared_ptr<EventListenerBase<Args...>>> eventListeners, std::vector<std::tuple<Args...>> argsList) {
+    void ListenerPool::Enqueue(std::vector<std::shared_ptr<EventListener<Args...>>> eventListeners, std::vector<std::tuple<Args...>> argsList) {
         size_t threadBatchSize = eventListeners.size() / threads_.size();
         {
             std::unique_lock<std::mutex> lock(mutex_);

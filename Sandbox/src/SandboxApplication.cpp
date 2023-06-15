@@ -39,9 +39,9 @@ private:
 		auto Hit = Pulse::Events::Event<int>::Create();
 		auto player = std::make_shared<Player>();
 		auto Hit2 = Pulse::Events::Event<int>::Create();
-		auto Hit3 = Pulse::Events::Event<int, float,int, float>::Create();
+		
+		auto Hit3 = Pulse::Events::CreatePulseEvent<int, float, int, float>();
 		auto Hit4 = Pulse::Events::Event<int, const std::string&>::Create();
-	
     	auto startAddingEvents = std::chrono::high_resolution_clock::now();
    	 	for (int i = 0; i < 1000; ++i) {
 			auto Hit22 = Pulse::Events::Event<int>::Create();
@@ -74,7 +74,7 @@ private:
 		 auto durationTriggeringEvents = std::chrono::duration_cast<std::chrono::milliseconds>(endTriggeringEvents - startTriggeringEvents).count();
 		 PLS_TRACE("Event triggering time: {0} milliseconds", durationTriggeringEvents);
 
-		 player->Cleanup();
+		 player->_Cleanup();
 	 }
 
 	 ~Sandbox() {

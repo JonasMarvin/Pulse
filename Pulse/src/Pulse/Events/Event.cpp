@@ -16,7 +16,7 @@ namespace Pulse::Events::Internal {
 	void EventBase::RemoveEventFromConnectedIEventListeners() {
 		for (auto& [listener, id] : listeningIEventListeners_) {
 			if (auto ptr = listener.lock()) {
-				ptr->OnEventRemoval(eventID_);
+				ptr->_OnEventRemoval(eventID_);
 			}
 		}
 	}

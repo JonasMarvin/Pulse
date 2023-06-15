@@ -8,10 +8,10 @@
 namespace Pulse::Events {
 
 	template <typename... Args>
-	class EventListenerBase {
+	class EventListener {
 	public:
 
-		virtual ~EventListenerBase();
+		virtual ~EventListener();
 
 		virtual void Invoke(Args... args) = 0;
 		
@@ -22,7 +22,7 @@ namespace Pulse::Events {
 		bool IsEnqeuedInThread() const;
 
 	protected:
-		EventListenerBase(bool isThreadSafe) : isThreadSafe_(isThreadSafe), eventListenerID_(eventIDManager_.GenerateID()) { }
+		EventListener(bool isThreadSafe) : isThreadSafe_(isThreadSafe), eventListenerID_(eventIDManager_.GenerateID()) { }
 
 		uint32_t eventListenerID_;
 
@@ -36,12 +36,12 @@ namespace Pulse::Events {
 	namespace Internal{
 
 		template <typename T, typename... Args>
-		class EventListenerMember : public EventListenerBase<Args...> {
+		class EventListenerMember : public EventListener<Args...> {
 		public:
 			typedef void(T::* Callback)(Args...);
 
 			EventListenerMember(T* objectInstance, const Callback callback, bool isThreadSafe)
-				: EventListenerBase<Args...>(isThreadSafe), objectInstance_(objectInstance), callback_(callback) { }
+				: EventListener<Args...>(isThreadSafe), objectInstance_(objectInstance), callback_(callback) { }
 
 			void Invoke(Args... args) override;
 
@@ -52,12 +52,12 @@ namespace Pulse::Events {
 		}; // class EventListenerMember
 
 		template <typename... Args>
-		class EventListenerNoMember : public EventListenerBase<Args...> {
+		class EventListenerNoMember : public EventListener<Args...> {
 		public:
 			typedef std::function<void(Args...)> Callback;
 
 			EventListenerNoMember(const Callback& callback, bool isThreadSafe)
-				: EventListenerBase<Args...>(isThreadSafe), callback_(callback) {}
+				: EventListener<Args...>(isThreadSafe), callback_(callback) {}
 
 			void Invoke(Args... args) override;
 

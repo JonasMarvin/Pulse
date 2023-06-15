@@ -18,7 +18,7 @@ namespace Pulse::Events::Internal {
 		~ListenerPool();
 
         template <typename... Args>
-        void Enqueue(std::vector<std::shared_ptr<EventListenerBase<Args...>>> eventListeners, std::vector<std::tuple<Args...>> argsList);
+        void Enqueue(std::vector<std::shared_ptr<EventListener<Args...>>> eventListeners, std::vector<std::tuple<Args...>> argsList);
 		
 	private:
 		std::vector<std::thread> threads_;

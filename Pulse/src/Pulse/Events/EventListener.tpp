@@ -1,27 +1,27 @@
 namespace Pulse::Events {
 
     template <typename... Args>
-	EventListenerBase<Args...>::~EventListenerBase() {
+	EventListener<Args...>::~EventListener() {
 		eventIDManager_.FreeID(eventListenerID_);
 	}
 		
     template <typename... Args>
-	uint32_t EventListenerBase<Args...>::GetEventListenerID() const {
+	uint32_t EventListener<Args...>::GetEventListenerID() const {
 		return eventListenerID_;
 	}
 
     template <typename... Args>
-	bool EventListenerBase<Args...>::IsThreadSafe() const {
+	bool EventListener<Args...>::IsThreadSafe() const {
 		return isThreadSafe_;
 	}
 
     template <typename... Args>
-	void EventListenerBase<Args...>::_SetEnqeuedInThread(bool isEnqeuedInThread) {
+	void EventListener<Args...>::_SetEnqeuedInThread(bool isEnqeuedInThread) {
 		isEnqeuedInThread_ = isEnqeuedInThread;
 	}
 
     template <typename... Args>
-	bool EventListenerBase<Args...>::IsEnqeuedInThread() const {
+	bool EventListener<Args...>::IsEnqeuedInThread() const {
 		return isEnqeuedInThread_;
 	}
 
