@@ -65,7 +65,7 @@ namespace Pulse::Events{
 	private:
 		Event() = default;
 		std::vector<std::pair<EventListenerID, std::shared_ptr<EventListenerBase<Args...>>>> eventListeners_;
-		ListenerPool listenerPool_;
+		Internal::ListenerPool listenerPool_;
 
 	}; // class Event
 

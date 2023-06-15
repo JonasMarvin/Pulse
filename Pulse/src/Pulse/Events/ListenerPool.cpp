@@ -6,7 +6,7 @@
 #include <condition_variable>
 #include <queue>
 
-namespace Pulse::Events {
+namespace Pulse::Events::Internal {
 	ListenerPool::ListenerPool(size_t threadCount)
 	: activeAndQueuedTasks_(0), isRunning_(true) {
 		for (size_t i = 0; i < threadCount; ++i) {
@@ -49,4 +49,4 @@ namespace Pulse::Events {
 		}
 	}
 
-} // namespace Pulse::Events
+} // namespace Pulse::Events::Internal

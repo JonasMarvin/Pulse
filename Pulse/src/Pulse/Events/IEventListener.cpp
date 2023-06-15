@@ -1,6 +1,6 @@
 #include "Pulse/Events/IEventListener.h"
 
-namespace Pulse::Events {
+namespace Pulse::Events::Internal {
 
     void IEventListenerBase::RemoveListener(EventListenerID eventListenerID) {
         auto iterator = listenersAndEvents_.find(eventListenerID);
@@ -8,7 +8,7 @@ namespace Pulse::Events {
             EventID eventID = iterator->second;
             listenersAndEvents_.erase(iterator);
             eventToListeners_[eventID].erase(eventListenerID);
-            eventPointers_[eventID]->_RemoveListener(get_shared_from_this(), eventListenerID);
+            eventPointers_[eventID]->_RemoveListener(_get_shared_from_this(), eventListenerID);
             if (eventToListeners_[eventID].empty()) {
                 eventPointers_.erase(eventID);
                 eventToListeners_.erase(eventID);
@@ -27,4 +27,8 @@ namespace Pulse::Events {
         }
     }
 
-} // namespace Pulse::Events
+    bool IEventListenerBase::IsClean() const {
+        return isClean_;
+    }
+
+} // namespace Pulse::Events::Internal

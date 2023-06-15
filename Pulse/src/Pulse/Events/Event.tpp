@@ -19,7 +19,7 @@ namespace Pulse::Events{
 	}
 
     template<typename... Args>
-	void Event<Args...>::_RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override {
+	void Event<Args...>::_RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) {
 		DecrementListenerCount(iEventListenerBase);
 
 		auto eventListenerIterator = std::find_if(eventListeners_.begin(), eventListeners_.end(),
@@ -38,7 +38,7 @@ namespace Pulse::Events{
 	}
 
     template<typename... Args>
-	void Event<Args...>::Trigger(Args... args) override {
+	void Event<Args...>::Trigger(Args... args) {
 		std::vector<std::shared_ptr<EventListenerBase<Args...>>> batchedListeners;
 		std::vector<std::tuple<Args...>> batchedArgs;
 
