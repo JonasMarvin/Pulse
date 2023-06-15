@@ -8,7 +8,7 @@ namespace Pulse::Events {
             EventID eventID = iterator->second;
             listenersAndEvents_.erase(iterator);
             eventToListeners_[eventID].erase(eventListenerID);
-            eventPointers_[eventID]->RemoveListener(get_shared_from_this(), eventListenerID);
+            eventPointers_[eventID]->_RemoveListener(get_shared_from_this(), eventListenerID);
             if (eventToListeners_[eventID].empty()) {
                 eventPointers_.erase(eventID);
                 eventToListeners_.erase(eventID);

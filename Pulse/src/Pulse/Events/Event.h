@@ -13,34 +13,21 @@ namespace Pulse::Events{
 
 	class IEventListenerBase;
 
-	template <typename... Args>
-	std::unique_ptr<IEvent<Args...>> CreateEvent();
-
-	template <typename... Args>
-	class IEvent{
-	public:
-		virtual ~IEvent() = default;
-		virtual void Trigger(Args... args) = 0;
-
-	protected:
-		IEvent() = default;
-
-	} // class IEvent
-
 	namespace Internal{
 
 		class PLS_API EventBase {
 		public:
 			using ListenerCount = uint32_t;
 
-			EventBase();
 			virtual ~EventBase();
 		
-			EventID GetEventID() const;
+			EventID _GetEventID() const;
 
-			virtual void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) = 0;
+			virtual void _RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) = 0;
 		
 		protected:
+			EventBase();
+
 			struct WeakPtrHasher {
 				std::size_t operator()(const std::weak_ptr<IEventListenerBase>& wp) const;
 			};
@@ -63,13 +50,13 @@ namespace Pulse::Events{
 		}; // class EventBase
 
 		template <typename... Args>
-		class Event : public EventBase, public IEvent {
+		class Event : public Internal::EventBase {
 		public:
 			virtual ~Event();
 
-			EventListenerID AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener);
-			void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override;
-			void Trigger(Args... args) override;
+			EventListenerID _AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener);
+			void _RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override;
+			void Trigger(Args... args);
 
 		private:
 			std::vector<std::pair<EventListenerID, std::shared_ptr<EventListenerBase<Args...>>>> eventListeners_;
@@ -78,6 +65,9 @@ namespace Pulse::Events{
 		}; // class Event
 	
 	} // namespace Internal
+
+	template <typename... Args>
+	std::shared_ptr<Internal::Event<Args...>> CreatePulseEvent();
 
 } // namespace Pulse::Events
 

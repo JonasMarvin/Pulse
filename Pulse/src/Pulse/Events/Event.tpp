@@ -4,12 +4,7 @@
 
 namespace Pulse::Events{
 
-    template <typename... Args>
-	std::shared_ptr<IEvent<Args...>> CreateEvent() {
-		return std::make_shared<Internal::Event<Args...>>();
-	}
-
-    namespace Internal{
+	namespace Internal{
 
         template<typename... Args>
         Event<Args...>::~Event() {
@@ -17,7 +12,7 @@ namespace Pulse::Events{
 		}
 
         template<typename... Args>
-		EventListenerID Event<Args...>::AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener) {
+		EventListenerID Event<Args...>::_AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener) {
 			IncrementListenerCount(iEventListenerBase);
 
 			EventListenerID newEventListenerID = eventListener->GetEventListenerID();
@@ -26,7 +21,7 @@ namespace Pulse::Events{
 		}
 
         template<typename... Args>
-		void Event<Args...>::RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override {
+		void Event<Args...>::_RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override {
 			DecrementListenerCount(iEventListenerBase);
 
 			auto eventListenerIterator = std::find_if(eventListeners_.begin(), eventListeners_.end(),
@@ -66,5 +61,10 @@ namespace Pulse::Events{
 		}
 
     } // namespace Internal
+
+	template <typename... Args>
+	std::shared_ptr<Internal::Event<Args...>> CreatePulseEvent() {
+		return std::make_shared<Internal::Event<Args...>>();
+	}
 
 } // namespace Pulse::Events

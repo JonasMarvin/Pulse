@@ -20,7 +20,7 @@ namespace Pulse::Events {
 
     protected:
         std::unordered_map<EventID, std::unordered_set<EventListenerID>> eventToListeners_;
-        std::unordered_map<EventID, EventBase*> eventPointers_;
+        std::unordered_map<EventID, std::shared_ptr<Internal::EventBase>> eventPointers_;
         std::unordered_map<EventListenerID, EventID> listenersAndEvents_;
         bool isClean_ = false;
     }; // class IEventListenerBase
@@ -42,44 +42,44 @@ namespace Pulse::Events {
             auto self_shared_ptr = this->get_shared_from_this();
             if (self_shared_ptr) {
                 for (auto& eventIterator : eventPointers_) {
-                    eventIterator.second->RemoveListener(self_shared_ptr, eventIterator.first);
+                    eventIterator.second->_RemoveListener(self_shared_ptr, eventIterator.first);
                 }
             }
             isClean_ = true;
         }
 
         template <typename... Args>
-        EventListenerID AddListener(Event<Args...>& event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(),std::make_shared<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
-            EventID eventID = event.GetEventID();
+        EventListenerID AddListener((std::shared_ptr<Internal::Event<Args...>> event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event->_AddListener(get_shared_from_this(),std::make_shared<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
+            EventID eventID = event->_GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
-            eventPointers_[eventID] = &event;
+            eventPointers_[eventID] = event;
             listenersAndEvents_[eventListenerID] = eventID;
 
             return eventListenerID;
         }
 
         template <typename... Args>
-        EventListenerID AddListener(Event<Args...>& event, void(*callback)(Args...), bool isThreadsafe = false) {
+        EventListenerID AddListener(std::shared_ptr<Internal::Event<Args...>> event, void(*callback)(Args...), bool isThreadsafe = false) {
             EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<EventListenerNoMember<Args...>>(callback, isThreadsafe));
-            EventID eventID = event.GetEventID();
+            EventID eventID = event->_GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
-            eventPointers_[eventID] = &event;
+            eventPointers_[eventID] = event;
             listenersAndEvents_[eventListenerID] = eventID;
 
             return eventListenerID;
         }
 
         template <typename... Args, typename Functor>
-        EventListenerID AddListener(Event<Args...>& event, Functor&& callback, bool isThreadsafe = false) {
+        EventListenerID AddListener((std::shared_ptr<Internal::Event<Args...>> event, Functor&& callback, bool isThreadsafe = false) {
             EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
-            EventID eventID = event.GetEventID();
+            EventID eventID = event->_GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
-            eventPointers_[eventID] = &event;
-            listenersAndEvents_[eventListenerID] = event.GetEventID();
+            eventPointers_[eventID] = event;
+            listenersAndEvents_[eventListenerID] = eventID;
 
             return eventListenerID;
         }

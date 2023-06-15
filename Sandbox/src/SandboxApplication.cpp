@@ -36,14 +36,14 @@ private:
  class Sandbox : public Pulse::Application {
  public:
 	 Sandbox() {
-		 Pulse::Events::Event<int> Hit{};
-		 std::shared_ptr<Player> player = std::make_shared<Player>();
-		 Pulse::Events::Event<int> Hit2{};
-		 Pulse::Events::Event<int, float,int, float> Hit3{};
-		 Pulse::Events::Event<int, const std::string&> Hit4{};
+		 auto Hit = Pulse::Events::CreatePulseEvent<int>();
+		 auto player = std::make_shared<Player>();
+		 auto Hit2 = Pulse::Events::CreatePulseEvent<int>();
+		 auto Hit3 = Pulse::Events::CreatePulseEvent<int, float,int, float>();
+		 auto Hit4 = Pulse::Events::CreatePulseEvent<int, const std::string&>();
 		 auto startAddingEvents = std::chrono::high_resolution_clock::now();
 		 for (int i = 0; i < 1000; ++i) {
-			 Pulse::Events::Event<int> Hit22{};
+			 auto Hit22 = Pulse::Events::CreatePulseEvent<int>();
 		 }
 		 // Calculate elapsed time for adding and removing events
 		 auto endAddingRemovingvents = std::chrono::high_resolution_clock::now();
@@ -65,7 +65,7 @@ private:
 
 		 // Trigger events multiple times
 		 for (int i = 0; i < 1000; ++i) {
-			 Hit3.Trigger(1, 1.0f, 1, 1.0f);
+			 Hit3->Trigger(1, 1.0f, 1, 1.0f);
 		 }
 
 		 // Calculate elapsed time for triggering events

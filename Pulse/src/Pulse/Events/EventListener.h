@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Pulse/Utility/IDManager.h"
-
 #include <memory>
 #include <functional>
+
+#include "Pulse/Utility/IDManager.h"
 
 namespace Pulse::Events {
 

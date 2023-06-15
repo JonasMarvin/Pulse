@@ -8,8 +8,8 @@ namespace Pulse::Events::Internal {
 	EventBase::~EventBase() {
 		eventIDManager_.FreeID(eventID_);
 	};
-		
-	EventID EventBase::GetEventID() const {
+
+	EventID EventBase::_GetEventID() const {
 		return eventID_;
 	}
 
