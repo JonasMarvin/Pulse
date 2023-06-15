@@ -36,15 +36,16 @@ private:
  class Sandbox : public Pulse::Application {
  public:
 	 Sandbox() {
-		 auto Hit = Pulse::Events::CreatePulseEvent<int>();
-		 auto player = std::make_shared<Player>();
-		 auto Hit2 = Pulse::Events::CreatePulseEvent<int>();
-		 auto Hit3 = Pulse::Events::CreatePulseEvent<int, float,int, float>();
-		 auto Hit4 = Pulse::Events::CreatePulseEvent<int, const std::string&>();
-		 auto startAddingEvents = std::chrono::high_resolution_clock::now();
-		 for (int i = 0; i < 1000; ++i) {
-			 auto Hit22 = Pulse::Events::CreatePulseEvent<int>();
-		 }
+		auto Hit = Pulse::Events::Event<int>::Create();
+		auto player = std::make_shared<Player>();
+		auto Hit2 = Pulse::Events::Event<int>::Create();
+		auto Hit3 = Pulse::Events::Event<int, float,int, float>::Create();
+		auto Hit4 = Pulse::Events::Event<int, const std::string&>::Create();
+	
+    	auto startAddingEvents = std::chrono::high_resolution_clock::now();
+   	 	for (int i = 0; i < 1000; ++i) {
+			auto Hit22 = Pulse::Events::Event<int>::Create();
+		}
 		 // Calculate elapsed time for adding and removing events
 		 auto endAddingRemovingvents = std::chrono::high_resolution_clock::now();
 		 auto durationAddingRemovingEvents = std::chrono::duration_cast<std::chrono::milliseconds>(endAddingRemovingvents - startAddingEvents).count();

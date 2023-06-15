@@ -48,26 +48,26 @@ namespace Pulse::Events{
 			static inline Pulse::Utility::IDManager<EventID> eventIDManager_{};
 
 		}; // class EventBase
-
-		template <typename... Args>
-		class Event : public Internal::EventBase {
-		public:
-			virtual ~Event();
-
-			EventListenerID _AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener);
-			void _RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override;
-			void Trigger(Args... args);
-
-		private:
-			std::vector<std::pair<EventListenerID, std::shared_ptr<EventListenerBase<Args...>>>> eventListeners_;
-			ListenerPool listenerPool_;
-
-		}; // class Event
 	
 	} // namespace Internal
 
 	template <typename... Args>
-	std::shared_ptr<Internal::Event<Args...>> CreatePulseEvent();
+	class Event : public Internal::EventBase {
+	public:
+		virtual ~Event();
+
+		static std::shared_ptr<Event<Args...>> Create();
+
+		EventListenerID _AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::shared_ptr<EventListenerBase<Args...>> eventListener);
+		void _RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override;
+		void Trigger(Args... args);
+
+	private:
+		Event() = default;
+		std::vector<std::pair<EventListenerID, std::shared_ptr<EventListenerBase<Args...>>>> eventListeners_;
+		ListenerPool listenerPool_;
+
+	}; // class Event
 
 } // namespace Pulse::Events
 

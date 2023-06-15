@@ -49,8 +49,8 @@ namespace Pulse::Events {
         }
 
         template <typename... Args>
-        EventListenerID AddListener((std::shared_ptr<Internal::Event<Args...>> event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
-            EventListenerID eventListenerID = event->_AddListener(get_shared_from_this(),std::make_shared<EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
+        EventListenerID AddListener((std::shared_ptr<Event<Args...>> event, void(Derived::* callback)(Args...), bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event->_AddListener(get_shared_from_this(),std::make_shared<Internal::EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
             EventID eventID = event->_GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
@@ -61,8 +61,8 @@ namespace Pulse::Events {
         }
 
         template <typename... Args>
-        EventListenerID AddListener(std::shared_ptr<Internal::Event<Args...>> event, void(*callback)(Args...), bool isThreadsafe = false) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<EventListenerNoMember<Args...>>(callback, isThreadsafe));
+        EventListenerID AddListener(std::shared_ptr<Event<Args...>> event, void(*callback)(Args...), bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<Internal::EventListenerNoMember<Args...>>(callback, isThreadsafe));
             EventID eventID = event->_GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
@@ -73,8 +73,8 @@ namespace Pulse::Events {
         }
 
         template <typename... Args, typename Functor>
-        EventListenerID AddListener((std::shared_ptr<Internal::Event<Args...>> event, Functor&& callback, bool isThreadsafe = false) {
-            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
+        EventListenerID AddListener((std::shared_ptr<Event<Args...>> event, Functor&& callback, bool isThreadsafe = false) {
+            EventListenerID eventListenerID = event.AddListener(get_shared_from_this(), std::make_shared<Internal::EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
             EventID eventID = event->_GetEventID();
 
             eventToListeners_[eventID].insert(eventListenerID);
