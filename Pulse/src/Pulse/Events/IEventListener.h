@@ -13,19 +13,12 @@ namespace Pulse::Events {
         class PLS_API IEventListenerBase {
         public:
             void _RemoveListener(EventListenerID eventListenerID);
-            void _OnEventRemoval(EventID eventID);
-
-            virtual std::shared_ptr<IEventListenerBase> _get_shared_from_this() = 0;
+            void _OnEventRemoval(std::weak_ptr<EventBase> eventID);
 
         protected:
             IEventListenerBase() = default;
-
-            bool IsClean() const;
-
-            std::unordered_map<EventID, std::unordered_set<EventListenerID>> eventToListeners_;
-            std::unordered_map<EventID, std::shared_ptr<Internal::EventBase>> eventPointers_;
-            std::unordered_map<EventListenerID, EventID> listenersAndEvents_;
-            bool isClean_ = false;
+            std::unordered_map<std::weak_ptr<EventBase>, EventListenerID, std::owner_less<std::weak_ptr<EventBase>>> eventToListeners_;
+            std::unordered_map<EventListenerID, std::weak_ptr<EventBase>> listenersAndEvents_;
 
         }; // class IEventListenerBase
 
@@ -52,9 +45,6 @@ namespace Pulse::Events {
     
     protected:
         IEventListener() = default;
-
-    private:
-        std::weak_ptr<Derived> selfWeakPointer_;
 
     }; // class IEventListener
 

@@ -16,7 +16,7 @@ namespace Pulse::Events::Internal {
         }
     }
 
-    void IEventListenerBase::_OnEventRemoval(EventID eventID) {
+    void IEventListenerBase::_OnEventRemoval(std::weak_ptr<EventBase> event) {
         auto listenersIterator = eventToListeners_.find(eventID);
         if (listenersIterator != eventToListeners_.end()) {
             for (EventListenerID listenerID : listenersIterator->second) {
@@ -25,10 +25,6 @@ namespace Pulse::Events::Internal {
             eventPointers_.erase(eventID);
             eventToListeners_.erase(listenersIterator);
         }
-    }
-
-    bool IEventListenerBase::IsClean() const {
-        return isClean_;
     }
 
 } // namespace Pulse::Events::Internal

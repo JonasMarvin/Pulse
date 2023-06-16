@@ -60,14 +60,4 @@ namespace Pulse::Events {
         return eventListenerID;
     }
 
-    template<Pulse::Utility::CRTPConform Derived>
-    std::shared_ptr<Internal::IEventListenerBase> IEventListener<Derived>::_get_shared_from_this() {
-        try {
-            return std::static_pointer_cast<Internal::IEventListenerBase>(std::enable_shared_from_this<Derived>::shared_from_this());
-        }
-        catch (...) {
-            return nullptr;
-        }
-    }
-
 } // namespace Pulse::Events
