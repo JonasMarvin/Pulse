@@ -1,67 +1,92 @@
 #pragma once
 
-#include "Pulse/Utility/IDManager.h"
-
 #include <memory>
 #include <functional>
 
+#include "Pulse/Core.h"
+
 namespace Pulse::Events {
 
-	template <typename... Args>
-	class EventListenerBase {
-	public:
-		EventListenerBase() : eventListenerID_(eventIDManager_.GenerateID()) { }
-		virtual ~EventListenerBase() {
-			eventIDManager_.FreeID(eventListenerID_);
-		}
-
-		virtual void Invoke(Args&&... args) = 0;
+	namespace Internal {
 		
-		uint32_t GetEventListenerID() const {
-			return eventListenerID_;
-		}
+		class IEventListenerBase;
+		class EventBase;
+
+		class PLS_API EventListenerBase : public std::enable_shared_from_this<EventListenerBase> {
+		public:
+			virtual ~EventListenerBase() = default;
+
+			void _RemoveFromIEventListenerBase();
+			void _RemoveFromEventBase();
+
+			void _SetEnqeuedInThread(const bool& enqueued);
+			bool IsEnqeuedInThread() const;
+				
+		protected:
+			EventListenerBase(std::weak_ptr<IEventListenerBase>&& iEventListenerBase, std::weak_ptr<EventBase>&& eventBase)
+				: iEventListenerBase_(std::move(iEventListenerBase)), eventBase_(std::move(eventBase)) {}
+	
+			std::weak_ptr<IEventListenerBase> iEventListenerBase_;
+			std::weak_ptr<EventBase> eventBase_;
+			bool isEnqeuedInThread_ = false;
+
+		}; // class EventListenerBase
+
+	} // namespace Internal
+
+	template <typename... Args>
+	class EventListener : public Internal::EventListenerBase{
+	public:
+		virtual ~EventListener() override = default;
+
+		virtual void Invoke(Args... args) = 0;
 
 	protected:
-		uint32_t eventListenerID_;
-
-	private:
-		static inline Pulse::Utility::IDManager<uint32_t> eventIDManager_{};
-
+		EventListener(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event)
+			: Internal::EventListenerBase(std::move(iEventListenerBase), std::move(event)) {}
 	}; // class EventListenerBase
 
-	template <typename T, typename... Args>
-	class EventListenerMember : public EventListenerBase<Args...> {
-	public:
-		typedef void(T::* Callback)(Args...);
+	namespace Internal{
 
-		EventListenerMember(T* objectInstance, const Callback callback)
-			: objectInstance_(objectInstance), callback_(callback) { }
+		template <typename T, typename... Args>
+		class EventListenerMember : public EventListener<Args...> {
+		public:
+			typedef void(T::* Callback)(Args...);
 
-		void Invoke(Args&&... args) override {
-			(objectInstance_->*callback_)(std::forward<Args>(args)...);
-		}
+			virtual ~EventListenerMember() override = default;
 
-	private:
-		T* objectInstance_;
-		Callback callback_;
+			EventListenerMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event,
+				T* objectInstance, Callback callback)
+				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event)), objectInstance_(objectInstance), callback_(callback) {}
 
-	}; // class EventListenerMember
+			void Invoke(Args... args) override;
 
-	template <typename... Args>
-	class EventListenerNoMember : public EventListenerBase<Args...> {
-	public:
-		typedef std::function<void(Args...)> Callback;
+		private:
+			T* objectInstance_;
+			Callback callback_;
 
-		EventListenerNoMember(const Callback& callback)
-			: callback_(callback) {}
+		}; // class EventListenerMember
 
-		void Invoke(Args&&... args) override {
-			callback_(std::forward<Args>(args)...);
-		}
+		template <typename... Args>
+		class EventListenerNoMember : public EventListener<Args...> {
+		public:
+			typedef std::function<void(Args...)> Callback;
 
-	private:
-		Callback callback_;
+			virtual ~EventListenerNoMember() override = default;
 
-	}; // class EventListenerNoMember
+			EventListenerNoMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event,
+				Callback callback)
+				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event)), callback_(callback) {}
+
+			void Invoke(Args... args) override;
+
+		private:
+			Callback callback_;
+
+		}; // class EventListenerNoMember
+
+	} // namespace Internal
 
 } // namespace Pulse::Events
+
+#include "Pulse/Events/EventListener.tpp"

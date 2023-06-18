@@ -1,89 +1,47 @@
 #pragma once
 
-#include <vector>
 #include <memory>
-#include <algorithm>
+#include <unordered_set>
+#include <tuple>
+#include <iostream>
 
-#include "Pulse/Events/EventListener.h"
-#include "Pulse/Core.h"
+#include "Pulse/Events/ListenerPool.h"
 
 namespace Pulse::Events{
 
-	class IEventListenerBase;
+	namespace Internal {
+		class PLS_API EventBase {
+		public:
+			virtual ~EventBase() = default;
+			virtual void _RemoveListenerFromUnorderedSet(const std::shared_ptr<Internal::EventListenerBase>& eventListener) = 0;
 
-	class PLS_API EventBase {
-	public:
-		using ListenerCount = uint32_t;
-		inline EventBase() : eventID_(eventIDManager_.GenerateID()) {}
-		inline virtual ~EventBase() {
-			eventIDManager_.FreeID(eventID_);
-		};
-		
-		inline EventID GetEventID() const {
-			return eventID_;
-		}
+		protected:
+			EventBase() = default;
 
-		void RemoveEventFromConnectedIEventListeners();
-
-		virtual void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) = 0;
-		void IncrementListenerCount(const std::shared_ptr<IEventListenerBase>& iEventListenerBase);
-		void DecrementListenerCount(const std::shared_ptr<IEventListenerBase>& iEventListenerBase);
-
-		struct WeakPtrHasher {
-			std::size_t operator()(const std::weak_ptr<IEventListenerBase>& wp) const;
-		};
-
-		struct WeakPtrEqual {
-			bool operator()(const std::weak_ptr<IEventListenerBase>& wp1, const std::weak_ptr<IEventListenerBase>& wp2) const;
-		};
-
-	protected:
-		EventID eventID_;
-		std::unordered_map<std::weak_ptr<IEventListenerBase>, ListenerCount, WeakPtrHasher, WeakPtrEqual> listeningIEventListeners_;
-
-	private:
-		static inline Pulse::Utility::IDManager<EventID> eventIDManager_{};
-
-	}; // class EventBase
+		}; // class EventBase
+	} // namespace Internal
 
 	template <typename... Args>
-	class Event : public EventBase{
+	class Event : public Internal::EventBase {
 	public:
-		virtual ~Event() {
-			RemoveEventFromConnectedIEventListeners();
-		}
+		Event() = default;
+		~Event() override;
 
-		EventListenerID AddListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, std::unique_ptr<EventListenerBase<Args...>> eventListener) {
-			IncrementListenerCount(iEventListenerBase);
+		static std::shared_ptr<Event<Args...>> Create();
 
-			EventListenerID newEventListenerID = eventListener->GetEventListenerID();
-			eventListeners_.emplace_back(newEventListenerID, std::move(eventListener));
-			return newEventListenerID;
-		}
+		void _AddListener(const std::shared_ptr<EventListener<Args...>>& eventListener, const bool& threadSafe);
+		void _RemoveListenerFromUnorderedSet(const std::shared_ptr<Internal::EventListenerBase>& eventListener) override;
 
-		void RemoveListener(std::shared_ptr<IEventListenerBase> iEventListenerBase, EventListenerID eventListenerID) override {
-			DecrementListenerCount(iEventListenerBase);
-
-			auto eventListenerIterator = std::find_if(eventListeners_.begin(), eventListeners_.end(),
-				[&](const auto& pair) { return pair.first == eventListenerID; });
-
-			if (eventListenerIterator != eventListeners_.end()) {
-				std::iter_swap(eventListenerIterator, eventListeners_.end() - 1);
-				eventListeners_.pop_back();
-			}
-		}
-
-		template<typename... ArgsType>
-		void Trigger(ArgsType&&... args) {
-			for (auto& [eventListenerID, eventListener] : eventListeners_) {
-				eventListener->Invoke(std::forward<ArgsType>(args)...);
-			}
-		}
-
+		void Trigger(Args... args);
 
 	private:
-		std::vector<std::pair<EventListenerID, std::unique_ptr<EventListenerBase<Args...>>>> eventListeners_;
+		std::unordered_set<std::shared_ptr<EventListener<Args...>>> eventListeners_;
+		std::unordered_set<std::shared_ptr<EventListener<Args...>>> multithreadedEventListeners_;
+
+		static inline Internal::ListenerPool listenerPool_{};
 
 	}; // class Event
 
 } // namespace Pulse::Events
+
+#include "Pulse/Events/Event.tpp"
