@@ -7,22 +7,23 @@
 #include <queue>
 
 namespace Pulse::Events::Internal {
-	ListenerPool::ListenerPool(size_t threadCount)
-	: activeAndQueuedTasks_(0), isRunning_(true) {
-		for (size_t i = 0; i < threadCount; ++i) {
+	ListenerPool::ListenerPool() {
+		for (size_t i = 0; i < threadCount_; ++i) {
 			threads_.emplace_back([this]() {
 				while (true) {
 					std::function<void()> task;
 					{
 						std::unique_lock<std::mutex> lock(mutex_);
 						condition_.wait(lock, [this]() {
-							return !tasks_.empty() || !isRunning_;
+							return !tasks_.empty() || isClosing_;
 						});
-						if (!isRunning_ && tasks_.empty()) {
+						if (isClosing_) {
 							return;
 						}
+
 						task = std::move(tasks_.front());
 						tasks_.pop();
+						conditionEmpty_.notify_one();
 					}
 					task();
 				}
@@ -31,18 +32,17 @@ namespace Pulse::Events::Internal {
 	}
 
 	ListenerPool::~ListenerPool() {
-		{
-			std::unique_lock<std::mutex> lock(mutex_);
-			isRunning_ = false;
-		}
-		condition_.notify_all();
 
 		{
 			std::unique_lock<std::mutex> lock(mutex_);
-			conditionEmpty_.wait(lock, [this]() {return activeAndQueuedTasks_ == 0; });
+			isClosing_ = true;
+			condition_.notify_all();
+			conditionEmpty_.wait(lock, [this]() {
+				return tasks_.empty();
+			});
 		}
 
-		for (std::thread &thread : threads_) {
+		for (std::thread& thread : threads_) {
 			if (thread.joinable()) {
 				thread.join();
 			}

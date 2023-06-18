@@ -2,62 +2,52 @@ namespace Pulse::Events {
 
     template<Pulse::Utility::CRTPConform Derived>
     IEventListener<Derived>::~IEventListener() {
-        if (!isClean_) {
-#pragma warning(push)
-#pragma warning(disable: 4297)
-            throw std::runtime_error("IEventListener is not clean. Please call Cleanup() before destroying the object."); // TODO: automate this in a parent script that is like MonoBehaviour in Unity
-#pragma warning(pop)
-        }
+        for (const auto& eventListener : eventListeners_) {
+			eventListener->_RemoveFromEventBase();
+		}
+    }
+
+    template <Pulse::Utility::CRTPConform Derived>
+    template <typename... Args>
+    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, void(Derived::* callback)(Args...), bool isThreadsafe) {
+        std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
+        std::weak_ptr<Internal::EventBase> weakEventBase = event;
+        auto newEventListener = std::make_shared<Internal::EventListenerMember<Derived, Args...>>(std::move(weakThis), std::move(weakEventBase), static_cast<Derived*>(this), callback);  
+        event->_AddListener(newEventListener, isThreadsafe);
+        eventListeners_.emplace(newEventListener);
+        return std::weak_ptr<EventListener<Args...>>(newEventListener);
     }
 
     template<Pulse::Utility::CRTPConform Derived>
-    void IEventListener<Derived>::_Cleanup() {
-        auto self_shared_ptr = this->_get_shared_from_this();
-        if (self_shared_ptr) {
-            for (auto& eventIterator : eventPointers_) {
-                eventIterator.second->_RemoveListener(self_shared_ptr, eventIterator.first);
-            }
-        }
-        isClean_ = true;
+    template<typename... Args>
+    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, void (*callback)(Args...), bool isThreadsafe) {
+        std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
+        std::weak_ptr<Internal::EventBase> weakEventBase = event;
+        auto newEventListener = std::make_shared<Internal::EventListenerNoMember<Args...>>(std::move(weakThis), std::move(weakEventBase), callback);
+        event->_AddListener(newEventListener, isThreadsafe);
+        eventListeners_.emplace(newEventListener);
+        return std::weak_ptr<EventListener<Args...>>(newEventListener);
+    }
+
+    template <Pulse::Utility::CRTPConform Derived>
+    template<typename Functor, typename... Args>
+    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, Functor&& callback, bool isThreadsafe) {
+        std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
+        std::weak_ptr<Internal::EventBase> weakEventBase = event;
+        auto newEventListener = std::make_shared<Internal::EventListenerNoMember<Args...>>(std::move(weakThis), std::move(weakEventBase), std::forward<Functor>(callback));
+        event->_AddListener(newEventListener, isThreadsafe);
+        eventListeners_.emplace(newEventListener);
+        return std::weak_ptr<EventListener<Args...>>(newEventListener);
     }
 
     template <Pulse::Utility::CRTPConform Derived>
     template <typename... Args>
-    EventListenerID IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>> event, void(Derived::* callback)(Args...), bool isThreadsafe) {
-        EventListenerID eventListenerID = event->_AddListener(_get_shared_from_this(),std::make_shared<Internal::EventListenerMember<Derived, Args...>>(static_cast<Derived*>(this), callback, isThreadsafe));
-        EventID eventID = event->_GetEventID();
-
-        eventToListeners_[eventID].insert(eventListenerID);
-        eventPointers_[eventID] = event;
-        listenersAndEvents_[eventListenerID] = eventID;
-
-        return eventListenerID;
-    }
-
-    template <Pulse::Utility::CRTPConform Derived>
-    template <typename... Args>
-    EventListenerID IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>> event, void(*callback)(Args...), bool isThreadsafe) {
-        EventListenerID eventListenerID = event->AddListener(_get_shared_from_this(), std::make_shared<Internal::EventListenerNoMember<Args...>>(callback, isThreadsafe));
-        EventID eventID = event->_GetEventID();
-
-        eventToListeners_[eventID].insert(eventListenerID);
-        eventPointers_[eventID] = event;
-        listenersAndEvents_[eventListenerID] = eventID;
-
-        return eventListenerID;
-    }
-
-    template <Pulse::Utility::CRTPConform Derived>
-    template <typename Functor, typename... Args>
-    EventListenerID IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>> event, Functor&& callback, bool isThreadsafe) {
-        EventListenerID eventListenerID = event->AddListener(_get_shared_from_this(), std::make_shared<Internal::EventListenerNoMember<Args...>>(std::forward<Functor>(callback, isThreadsafe)));
-        EventID eventID = event->_GetEventID();
-
-        eventToListeners_[eventID].insert(eventListenerID);
-        eventPointers_[eventID] = event;
-        listenersAndEvents_[eventListenerID] = eventID;
-
-        return eventListenerID;
-    }
+    void IEventListener<Derived>::RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener) {
+		auto sharedEventListener = eventListener.lock();
+        if (sharedEventListener) {
+			sharedEventListener->_RemoveFromEventBase();
+			eventListeners_.erase(sharedEventListener);
+		}
+	}
 
 } // namespace Pulse::Events

@@ -1,20 +1,24 @@
 namespace Pulse::Events::Internal {
         
     template <typename... Args>
-    void ListenerPool::Enqueue(std::vector<std::shared_ptr<EventListener<Args...>>> eventListeners, std::vector<std::tuple<Args...>> argsList) {
-        size_t threadBatchSize = eventListeners.size() / threads_.size();
-        {
-            std::unique_lock<std::mutex> lock(mutex_);
-            activeAndQueuedTasks_ += eventListeners.size();
-        }
-        std::queue<std::function<void()>> tasks;
-        for (size_t i = 0; i < eventListeners.size(); ++i) {
-            auto& eventListener = eventListeners[i];
-            auto& args = argsList[i];
-            auto task = [eventListener, args]() mutable {
-                std::apply([eventListener](auto&&... args) { eventListener->Invoke(std::forward<decltype(args)>(args)...); }, args);
-            };
+    void ListenerPool::Enqueue(std::unordered_set<std::shared_ptr<EventListener<Args...>>> eventListeners, Args... args) {
+        
+        auto args_tuple = std::make_tuple(args...);
 
+        std::queue<std::function<void()>> tasks;
+
+        for (auto& eventListener : eventListeners) {
+            eventListener->_SetEnqeuedInThread(true);
+            auto task_args = args_tuple;
+            auto task = [eventListener, task_args]() mutable {
+                std::apply(
+                    [eventListener](auto&&... args) {
+                        eventListener->Invoke(std::forward<decltype(args)>(args)...);
+                        eventListener->_SetEnqeuedInThread(false);
+                    },
+                    task_args
+                );
+            };
             tasks.emplace(std::move(task));
         }
 
