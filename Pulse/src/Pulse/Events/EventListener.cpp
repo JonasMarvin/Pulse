@@ -39,4 +39,14 @@ namespace Pulse::Events::Internal {
 		return isEnqeuedInThread_;
 	}
 
+	// Unsafe system:
+
+	void UnsafeEventListenerBase::_SetEnqeuedInThread(const bool& enqueued) {
+		isEnqeuedInThread_ = enqueued;
+	}
+
+	bool UnsafeEventListenerBase::IsEnqeuedInThread() const {
+		return isEnqeuedInThread_;
+	}
+
 } // namespace Pulse::Events::Internal

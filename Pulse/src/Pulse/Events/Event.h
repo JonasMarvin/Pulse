@@ -42,6 +42,27 @@ namespace Pulse::Events{
 
 	}; // class Event
 
+	// Unsafe system:
+
+	template <typename... Args>
+	class UnsafeEvent {
+	public:
+		UnsafeEvent() = default;
+		~UnsafeEvent() = default;
+
+		void AddListener(const UnsafeEventListener& eventListener, const bool& threadSafe);
+		void RemoveListener(const UnsafeEventListener& eventListener);
+
+		void Trigger(Args... args);
+
+	private:
+		std::unordered_set<UnsafeEventListener<Args...>>& eventListeners_;
+		std::unordered_set<UnsafeEventListener<Args...>>& multithreadedEventListeners_;
+
+		static inline Internal::ListenerPool listenerPool_{};
+
+	} // class UnsafeEvent
+
 } // namespace Pulse::Events
 
 #include "Pulse/Events/Event.tpp"

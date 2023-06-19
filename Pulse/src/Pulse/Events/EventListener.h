@@ -21,7 +21,7 @@ namespace Pulse::Events {
 
 			void _SetEnqeuedInThread(const bool& enqueued);
 			bool IsEnqeuedInThread() const;
-				
+
 		protected:
 			EventListenerBase(std::weak_ptr<IEventListenerBase>&& iEventListenerBase, std::weak_ptr<EventBase>&& eventBase)
 				: iEventListenerBase_(std::move(iEventListenerBase)), eventBase_(std::move(eventBase)) {}
@@ -75,7 +75,7 @@ namespace Pulse::Events {
 			virtual ~EventListenerNoMember() override = default;
 
 			EventListenerNoMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event,
-				Callback callback)
+				Callback&& callback)
 				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event)), callback_(callback) {}
 
 			void Invoke(Args... args) override;
@@ -86,6 +86,58 @@ namespace Pulse::Events {
 		}; // class EventListenerNoMember
 
 	} // namespace Internal
+
+	// Unsafe system:
+
+	template<typename... Args>
+	class UnsafeEventListener {
+	public:
+		virtual ~UnsafeEventListener() = default;
+
+		virtual void Invoke(Args... args) = 0;
+
+		void _SetEnqeuedInThread(const bool& enqueued);
+		bool IsEnqeuedInThread() const;
+
+	private:
+		bool isEnqeuedInThread_ = false;
+
+	} // class UnsafeEventListener
+
+	template <typename T, typename... Args>
+		class UnsafeEventListenerMember : public UnsafeEventListener<Args...> {
+		public:
+			typedef void(T::* Callback)(Args...);
+
+			virtual ~UnsafeEventListenerMember() override = default;
+
+			UnsafeEventListenerMember(T* objectInstance, Callback callback)
+				: objectInstance_(objectInstance), callback_(callback) {}
+
+			void Invoke(Args... args) override;
+
+		private:
+			T* objectInstance_;
+			Callback callback_;
+
+		}; // class UnsafeEventListenerMember
+
+		template <typename... Args>
+		class UnsafeEventListenerNoMember : public UnsafeEventListener<Args...> {
+		public:
+			typedef std::function<void(Args...)> Callback;
+
+			virtual ~UnsafeEventListenerNoMember() override = default;
+
+			UnsafeEventListenerNoMember(Callback callback)
+				: callback_(callback) {}
+
+			void Invoke(Args... args) override;
+
+		private:
+			Callback callback_;
+
+		}; // class UnsafeEventListenerNoMember
 
 } // namespace Pulse::Events
 
