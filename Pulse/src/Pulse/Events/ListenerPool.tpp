@@ -66,6 +66,5 @@ namespace Pulse::Events::Internal {
 
         condition_.notify_all();
     }
-    }
     
 } // namespace Pulse::Events::Internal

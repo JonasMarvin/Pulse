@@ -108,7 +108,7 @@ namespace Pulse::Events {
 		bool isEnqeuedInThread_ = false;
 		bool isThreadsafe_ = false;
 
-	} // class UnsafeEventListener
+	}; // class UnsafeEventListener
 
 	template <typename T, typename... Args>
 		class UnsafeEventListenerMember : public UnsafeEventListener<Args...> {
@@ -139,7 +139,7 @@ namespace Pulse::Events {
 		void Invoke(Args... args) override;
 
 	private:
-		Callback callback_;
+		Callable callback_;
 
 	}; // class UnsafeEventListenerNoMember
 

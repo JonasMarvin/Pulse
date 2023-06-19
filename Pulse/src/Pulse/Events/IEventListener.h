@@ -29,7 +29,7 @@ namespace Pulse::Events {
 
     } // namespace Internal
 
-    template<Derived>
+    template<typename Derived>
     requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:

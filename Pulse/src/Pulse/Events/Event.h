@@ -12,7 +12,7 @@ namespace Pulse::Events{
 	namespace Internal {
 		class PLS_API EventBase {
 		public:
-			virtual ~EventBase() noexcept = default;
+			virtual ~EventBase() = default;
 			virtual void _RemoveListenerFromUnorderedSet(const std::shared_ptr<Internal::EventListenerBase>& eventListener) = 0;
 
 		protected:
@@ -24,8 +24,8 @@ namespace Pulse::Events{
 	template <typename... Args>
 	class Event : public Internal::EventBase {
 	public:
-		Event() = default noexcept;
-		~Event() noexcept override;
+		Event() noexcept = default;
+		~Event() override;
 
 		static std::shared_ptr<Event<Args...>> Create();
 
@@ -61,7 +61,7 @@ namespace Pulse::Events{
 
 		static inline Internal::ListenerPool listenerPool_{};
 
-	} // class UnsafeEvent
+	}; // class UnsafeEvent
 
 } // namespace Pulse::Events
 

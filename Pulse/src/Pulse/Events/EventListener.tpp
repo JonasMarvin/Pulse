@@ -8,7 +8,7 @@ namespace Pulse::Events {
 		}
 		
         template <typename Callable, typename... Args>
-		void EventListenerNoMember<Args...>::Invoke(Args... args) {
+		void EventListenerNoMember<Callable, Args...>::Invoke(Args... args) {
 			callback_(std::forward<Args>(args)...);
 		}
 
@@ -22,7 +22,7 @@ namespace Pulse::Events {
 	}
 		
     template <typename Callable, typename... Args>
-	void UnsafeEventListenerNoMember<Args...>::Invoke(Args... args) {
+	void UnsafeEventListenerNoMember<Callable, Args...>::Invoke(Args... args) {
 		callback_(std::forward<Args>(args)...);
 	}
 
