@@ -1,13 +1,13 @@
 namespace Pulse::Events {
 
     template <typename Derived>
-    Derived* Internal::IEventListenerBase::_Self() {
+    Derived* Internal::IEventListenerBase::_Self() noexcept {
         return static_cast<Derived*>(this);
     }
 
     template<typename Derived>
     requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
-    IEventListener<Derived>::~IEventListener() {
+    IEventListener<Derived>::~IEventListener() noexcept {
         for (const auto& eventListener : eventListeners_) {
 			eventListener->_RemoveFromEventBase();
 		}

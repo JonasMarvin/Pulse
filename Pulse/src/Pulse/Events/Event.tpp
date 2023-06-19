@@ -35,22 +35,22 @@ namespace Pulse::Events{
     template<typename... Args>
     void Event<Args...>::Trigger(Args... args) {
         if (!multithreadedEventListeners_.empty()) {
-            auto args_tuple_for_mt = std::make_tuple(args...);
+            auto argsTupleForMt = std::make_tuple(args...);
             std::apply(
                 [this](auto&&... args) {
                     listenerPool_.Enqueue<Args...>(multithreadedEventListeners_, std::forward<decltype(args)>(args)...);
                 },
-                args_tuple_for_mt
+                argsTupleForMt
             );
         }
 
-        auto args_tuple_for_st = std::make_tuple(std::forward<Args>(args)...);
+        auto argsTupleForSt = std::make_tuple(std::forward<Args>(args)...);
         for (const auto& eventListener : eventListeners_) {
             std::apply(
                 [eventListener](auto&&... args) {
                     eventListener->Invoke(std::forward<decltype(args)>(args)...);
                 },
-                args_tuple_for_st
+                argsTupleForSt
             );
         }
     }
@@ -60,16 +60,18 @@ namespace Pulse::Events{
     template<typename... Args>
 	void UnsafeEvent<Args...>::AddListener(const UnsafeEventListener<Args...>* eventListener){
         if(!eventListener){
-            throw std::invalid_argument("Unsafe Eventlistener cannot be null");
+            return;
         }
+        
         eventListener->IsThreadsafe() ? multithreadedEventListeners_.emplace(eventListener) : eventListeners_.emplace(eventListener);
     }
 	
     template<typename... Args>
     void UnsafeEvent<Args...>::RemoveListener(const UnsafeEventListener<Args...>* eventListener){
         if(!eventListener){
-            throw std::invalid_argument("Unsafe Eventlistener cannot be null");
+            return;
         }
+
         if(eventListener->IsThreadsafe()){
             multithreadedEventListeners_.erase(eventListener);
         }
@@ -81,22 +83,22 @@ namespace Pulse::Events{
     template<typename... Args>
 	void UnsafeEvent<Args...>::Trigger(Args... args){
         if (!multithreadedEventListeners_.empty()) {
-            auto args_tuple_for_mt = std::make_tuple(args...);
+            auto argsTupleForMt = std::make_tuple(args...);
             std::apply(
                 [this](auto&&... args) {
                     listenerPool_.Enqueue<Args...>(multithreadedEventListeners_, std::forward<decltype(args)>(args)...);
                 },
-                args_tuple_for_mt
+                argsTupleForMt
             );
         }
 
-        auto args_tuple_for_st = std::make_tuple(std::forward<Args>(args)...);
+        auto argsTupleForSt = std::make_tuple(std::forward<Args>(args)...);
         for (const auto& eventListener : eventListeners_) {
             std::apply(
                 [eventListener](auto&&... args) {
                     eventListener->Invoke(std::forward<decltype(args)>(args)...);
                 },
-                args_tuple_for_st
+                argsTupleForSt
             );
         }
     }

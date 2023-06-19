@@ -27,22 +27,22 @@ namespace Pulse::Events {
 	}
 
 	template<typename... Args>
-	void UnsafeEventListener<Args...>::_SetEnqeuedInThread(const bool& enqueued) {
+	void UnsafeEventListener<Args...>::_SetEnqeuedInThread(const bool& enqueued) noexcept {
 		isEnqeuedInThread_ = enqueued;
 	}
 
 	template<typename... Args>
-	bool UnsafeEventListener<Args...>::IsEnqeuedInThread() const {
+	bool UnsafeEventListener<Args...>::IsEnqeuedInThread() const noexcept {
 		return isEnqeuedInThread_;
 	}
 
 	template<typename... Args>
-	bool UnsafeEventListener<Args...>::IsThreadsafe() const {
+	bool UnsafeEventListener<Args...>::IsThreadsafe() const noexcept {
 		return isThreadsafe_;
 	}
 
 	template<typename... Args>
-	UnsafeEventListener<Args...>::~UnsafeEventListener(){
+	UnsafeEventListener<Args...>::~UnsafeEventListener() noexcept {
 		if (IsEnqeuedInThread()) {
 			while (IsEnqeuedInThread()) {
 				std::this_thread::yield();

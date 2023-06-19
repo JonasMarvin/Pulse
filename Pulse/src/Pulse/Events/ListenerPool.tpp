@@ -36,7 +36,7 @@ namespace Pulse::Events::Internal {
     // Unsafe system:
 
     template <typename... Args>
-    void ListenerPool::Enqueue(std::unordered_set<UnsafeEventListener<Args...>>& eventListeners, Args... args){
+    void ListenerPool::Enqueue(std::unordered_set<UnsafeEventListener<Args...>>& eventListeners, Args... args) {
         auto args_tuple = std::make_tuple(args...);
 
         std::queue<std::function<void()>> tasks;
