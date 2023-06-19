@@ -16,21 +16,26 @@ namespace Pulse::Events {
             virtual ~IEventListenerBase() = default;
 
             void _RemoveListenerFromUnorderedSet(const std::shared_ptr<EventListenerBase>& eventListener);
+
+            template <typename Derived>
+            Derived* _Self();
+
         protected:
             IEventListenerBase() = default;
-            
+
             std::unordered_set<std::shared_ptr<EventListenerBase>> eventListeners_;
 
         }; // class IEventListenerBase
 
     } // namespace Internal
 
-    template<Pulse::Utility::CRTPConform Derived>
+    template<Derived>
+    requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:
         ~IEventListener() override;
 
-        template <typename Functor, typename... Args>
+        template <typename Callable, typename... Args>
         std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false);
     
         template <typename... Args>

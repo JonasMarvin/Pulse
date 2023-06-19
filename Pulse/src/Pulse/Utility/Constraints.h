@@ -5,8 +5,8 @@
 
 namespace Pulse::Utility {
 
-	template<typename T>
-	concept CRTPConform = std::is_same_v<T, std::remove_cvref_t<decltype(std::declval<T>())>>;
+	template<typename Base, typename Derived>
+    concept CRTPConform = std::is_base_of_v<Base, Derived> && std::is_same_v<Derived, std::remove_cvref_t<decltype(static_cast<Base*>(nullptr)->template _Self<Derived>())>>;
 
 	template<typename T>
 	concept Unsigned = std::is_unsigned_v<T>;

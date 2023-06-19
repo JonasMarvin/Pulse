@@ -1,15 +1,22 @@
 namespace Pulse::Events {
 
-    template<Pulse::Utility::CRTPConform Derived>
+    template <typename Derived>
+    Derived* Internal::IEventListenerBase::_Self() {
+        return static_cast<Derived*>(this);
+    }
+
+    template<typename Derived>
+    requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
     IEventListener<Derived>::~IEventListener() {
         for (const auto& eventListener : eventListeners_) {
 			eventListener->_RemoveFromEventBase();
 		}
     }
 
-    template <Pulse::Utility::CRTPConform Derived>
+    template<typename Derived>
     template <typename Callable, typename... Args>
-    std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false){
+    requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
+    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false){
         std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
         std::weak_ptr<Internal::EventBase> weakEventBase = event;
         std::shared_ptr<Internal::EventListenerBase> newEventListener;
@@ -27,8 +34,9 @@ namespace Pulse::Events {
         return std::weak_ptr<EventListener<Args...>>(newEventListener);
     }
 
-    template <Pulse::Utility::CRTPConform Derived>
+    template<typename Derived>
     template <typename... Args>
+    requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
     void IEventListener<Derived>::RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener) {
 		auto sharedEventListener = eventListener.lock();
         if (sharedEventListener) {
