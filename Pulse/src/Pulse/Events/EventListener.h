@@ -99,6 +99,9 @@ namespace Pulse::Events {
 		void _SetEnqeuedInThread(const bool& enqueued);
 		bool IsEnqeuedInThread() const;
 
+	protected:
+		UnsafeEventListener() = default;
+
 	private:
 		bool isEnqeuedInThread_ = false;
 
