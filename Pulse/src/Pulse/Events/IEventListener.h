@@ -2,6 +2,7 @@
 
 #include <unordered_set>
 #include <memory>
+#include <type_traits>
 
 #include "Pulse/Events/Event.h"
 #include "Pulse/Utility/Constraints.h"
@@ -29,14 +30,8 @@ namespace Pulse::Events {
     public:
         ~IEventListener() override;
 
-        template <typename... Args>
-        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, void(Derived::*callback)(Args...), bool isThreadsafe = false);
-
-        template <typename... Args>
-        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, void(*callback)(Args...), bool isThreadsafe = false);
-
         template <typename Functor, typename... Args>
-        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Functor&& callback, bool isThreadsafe = false);
+        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false);
     
         template <typename... Args>
         void RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener);

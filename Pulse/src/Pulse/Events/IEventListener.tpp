@@ -8,34 +8,21 @@ namespace Pulse::Events {
     }
 
     template <Pulse::Utility::CRTPConform Derived>
-    template <typename... Args>
-    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, void(Derived::* callback)(Args...), bool isThreadsafe) {
+    template <typename Callable, typename... Args>
+    std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false){
         std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
         std::weak_ptr<Internal::EventBase> weakEventBase = event;
-        auto newEventListener = std::make_shared<Internal::EventListenerMember<Derived, Args...>>(std::move(weakThis), std::move(weakEventBase), static_cast<Derived*>(this), callback);  
-        event->_AddListener(newEventListener, isThreadsafe);
-        eventListeners_.emplace(newEventListener);
-        return std::weak_ptr<EventListener<Args...>>(newEventListener);
-    }
+        std::shared_ptr<Internal::EventListenerBase> newEventListener;
 
-    template<Pulse::Utility::CRTPConform Derived>
-    template<typename... Args>
-    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, void (*callback)(Args...), bool isThreadsafe) {
-        std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
-        std::weak_ptr<Internal::EventBase> weakEventBase = event;
-        auto newEventListener = std::make_shared<Internal::EventListenerNoMember<Args...>>(std::move(weakThis), std::move(weakEventBase), callback);
-        event->_AddListener(newEventListener, isThreadsafe);
-        eventListeners_.emplace(newEventListener);
-        return std::weak_ptr<EventListener<Args...>>(newEventListener);
-    }
+        if(constexpr(std::is_member_function_pointer_v<std::decay_t<Callable>>)){
+            auto memberCallback = static_cast<decltype(Derived::callback)*>(callback);
+            newEventListener = std::make_shared<Internal::EventListenerMember<Derived, Args...>>(std::move(weakThis), std::move(weakEventBase), static_cast<Derived*>(this), memberCallback, isThreadsafe);  
+        }
+        else{
+            newEventListener = std::make_shared<Internal::EventListenerNoMember<std::decay_t<Callable>, Args...>>(std::move(weakThis), std::move(weakEventBase), std::forward<Callable>(callback), isThreadsafe);
+        }
 
-    template <Pulse::Utility::CRTPConform Derived>
-    template<typename Functor, typename... Args>
-    std::weak_ptr<EventListener<Args...>> IEventListener<Derived>::AddListener(std::shared_ptr<Event<Args...>>& event, Functor&& callback, bool isThreadsafe) {
-        std::weak_ptr<Internal::IEventListenerBase> weakThis = this->weak_from_this();
-        std::weak_ptr<Internal::EventBase> weakEventBase = event;
-        auto newEventListener = std::make_shared<Internal::EventListenerNoMember<Args...>>(std::move(weakThis), std::move(weakEventBase), std::forward<Functor>(callback));
-        event->_AddListener(newEventListener, isThreadsafe);
+        event->_AddListener(newEventListener);
         eventListeners_.emplace(newEventListener);
         return std::weak_ptr<EventListener<Args...>>(newEventListener);
     }

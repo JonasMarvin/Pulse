@@ -8,26 +8,24 @@
 namespace Pulse::Events::Internal {
 	
 	void EventListenerBase::_RemoveFromIEventListenerBase() {
-		auto lockedIEventListenerBase_ = iEventListenerBase_.lock();
-		if (lockedIEventListenerBase_) {
-			if (this->IsEnqeuedInThread()) {
-				while (this->IsEnqeuedInThread()) {
+		if (auto lockedIEventListenerBase = iEventListenerBase_.lock()) {
+			if (IsEnqeuedInThread()) {
+				while (IsEnqeuedInThread()) {
 					std::this_thread::yield();
 				}
 			}
-			lockedIEventListenerBase_->_RemoveListenerFromUnorderedSet(shared_from_this());
+			lockedIEventListenerBase->_RemoveListenerFromUnorderedSet(shared_from_this());
 		}
 	}
 
 	void EventListenerBase::_RemoveFromEventBase() {
-		auto lockedEventBase_ = eventBase_.lock();
-		if (lockedEventBase_) {
-			if (this->IsEnqeuedInThread()) {
-				while (this->IsEnqeuedInThread()) {
+		if (auto lockedEventBase = eventBase_.lock()) {
+			if (IsEnqeuedInThread()) {
+				while (IsEnqeuedInThread()) {
 					std::this_thread::yield();
 				}
 			}
-			lockedEventBase_->_RemoveListenerFromUnorderedSet(shared_from_this());
+			lockedEventBase->_RemoveListenerFromUnorderedSet(shared_from_this());
 		}
 	}
 
@@ -39,14 +37,8 @@ namespace Pulse::Events::Internal {
 		return isEnqeuedInThread_;
 	}
 
-	// Unsafe system:
-
-	void UnsafeEventListenerBase::_SetEnqeuedInThread(const bool& enqueued) {
-		isEnqeuedInThread_ = enqueued;
-	}
-
-	bool UnsafeEventListenerBase::IsEnqeuedInThread() const {
-		return isEnqeuedInThread_;
+	bool EventListenerBase::IsThreadsafe() const {
+		return isThreadsafe_;
 	}
 
 } // namespace Pulse::Events::Internal

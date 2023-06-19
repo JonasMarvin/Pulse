@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <functional>
+#include <thread>
 
 #include "Pulse/Core.h"
 
@@ -21,14 +22,16 @@ namespace Pulse::Events {
 
 			void _SetEnqeuedInThread(const bool& enqueued);
 			bool IsEnqeuedInThread() const;
+			bool IsThreadsafe() const;
 
 		protected:
-			EventListenerBase(std::weak_ptr<IEventListenerBase>&& iEventListenerBase, std::weak_ptr<EventBase>&& eventBase)
-				: iEventListenerBase_(std::move(iEventListenerBase)), eventBase_(std::move(eventBase)) {}
+			EventListenerBase(std::weak_ptr<IEventListenerBase>&& iEventListenerBase, std::weak_ptr<EventBase>&& eventBase, const bool& isThreadsafe)
+				: iEventListenerBase_(std::move(iEventListenerBase)), eventBase_(std::move(eventBase)), isThreadsafe_(isThreadsafe) {}
 	
 			std::weak_ptr<IEventListenerBase> iEventListenerBase_;
 			std::weak_ptr<EventBase> eventBase_;
 			bool isEnqeuedInThread_ = false;
+			bool isThreadsafe_ = false;
 
 		}; // class EventListenerBase
 
@@ -42,8 +45,8 @@ namespace Pulse::Events {
 		virtual void Invoke(Args... args) = 0;
 
 	protected:
-		EventListener(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event)
-			: Internal::EventListenerBase(std::move(iEventListenerBase), std::move(event)) {}
+		EventListener(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event, const bool& isThreadsafe)
+			: Internal::EventListenerBase(std::move(iEventListenerBase), std::move(event), isThreadsafe) {}
 	}; // class EventListenerBase
 
 	namespace Internal{
@@ -56,8 +59,8 @@ namespace Pulse::Events {
 			virtual ~EventListenerMember() override = default;
 
 			EventListenerMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event,
-				T* objectInstance, Callback callback)
-				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event)), objectInstance_(objectInstance), callback_(callback) {}
+				T* objectInstance, Callback callback, const bool& isThreadsafe)
+				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), objectInstance_(objectInstance), callback_(callback) {}
 
 			void Invoke(Args... args) override;
 
@@ -67,21 +70,19 @@ namespace Pulse::Events {
 
 		}; // class EventListenerMember
 
-		template <typename... Args>
+		template <typename Callable, typename... Args>
 		class EventListenerNoMember : public EventListener<Args...> {
 		public:
-			typedef std::function<void(Args...)> Callback;
-
 			virtual ~EventListenerNoMember() override = default;
 
 			EventListenerNoMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event,
-				Callback&& callback)
-				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event)), callback_(callback) {}
+				Callable&& callback, const bool& isThreadsafe)
+				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), callback_(std::forward<Callable>(callback)) {}
 
 			void Invoke(Args... args) override;
 
 		private:
-			Callback callback_;
+			Callable callback_;
 
 		}; // class EventListenerNoMember
 
@@ -92,18 +93,20 @@ namespace Pulse::Events {
 	template<typename... Args>
 	class UnsafeEventListener {
 	public:
-		virtual ~UnsafeEventListener() = default;
+		virtual ~UnsafeEventListener();
 
 		virtual void Invoke(Args... args) = 0;
 
 		void _SetEnqeuedInThread(const bool& enqueued);
 		bool IsEnqeuedInThread() const;
+		bool IsThreadsafe() const;
 
 	protected:
-		UnsafeEventListener() = default;
+		UnsafeEventListener(const bool& isThreadsafe) : isThreadsafe_(isThreadsafe) {};
 
 	private:
 		bool isEnqeuedInThread_ = false;
+		bool isThreadsafe_ = false;
 
 	} // class UnsafeEventListener
 
@@ -114,8 +117,8 @@ namespace Pulse::Events {
 
 			virtual ~UnsafeEventListenerMember() override = default;
 
-			UnsafeEventListenerMember(T* objectInstance, Callback callback)
-				: objectInstance_(objectInstance), callback_(callback) {}
+			UnsafeEventListenerMember(T* objectInstance, Callback callback, const bool& isThreadsafe)
+				: UnsafeEventListener<Args...>(isThreadsafe), objectInstance_(objectInstance), callback_(callback) {}
 
 			void Invoke(Args... args) override;
 
@@ -125,22 +128,20 @@ namespace Pulse::Events {
 
 		}; // class UnsafeEventListenerMember
 
-		template <typename... Args>
-		class UnsafeEventListenerNoMember : public UnsafeEventListener<Args...> {
-		public:
-			typedef std::function<void(Args...)> Callback;
+	template <typename Callable, typename... Args>
+	class UnsafeEventListenerNoMember : public UnsafeEventListener<Args...> {
+	public:
+		virtual ~UnsafeEventListenerNoMember() override = default;
 
-			virtual ~UnsafeEventListenerNoMember() override = default;
+		UnsafeEventListenerNoMember(Callable&& callback, const bool& isThreadsafe)
+			: UnsafeEventListener<Args...>(isThreadsafe), callback_(std::forward<Callable>(callback)) {}
 
-			UnsafeEventListenerNoMember(Callback callback)
-				: callback_(callback) {}
+		void Invoke(Args... args) override;
 
-			void Invoke(Args... args) override;
+	private:
+		Callback callback_;
 
-		private:
-			Callback callback_;
-
-		}; // class UnsafeEventListenerNoMember
+	}; // class UnsafeEventListenerNoMember
 
 } // namespace Pulse::Events
 
