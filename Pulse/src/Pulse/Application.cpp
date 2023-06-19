@@ -11,6 +11,9 @@ namespace Pulse {
 	}
 
 	void Application::Run() {
+
+
+
 		while (true);
 	}
 

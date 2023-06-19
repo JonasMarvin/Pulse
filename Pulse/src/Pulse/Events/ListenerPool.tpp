@@ -36,19 +36,19 @@ namespace Pulse::Events::Internal {
     // Unsafe system:
 
     template <typename... Args>
-    void ListenerPool::Enqueue(std::unordered_set<UnsafeEventListener<Args...>>& eventListeners, Args... args) {
+    void ListenerPool::Enqueue(std::unordered_set<UnsafeEventListener<Args...>*> eventListeners, Args... args) {
         auto args_tuple = std::make_tuple(args...);
 
         std::queue<std::function<void()>> tasks;
 
         for (auto& eventListener : eventListeners) {
-            eventListener._SetEnqeuedInThread(true);
+            eventListener->_SetEnqeuedInThread(true);
             auto task_args = args_tuple;
             auto task = [eventListener, task_args]() mutable {
                 std::apply(
                     [eventListener](auto&&... args) {
-                        eventListener.Invoke(std::forward<decltype(args)>(args)...);
-                        eventListener._SetEnqeuedInThread(false);
+                        eventListener->Invoke(std::forward<decltype(args)>(args)...);
+                        eventListener->_SetEnqeuedInThread(false);
                     },
                     task_args
                 );

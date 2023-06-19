@@ -20,7 +20,7 @@ namespace Pulse::Events::Internal {
         void Enqueue(std::unordered_set<std::shared_ptr<EventListener<Args...>>> eventListeners, Args... args);
 		
 		template <typename... Args>
-        void Enqueue(std::unordered_set<UnsafeEventListener<Args...>>& eventListeners, Args... args);
+        void Enqueue(std::unordered_set<UnsafeEventListener<Args...>*> eventListeners, Args... args);
 
 	private:
 		std::vector<std::thread> threads_;

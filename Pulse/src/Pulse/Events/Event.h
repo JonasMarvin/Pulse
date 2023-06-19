@@ -47,11 +47,11 @@ namespace Pulse::Events{
 	template <typename... Args>
 	class UnsafeEvent {
 	public:
-		UnsafeEvent() noexcept = default;
+		UnsafeEvent() = default;
 		~UnsafeEvent() noexcept = default;
 
-		void AddListener(const UnsafeEventListener<Args...>* eventListener);
-		void RemoveListener(const UnsafeEventListener<Args...>* eventListener);
+		void AddListener(UnsafeEventListener<Args...>* eventListener);
+		void RemoveListener(UnsafeEventListener<Args...>* eventListener);
 
 		void Trigger(Args... args);
 

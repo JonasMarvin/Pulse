@@ -117,7 +117,7 @@ namespace Pulse::Events {
 
 			virtual ~UnsafeEventListenerMember() noexcept override = default;
 
-			UnsafeEventListenerMember(T* objectInstance, Callback callback, const bool& isThreadsafe) noexcept
+			UnsafeEventListenerMember(T* objectInstance, Callback callback, const bool& isThreadsafe = false) noexcept
 				: UnsafeEventListener<Args...>(isThreadsafe), objectInstance_(objectInstance), callback_(callback) {}
 
 			void Invoke(Args... args) override;
@@ -133,7 +133,7 @@ namespace Pulse::Events {
 	public:
 		virtual ~UnsafeEventListenerNoMember() noexcept override = default;
 
-		UnsafeEventListenerNoMember(Callable&& callback, const bool& isThreadsafe) noexcept
+		UnsafeEventListenerNoMember(Callable&& callback, const bool& isThreadsafe = false) noexcept
 			: UnsafeEventListener<Args...>(isThreadsafe), callback_(std::forward<Callable>(callback)) {}
 
 		void Invoke(Args... args) override;

@@ -58,7 +58,7 @@ namespace Pulse::Events{
     // Unsafe system:
 
     template<typename... Args>
-	void UnsafeEvent<Args...>::AddListener(const UnsafeEventListener<Args...>* eventListener){
+	void UnsafeEvent<Args...>::AddListener(UnsafeEventListener<Args...>* eventListener){
         if(!eventListener){
             return;
         }
@@ -67,7 +67,7 @@ namespace Pulse::Events{
     }
 	
     template<typename... Args>
-    void UnsafeEvent<Args...>::RemoveListener(const UnsafeEventListener<Args...>* eventListener){
+    void UnsafeEvent<Args...>::RemoveListener(UnsafeEventListener<Args...>* eventListener){
         if(!eventListener){
             return;
         }

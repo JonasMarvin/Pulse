@@ -17,9 +17,6 @@ namespace Pulse::Events {
 
             void _RemoveListenerFromUnorderedSet(const std::shared_ptr<EventListenerBase>& eventListener);
 
-            template <typename Derived>
-            Derived* _Self() noexcept;
-
         protected:
             IEventListenerBase() noexcept = default;
 
@@ -30,7 +27,6 @@ namespace Pulse::Events {
     } // namespace Internal
 
     template<typename Derived>
-    requires Pulse::Utility::CRTPConform<Internal::IEventListenerBase, Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:
         ~IEventListener() noexcept override;
