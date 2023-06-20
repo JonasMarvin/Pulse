@@ -13,12 +13,11 @@ namespace Pulse::Events {
 
         class PLS_API IEventListenerBase : public std::enable_shared_from_this<IEventListenerBase> {
         public:
-            virtual ~IEventListenerBase() noexcept = default;
-
             void _RemoveListenerFromUnorderedSet(const std::shared_ptr<EventListenerBase>& eventListener);
 
         protected:
-            IEventListenerBase() noexcept = default;
+            virtual ~IEventListenerBase() = default;
+            IEventListenerBase() = default;
 
             std::unordered_set<std::shared_ptr<EventListenerBase>> eventListeners_;
 
@@ -29,8 +28,6 @@ namespace Pulse::Events {
     template<typename Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:
-        ~IEventListener() noexcept override;
-
         template <typename Callable, typename... Args>
         std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false);
     
@@ -38,7 +35,8 @@ namespace Pulse::Events {
         void RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener);
 
     protected:
-        IEventListener() noexcept = default;
+        virtual ~IEventListener() override;
+        IEventListener() = default;
 
     }; // class IEventListener
 

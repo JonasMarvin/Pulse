@@ -1,7 +1,7 @@
 namespace Pulse::Events {
 
     template<typename Derived>
-    IEventListener<Derived>::~IEventListener() noexcept {
+    IEventListener<Derived>::~IEventListener() {
         for (const auto& eventListener : eventListeners_) {
 			eventListener->_RemoveFromEventBase();
 		}

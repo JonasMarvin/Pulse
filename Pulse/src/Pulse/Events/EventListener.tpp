@@ -27,7 +27,7 @@ namespace Pulse::Events {
 	}
 
 	template<typename... Args>
-	void UnsafeEventListener<Args...>::_SetEnqeuedInThread(const bool& enqueued) noexcept {
+	void UnsafeEventListener<Args...>::_SetEnqeuedInThread(const bool& enqueued) {
 		isEnqeuedInThread_ = enqueued;
 	}
 
@@ -42,7 +42,7 @@ namespace Pulse::Events {
 	}
 
 	template<typename... Args>
-	UnsafeEventListener<Args...>::~UnsafeEventListener() noexcept {
+	UnsafeEventListener<Args...>::~UnsafeEventListener() {
 		if (IsEnqeuedInThread()) {
 			while (IsEnqeuedInThread()) {
 				std::this_thread::yield();

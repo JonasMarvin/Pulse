@@ -31,7 +31,7 @@ namespace Pulse::Events::Internal {
 		}
 	}
 
-	ListenerPool::~ListenerPool() noexcept {
+	ListenerPool::~ListenerPool() {
 
 		{
 			std::unique_lock<std::mutex> lock(mutex_);

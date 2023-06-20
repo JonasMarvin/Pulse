@@ -3,29 +3,29 @@
 #include <memory>
 #include <unordered_set>
 #include <tuple>
-#include <stdexcept>
 
 #include "Pulse/Events/ListenerPool.h"
 
 namespace Pulse::Events{
-
+	
 	namespace Internal {
+
 		class PLS_API EventBase {
 		public:
-			virtual ~EventBase() = default;
 			virtual void _RemoveListenerFromUnorderedSet(const std::shared_ptr<Internal::EventListenerBase>& eventListener) = 0;
 
 		protected:
-			EventBase() noexcept = default;
+			EventBase() = default;
+			~EventBase() = default;
 
 		}; // class EventBase
+		
 	} // namespace Internal
 
 	template <typename... Args>
 	class Event : public Internal::EventBase {
 	public:
-		Event() noexcept = default;
-		~Event() override;
+		~Event();
 
 		static std::shared_ptr<Event<Args...>> Create();
 
@@ -47,9 +47,6 @@ namespace Pulse::Events{
 	template <typename... Args>
 	class UnsafeEvent {
 	public:
-		UnsafeEvent() = default;
-		~UnsafeEvent() noexcept = default;
-
 		void AddListener(UnsafeEventListener<Args...>* eventListener);
 		void RemoveListener(UnsafeEventListener<Args...>* eventListener);
 

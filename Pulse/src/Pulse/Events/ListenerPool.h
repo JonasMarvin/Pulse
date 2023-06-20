@@ -14,7 +14,7 @@ namespace Pulse::Events::Internal {
 	class PLS_API ListenerPool {
 	public:
 		ListenerPool();
-		~ListenerPool() noexcept;
+		~ListenerPool();
 
         template <typename... Args>
         void Enqueue(std::unordered_set<std::shared_ptr<EventListener<Args...>>> eventListeners, Args... args);
