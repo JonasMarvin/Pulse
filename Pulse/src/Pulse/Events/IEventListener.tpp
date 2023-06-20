@@ -16,7 +16,7 @@ namespace Pulse::Events {
 
         if constexpr (std::is_member_function_pointer_v<std::decay_t<Callable>>) {
             auto memberCallback = static_cast<decltype(callback)>(callback);
-            newEventListener = std::make_shared<Internal::EventListenerMember<Derived, Args...>>(std::move(weakThis), std::move(weakEventBase), static_cast<Derived*>(this), memberCallback, isThreadsafe);
+            newEventListener = std::make_shared<Internal::EventListenerMember<Derived, Args...>>(std::move(weakThis), std::move(weakEventBase), static_cast<Derived*>(this), std::forward<Callable>(memberCallback), isThreadsafe);
         }
         else {
             newEventListener = std::make_shared<Internal::EventListenerNoMember<std::decay_t<Callable>, Args...>>(std::move(weakThis), std::move(weakEventBase), std::forward<Callable>(callback), isThreadsafe);

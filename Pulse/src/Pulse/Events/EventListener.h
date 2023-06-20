@@ -64,8 +64,8 @@ namespace Pulse::Events {
 			virtual ~EventListenerMember() override = default;
 
 			EventListenerMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event,
-				T* objectInstance, Callback callback, const bool& isThreadsafe)
-				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), objectInstance_(objectInstance), callback_(callback) {}
+				T* objectInstance, Callback&& callback, const bool& isThreadsafe)
+				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), objectInstance_(objectInstance), callback_(std::forward<Callable>(callback)) {}
 
 			void Invoke(Args... args) override;
 
