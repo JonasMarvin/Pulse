@@ -8,13 +8,13 @@ namespace Pulse::Events::Internal {
         std::queue<std::function<void()>> tasks;
 
         for (auto& eventListener : eventListeners) {
-            eventListener->_SetEnqeuedInThread(true);
+            eventListener->_SetEnqueuedInThread(true);
             auto task_args = args_tuple;
             auto task = [eventListener, task_args]() mutable {
                 std::apply(
                     [eventListener](auto&&... args) {
                         eventListener->Invoke(std::forward<decltype(args)>(args)...);
-                        eventListener->_SetEnqeuedInThread(false);
+                        eventListener->_SetEnqueuedInThread(false);
                     },
                     task_args
                 );
@@ -42,13 +42,13 @@ namespace Pulse::Events::Internal {
         std::queue<std::function<void()>> tasks;
 
         for (auto& eventListener : eventListeners) {
-            eventListener->_SetEnqeuedInThread(true);
+            eventListener->_SetEnqueuedInThread(true);
             auto task_args = args_tuple;
             auto task = [eventListener, task_args]() mutable {
                 std::apply(
                     [eventListener](auto&&... args) {
                         eventListener->Invoke(std::forward<decltype(args)>(args)...);
-                        eventListener->_SetEnqeuedInThread(false);
+                        eventListener->_SetEnqueuedInThread(false);
                     },
                     task_args
                 );

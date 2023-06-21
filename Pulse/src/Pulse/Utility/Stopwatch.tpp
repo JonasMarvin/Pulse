@@ -11,7 +11,7 @@ namespace Pulse::Utility {
         if (message == nullptr) {
             PLS_CORE_INFO("Time: {0}", GetTime<Precision>());
         } else {
-            PLS_CORE_INFO("{0} {1}", message, GetTime<Precision>());
+            PLS_CORE_INFO("{0}{1}", message, GetTime<Precision>());
 		}
         
     }

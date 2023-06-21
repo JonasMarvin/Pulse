@@ -56,18 +56,13 @@ namespace Pulse::Events {
 
 	namespace Internal{
 
-		template <typename T, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
+		template <typename T, typename... Args>
 		class EventListenerMember : public EventListener<Args...> {
 		public:
 			using Callback = void(T::*)(Args...);
 
 			virtual ~EventListenerMember() override = default;
 
-			PLS_DOES_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
-			EventListenerMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event, T* objectInstance, Callback&& callback, Condition&& condition, bool isThreadsafe)
-				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), objectInstance_(objectInstance), callback_(std::forward<Callback>(callback)), condition_(std::forward<Condition>(condition)) {}
-
-			PLS_DOES_NOT_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
 			EventListenerMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event, T* objectInstance, Callback&& callback, bool isThreadsafe)
 				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), objectInstance_(objectInstance), callback_(std::forward<Callback>(callback)) {}
 
@@ -78,20 +73,14 @@ namespace Pulse::Events {
 
 			T* objectInstance_;
 			Callback callback_;
-			Condition condition_;
 
 		}; // class EventListenerMember
 
-		template <typename Callable, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
+		template <typename Callable, typename... Args>
 		class EventListenerNoMember : public EventListener<Args...> {
 		public:
 			virtual ~EventListenerNoMember() override = default;
 
-			PLS_DOES_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
-			EventListenerNoMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event, Callable&& callback, Condition&& condition, bool isThreadsafe)
-				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), callback_(std::forward<Callable>(callback)), condition_(std::forward<Condition>(condition)) {}
-
-			PLS_DOES_NOT_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
 			EventListenerNoMember(std::weak_ptr<Internal::IEventListenerBase>&& iEventListenerBase, std::weak_ptr<Internal::EventBase>&& event, Callable&& callback, bool isThreadsafe)
 				: EventListener<Args...>(std::move(iEventListenerBase), std::move(event), isThreadsafe), callback_(std::forward<Callable>(callback)) {}
 
@@ -101,7 +90,6 @@ namespace Pulse::Events {
 			EventListenerNoMember() = default;
 
 			Callable callback_;
-			Condition condition_;
 
 		}; // class EventListenerNoMember
 
@@ -131,18 +119,13 @@ namespace Pulse::Events {
 
 	}; // class UnsafeEventListener
 
-	template <typename T, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
+	template <typename T, typename... Args>
 		class UnsafeEventListenerMember : public UnsafeEventListener<Args...> {
 		public:
 			using Callback = void(T::*)(Args...);
 
 			virtual ~UnsafeEventListenerMember() override = default;
 
-			PLS_DOES_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
-			UnsafeEventListenerMember(T* objectInstance, Callback&& callback, Condition&& condition, bool isThreadsafe = false)
-				: UnsafeEventListener<Args...>(isThreadsafe), objectInstance_(objectInstance), callback_(std::forward<Callback>(callback)), condition_(std::forward<Condition>(condition)) {}
-
-			PLS_DOES_NOT_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
 			UnsafeEventListenerMember(T* objectInstance, Callback&& callback, bool isThreadsafe = false)
 				: UnsafeEventListener<Args...>(isThreadsafe), objectInstance_(objectInstance), callback_(std::forward<Callback>(callback)) {}
 
@@ -153,20 +136,14 @@ namespace Pulse::Events {
 
 			T* objectInstance_;
 			Callback callback_;
-			Condition condition_;
 
 		}; // class UnsafeEventListenerMember
 
-		template <typename Callable, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
+		template <typename Callable, typename... Args>
 		class UnsafeEventListenerNoMember : public UnsafeEventListener<Args...> {
 		public:
 			virtual ~UnsafeEventListenerNoMember() override = default;
 
-			PLS_DOES_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
-			UnsafeEventListenerNoMember(Callable&& callback, Condition&& condition, bool isThreadsafe = false)
-				: UnsafeEventListener<Args...>(isThreadsafe), callback_(std::forward<Callable>(callback)), condition_(std::forward<Condition>(condition)) {}
-
-			PLS_DOES_NOT_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(Condition)
 			UnsafeEventListenerNoMember(Callable&& callback, bool isThreadsafe = false)
 				: UnsafeEventListener<Args...>(isThreadsafe), callback_(std::forward<Callable>(callback)) {}
 
@@ -176,7 +153,6 @@ namespace Pulse::Events {
 			UnsafeEventListenerNoMember() = delete;
 
 			Callable callback_;
-			Condition condition_;
 
 		}; // class UnsafeEventListenerNoMember
 

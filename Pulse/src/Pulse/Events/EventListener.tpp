@@ -2,23 +2,13 @@ namespace Pulse::Events {
 
 	namespace Internal{
 
-        template <typename T, typename Condition, typename... Args>
-		void EventListenerMember<T, Condition, Args...>::Invoke(Args... args) {
-			if constexpr (PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(Condition)) {
-				if (!condition_(std::forward<Args>(args)...)) {
-					return;
-				}
-			}
+        template <typename T, typename... Args>
+		void EventListenerMember<T, Args...>::Invoke(Args... args) {
 			(objectInstance_->*callback_)(std::forward<Args>(args)...);
 		}
 		
-        template <typename Callable, typename Condition, typename... Args>
-		void EventListenerNoMember<Callable, Condition, Args...>::Invoke(Args... args) {
-			if constexpr (PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(Condition)) {
-				if (!condition_(std::forward<Args>(args)...)) {
-					return;
-				}
-			}
+        template <typename Callable, typename... Args>
+		void EventListenerNoMember<Callable, Args...>::Invoke(Args... args) {
 			callback_(std::forward<Args>(args)...);
 		}
 
@@ -26,23 +16,13 @@ namespace Pulse::Events {
 
 	// Unsafe system:
 
-	template <typename T, typename Condition, typename... Args>
-	void UnsafeEventListenerMember<T, Condition, Args...>::Invoke(Args... args) {
-		if constexpr (PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(Condition)) {
-			if (!condition_(std::forward<Args>(args)...)) {
-				return;
-			}
-		}
+	template <typename T, typename... Args>
+	void UnsafeEventListenerMember<T, Args...>::Invoke(Args... args) {
 		(objectInstance_->*callback_)(std::forward<Args>(args)...);
 	}
 		
-    template <typename Callable, typename Condition, typename... Args>
-	void UnsafeEventListenerNoMember<Callable, Condition, Args...>::Invoke(Args... args) {
-		if constexpr (PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(Condition)) {
-			if (!condition_(std::forward<Args>(args)...)) {
-				return;
-			}
-		}
+    template <typename Callable, typename... Args>
+	void UnsafeEventListenerNoMember<Callable, Args...>::Invoke(Args... args) {
 		callback_(std::forward<Args>(args)...);
 	}
 

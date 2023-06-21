@@ -16,7 +16,7 @@ namespace Pulse::Events {
 
         protected:
             virtual ~IEventListenerBase() = default;
-            IEventListenerBase() = default;
+            IEventListenerBase();
 
             std::unordered_set<std::shared_ptr<EventListenerBase>> eventListeners_;
 
@@ -27,20 +27,22 @@ namespace Pulse::Events {
     template<typename Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:
-        template <typename Callable, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
-        PLS_DOES_REQUIRE_OPTIONAL_TEMPLATE_ARGUMENT(Condition)
-        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, Condition&& condition, bool isThreadsafe = false);
-    
-        template <typename Callable, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
-        PLS_DOES_NOT_REQUIRE_OPTIONAL_TEMPLATE_ARGUMENT(Condition)
+        static std::shared_ptr<Derived> Create() {
+            return std::make_shared<Derived>();
+        }
+
+        IEventListener(const IEventListener&) = delete;
+        IEventListener& operator=(const IEventListener&) = delete;
+
+        template <typename Callable, typename... Args>
         std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false);
 
         template <typename... Args>
         void RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener);
 
     protected:
-        virtual ~IEventListener() override;
         IEventListener() = default;
+        virtual ~IEventListener() override;
 
     }; // class IEventListener
 

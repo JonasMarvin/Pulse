@@ -17,10 +17,3 @@
 #endif
 
 #define PLS_BIT(x) (1 << x)
-
-#define PLS_OPTIONAL_TEMPLATE_ARGUMENT(parameter) typename parameter = std::nullptr_t
-#define PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(parameter) !std::is_same_v<parameter, std::nullptr_t>
-#define PLS_DOES_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(parameter) template <typename T = parameter> requires (PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(T))
-#define PLS_DOES_NOT_REQUIRE_OPTIONAL_CLASS_TEMPLATE_ARGUMENT(parameter) template <typename T = parameter> requires (!PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(T))
-#define PLS_DOES_REQUIRE_OPTIONAL_TEMPLATE_ARGUMENT(parameter) requires (PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(parameter))
-#define PLS_DOES_NOT_REQUIRE_OPTIONAL_TEMPLATE_ARGUMENT(parameter) requires (!PLS_OPTIONAL_TEMPLATE_ARGUMENT_EXISTS(parameter))

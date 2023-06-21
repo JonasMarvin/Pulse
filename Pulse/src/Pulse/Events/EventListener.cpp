@@ -1,6 +1,7 @@
 #include "Pulse/Events/EventListener.h"
 
 #include <thread>
+#include <iostream>
 
 #include "Pulse/Events/Event.h"
 #include "Pulse/Events/IEventListener.h"
@@ -14,6 +15,7 @@ namespace Pulse::Events::Internal {
 					std::this_thread::yield();
 				}
 			}
+			std::cout << "Removing from IEventListenerBase" << std::endl;
 			lockedIEventListenerBase->_RemoveListenerFromUnorderedSet(shared_from_this());
 		}
 	}
@@ -25,6 +27,7 @@ namespace Pulse::Events::Internal {
 					std::this_thread::yield();
 				}
 			}
+			std::cout << "Removing from EventBase" << std::endl;
 			lockedEventBase->_RemoveListenerFromUnorderedSet(shared_from_this());
 		}
 	}

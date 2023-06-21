@@ -1,3 +1,5 @@
+#include <iostream>
+
 namespace Pulse::Events{
 
     // Definition of the Create function
@@ -14,6 +16,7 @@ namespace Pulse::Events{
         for (const auto& eventListener : multithreadedEventListeners_) {
 			eventListener->_RemoveFromIEventListenerBase();
 		}
+        std::cout << "Destructor called" << std::endl;
 	}
 
     template<typename... Args>
