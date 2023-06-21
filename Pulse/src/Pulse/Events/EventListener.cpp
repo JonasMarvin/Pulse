@@ -29,12 +29,12 @@ namespace Pulse::Events::Internal {
 		}
 	}
 
-	void EventListenerBase::_SetEnqeuedInThread(const bool& enqueued) {
-		isEnqeuedInThread_ = enqueued;
+	void EventListenerBase::_SetEnqueuedInThread(bool enqueued) {
+		isEnqueuedInThread_ = enqueued;
 	}
 
 	bool EventListenerBase::IsEnqeuedInThread() const noexcept {
-		return isEnqeuedInThread_;
+		return isEnqueuedInThread_;
 	}
 
 	bool EventListenerBase::IsThreadsafe() const noexcept {

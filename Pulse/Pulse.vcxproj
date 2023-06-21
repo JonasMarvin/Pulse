@@ -161,7 +161,6 @@
     <ClInclude Include="src\Pulse\Log.h" />
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
-    <ClInclude Include="src\Pulse\Utility\Constraints.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp" />

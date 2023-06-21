@@ -5,7 +5,6 @@
 #include <type_traits>
 
 #include "Pulse/Events/Event.h"
-#include "Pulse/Utility/Constraints.h"
 
 namespace Pulse::Events {
 
@@ -28,9 +27,14 @@ namespace Pulse::Events {
     template<typename Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:
-        template <typename Callable, typename... Args>
-        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false);
+        template <typename Callable, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
+        PLS_DOES_REQUIRE_OPTIONAL_TEMPLATE_ARGUMENT(Condition)
+        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, Condition&& condition, bool isThreadsafe = false);
     
+        template <typename Callable, PLS_OPTIONAL_TEMPLATE_ARGUMENT(Condition), typename... Args>
+        PLS_DOES_NOT_REQUIRE_OPTIONAL_TEMPLATE_ARGUMENT(Condition)
+        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback, bool isThreadsafe = false);
+
         template <typename... Args>
         void RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener);
 
