@@ -46,6 +46,7 @@
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
       <Filter>Pulse\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -66,5 +67,9 @@
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
       <Filter>Pulse\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Pulse\Utility\Stopwatch.tpp" />
   </ItemGroup>
 </Project>

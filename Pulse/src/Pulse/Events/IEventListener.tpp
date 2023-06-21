@@ -1,4 +1,3 @@
-#include "IEventListener.h"
 namespace Pulse::Events {
 
     template<typename Derived>
