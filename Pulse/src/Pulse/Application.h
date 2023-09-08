@@ -4,14 +4,15 @@
 
 namespace Pulse
 {
+	// This is the base class for all Pulse applications.
 	class PLS_API Application {
 	public:
-		Application();
-		virtual ~Application();
-		void Run();
+		Application(); // Constructor
+		virtual ~Application(); // Virtual destructor for proper cleanup
+
+		void Run(); // Main loop of the application
 	};
 
-	// To be defined in CLIENT
-	Application* CreateApplication();
+	Application* CreateApplication(); // To be defined in CLIENT
 
 } // namespace Pulse

@@ -1,3 +1,5 @@
+// This file is used to define core functionality of the engine.
+// E.g disabling specific warnings or defining macros.
 #pragma once
 
 #include <type_traits>

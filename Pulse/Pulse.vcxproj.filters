@@ -34,9 +34,6 @@
     <ClInclude Include="src\Pulse\Events\IEventListener.h">
       <Filter>Pulse\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Events\ListenerPool.h">
-      <Filter>Pulse\Events</Filter>
-    </ClInclude>
     <ClInclude Include="src\Pulse\Log.h">
       <Filter>Pulse</Filter>
     </ClInclude>
@@ -46,7 +43,9 @@
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
       <Filter>Pulse\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
+    <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
+      <Filter>Pulse\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -58,18 +57,14 @@
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp">
       <Filter>Pulse\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Events\ListenerPool.cpp">
-      <Filter>Pulse\Events</Filter>
-    </ClCompile>
     <ClCompile Include="src\Pulse\Log.cpp">
       <Filter>Pulse</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
       <Filter>Pulse\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Pulse\Utility\Stopwatch.tpp" />
+    <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp">
+      <Filter>Pulse\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,17 +6,17 @@
 
 namespace Pulse {
 
+	// Class for logging
 	class PLS_API Log {
 	public:
+		static void Init(); // Initialize the logger
 
-		static void Init();
-
-		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger_; }
-		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger_; }
+		static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return coreLogger_; } // Get the core logger
+		static std::shared_ptr<spdlog::logger>& GetClientLogger() { return clientLogger_; } // Get the client logger
 	
 	private:
-		static std::shared_ptr<spdlog::logger> clientLogger_;
-		static std::shared_ptr<spdlog::logger> coreLogger_;
+		static std::shared_ptr<spdlog::logger> clientLogger_; // Client logger
+		static std::shared_ptr<spdlog::logger> coreLogger_; // Core logger
 	};
 
 } // namespace Pulse
