@@ -1,7 +1,7 @@
 // The purpose of this file is to allow convient inclusion of the Event system.
 #pragma once
 
-#include "Pulse/Events/Event.h"
+#include "Pulse/Events/IEventListener.h"
 
 namespace Pulse::Events {
 
