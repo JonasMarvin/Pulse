@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "ModuleManager.h"
 
 namespace Pulse::Modules {

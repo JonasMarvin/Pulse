@@ -18,6 +18,9 @@ project "Pulse"
 	targetdir ("bin/" .. outputDirectory .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputDirectory .. "/%{prj.name}")
 
+	pchheader "pch.h"
+	pchsource "Pulse/src/pch.cpp"
+
 	files{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
