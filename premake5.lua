@@ -9,6 +9,11 @@ workspace "Pulse"
 
 outputDirectory = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Pulse/vendor/GLFW/include"
+
+include "Pulse/vendor/GLFW"
+
 project "Pulse"
 	location "Pulse"
 	kind "SharedLib"
@@ -28,7 +33,14 @@ project "Pulse"
 
 	includedirs{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
