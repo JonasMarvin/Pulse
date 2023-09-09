@@ -2,8 +2,6 @@
 // E.g disabling specific warnings or defining macros.
 #pragma once
 
-#include <type_traits>
-
 // This disables the warning that is thrown when using STL classes in DLLs.
 #pragma warning(disable : 4251)
 

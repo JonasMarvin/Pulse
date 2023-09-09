@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #include "Pulse/Events/IEventListener.h"
 
 #include "Pulse/Log.h"

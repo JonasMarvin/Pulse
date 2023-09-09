@@ -1,6 +1,6 @@
-#include "Stopwatch.h"
+#include "pch.h"
 
-#include <chrono>
+#include "Stopwatch.h"
 
 namespace Pulse::Utility {
 
