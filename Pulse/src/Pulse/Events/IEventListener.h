@@ -45,7 +45,7 @@ namespace Pulse::Events {
         IEventListener& operator=(const IEventListener&) = delete; // Delete copy assignment operator to avoid copying of the base class.
 
         template <typename Callable, typename... Args>
-        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback); // Function to add an event listener to the event. Accepts any callable object as callback. Returns a weak_ptr to the event listener to be able to remove the event listener from the event manually.
+        std::weak_ptr<EventListener<Args...>> AddListener(std::shared_ptr<Event<Args...>>& event, Callable&& callback); // Function to add an event listener to the event. Accepts any callable object as callback. Returns a weak_ptr to the event listener to be able to remove the event listener from the event manually. The Listeners should not use move semantics to alter the passed parameters state as this would break other Listeners that get called later on event Triggering.
 
         template <typename... Args>
         void RemoveListener(const std::weak_ptr<EventListener<Args...>>& eventListener); // Function to remove an event listener from the event. Accepts a weak_ptr to the event listener.
