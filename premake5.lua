@@ -54,7 +54,8 @@ project "Pulse"
 
 		defines{
 			"PLS_PLATFORM_WINDOWS",
-			"PLS_BUILD_DLL"
+			"PLS_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands{
