@@ -11,8 +11,10 @@ outputDirectory = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Pulse/vendor/GLFW/include"
+IncludeDir["Glad"] = "Pulse/vendor/Glad/include"
 
 include "Pulse/vendor/GLFW"
+include "Pulse/vendor/Glad"
 
 project "Pulse"
 	location "Pulse"
@@ -34,18 +36,20 @@ project "Pulse"
 	includedirs{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
 	filter "system:windows"
 		cppdialect "c++20"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 
 		defines{
@@ -61,7 +65,7 @@ project "Pulse"
 		defines "PLS_DEBUG"
 		staticruntime "off"
 		runtime "Debug"
-		optimize "On"
+		optimize "Off"
 
 	filter "configurations:Release"
 		defines "PLS_RELEASE"
@@ -100,7 +104,7 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "c++20"
-		staticruntime "On"
+		staticruntime "Off"
 		systemversion "latest"
 
 		defines{
@@ -109,12 +113,18 @@ project "Sandbox"
 	
 	filter "configurations:Debug"
 		defines "PLS_DEBUG"
-		optimize "On"
+		staticruntime "off"
+		runtime "Debug"
+		optimize "Off"
 
 	filter "configurations:Release"
 		defines "PLS_RELEASE"
+		staticruntime "off"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "PLS_DIST"
+		staticruntime "off"
+		runtime "Release"
 		optimize "On"
