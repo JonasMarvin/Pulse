@@ -4,3 +4,6 @@
 [submodule "Pulse/vendor/GLFW"]
 	path = Pulse/vendor/GLFW
 	url = https://github.com/JonasMarvin/glfw
+[submodule "Pulse/vendor/imgui"]
+	path = Pulse/vendor/imgui
+	url = https://github.com/JonasMarvin/imgui
