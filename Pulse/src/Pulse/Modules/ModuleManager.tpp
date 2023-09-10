@@ -1,6 +1,6 @@
 namespace Pulse::Modules {
 
-	template <typename T>
+	template<typename T>
 	void ModuleManager::RegisterModule() {
 		std::type_index typeIndex(typeid(T));
 		if (modulesMap_.find(typeIndex) != modulesMap_.end()) {
@@ -14,7 +14,7 @@ namespace Pulse::Modules {
 		}
 	}
 
-	template <typename T>
+	template<typename T>
 	T* ModuleManager::GetModule() {
 		std::type_index typeIndex(typeid(T));
 		if (modulesMap_.find(typeIndex) == modulesMap_.end()) {
@@ -26,7 +26,7 @@ namespace Pulse::Modules {
 		}
 	}
 
-	template <typename T>
+	template<typename T>
 	void ModuleManager::UnregisterModule() {
 		std::type_index typeIndex(typeid(T));
 		if (modulesMap_.find(typeIndex) == modulesMap_.end()) {
