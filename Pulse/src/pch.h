@@ -6,6 +6,7 @@
 
 // STL includes
 #include <type_traits>
+#include <typeindex>
 #include <memory>
 #include <chrono>
 #include <functional>

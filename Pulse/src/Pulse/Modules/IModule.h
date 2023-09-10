@@ -2,20 +2,24 @@
 
 namespace Pulse::Modules {
 	
-	class IModule : public std::enable_shared_from_this<IModule> {
+	// Interface for modules that can be registered with the module manager.
+	// You can use the constructor in dervied classes but its recommended to use the overriden Initialize function instead.
+	class IModule {
 	public:
-		// Declarations
-		IModule() = default;
-		virtual ~IModule() = default;
+		IModule(const IModule&) = delete; // Copy constructor deleted as we don't want to copy modules
+		IModule& operator=(const IModule&) = delete; // Copy assignment operator deleted as we don't want to copy modules
+		IModule(IModule&&) = delete; // Move constructor deleted as we don't want to move modules
+		IModule& operator=(IModule&&) = delete; // Move assignment operator deleted as we don't want to move modules
 
-		IModule(const IModule&) = delete;
-		IModule& operator=(const IModule&) = delete;
-		IModule(IModule&&) = delete;
-		IModule& operator=(IModule&&) = delete;
+		virtual void Initialize() = 0; // Pure virtual function gets called by the module manager when the module is registered
+		virtual void Update() = 0; // Pure virtual function gets called by the module manager every frame
+		virtual void Shutdown() = 0; // Pure virtual function gets called by the module manager when the module is unregistered
+	
+	private:
+		IModule() = default; // Default constructor is private as modules should only be created by the module manager
+		virtual ~IModule() = default; // Default destructor is private as modules should only be destroyed by the module manager
 
-		virtual void Initialize() = 0;
-		virtual void Update(float deltaTime) = 0;
-		virtual void Shutdown() = 0;
+		friend class ModuleManager; // Module manager is a friend class so it can call the private constructor and destructor
 
 	}; // class IModule
 

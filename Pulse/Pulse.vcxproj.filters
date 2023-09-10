@@ -87,4 +87,7 @@
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Pulse\Modules\ModuleManager.tpp" />
+  </ItemGroup>
 </Project>
