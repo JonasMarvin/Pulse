@@ -59,14 +59,20 @@ project "Pulse"
 	
 	filter "configurations:Debug"
 		defines "PLS_DEBUG"
+		staticruntime "off"
+		runtime "Debug"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "PLS_RELEASE"
+		staticruntime "off"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "PLS_DIST"
+		staticruntime "off"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"

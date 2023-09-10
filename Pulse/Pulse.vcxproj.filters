@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Pulse">
       <UniqueIdentifier>{6EABE80D-DABF-10BF-A341-B41E0F150DF0}</UniqueIdentifier>
     </Filter>
@@ -15,6 +21,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pulse.h" />
     <ClInclude Include="src\Pulse\Application.h">
       <Filter>Pulse</Filter>
@@ -29,6 +38,9 @@
       <Filter>Pulse\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\EventListener.h">
+      <Filter>Pulse\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Events\Events.h">
       <Filter>Pulse\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\IEventListener.h">
@@ -46,12 +58,15 @@
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
       <Filter>Pulse\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Window.h">
+      <Filter>Pulse</Filter>
+    </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Pulse\Events\Events.h" />
-    <ClInclude Include="src\Pulse\Window.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Pulse\Application.cpp">
       <Filter>Pulse</Filter>
     </ClCompile>
@@ -71,6 +86,5 @@
       <Filter>Pulse\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>
