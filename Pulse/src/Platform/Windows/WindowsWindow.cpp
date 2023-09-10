@@ -1,7 +1,9 @@
 #include "pch.h"
 
 #include "WindowsWindow.h"
-#include "Pulse/Log.h"
+
+#include <glad/glad.h>
+
 #include "Pulse/Events/Events.h"
 
 namespace Pulse {
@@ -37,6 +39,8 @@ namespace Pulse {
 
 		window_ = glfwCreateWindow((int)properties.width, (int)properties.height, data_.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(window_);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		PLS_CORE_ASSERT(status, "Failed to initialize Glad!");
 		glfwSetWindowUserPointer(window_, &data_);
 		SetVSync(true);
 
