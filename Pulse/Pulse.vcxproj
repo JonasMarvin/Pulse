@@ -153,17 +153,17 @@
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Pulse.h" />
     <ClInclude Include="src\Pulse\Application.h" />
-    <ClInclude Include="src\Pulse\Core.h" />
+    <ClInclude Include="src\Pulse\Core\Core.h" />
     <ClInclude Include="src\Pulse\EntryPoint.h" />
     <ClInclude Include="src\Pulse\Events\Event.h" />
     <ClInclude Include="src\Pulse\Events\EventListener.h" />
     <ClInclude Include="src\Pulse\Events\Events.h" />
     <ClInclude Include="src\Pulse\Events\IEventListener.h" />
-    <ClInclude Include="src\Pulse\Log.h" />
+    <ClInclude Include="src\Pulse\Core\Logging\Log.h" />
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
-    <ClInclude Include="src\Pulse\Window.h" />
+    <ClInclude Include="src\Pulse\Core\Window.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +171,7 @@
     <ClCompile Include="src\Pulse\Application.cpp" />
     <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
-    <ClCompile Include="src\Pulse\Log.cpp" />
+    <ClCompile Include="src\Pulse\Core\Logging\Log.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />
     <ClCompile Include="src\pch.cpp">

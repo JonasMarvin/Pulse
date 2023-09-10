@@ -2,8 +2,8 @@
 
 #include <chrono>
 
-#include "Pulse/Core.h"
-#include "Pulse/Log.h"
+#include "Pulse/Core/Core.h"
+#include "Pulse/Core/Logging/Log.h"
 
 namespace Pulse::Utility {
 	

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
+#include "Pulse/Core/Core.h"
+#include "Pulse/Core/Window.h"
 #include "Pulse/Events/Events.h"
 
 namespace Pulse

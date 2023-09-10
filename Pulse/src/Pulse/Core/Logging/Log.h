@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "Pulse/Core/Core.h"
 
 #include "spdlog/spdlog.h"
 

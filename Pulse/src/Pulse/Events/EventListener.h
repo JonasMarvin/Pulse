@@ -3,7 +3,7 @@
 #include <memory>
 #include <functional>
 
-#include "Pulse/Core.h"
+#include "Pulse/Core/Core.h"
 
 namespace Pulse::Events {
 

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Pulse/Core.h"
+#include "Pulse/Core/Core.h"
 #include "Pulse/Events/Events.h"
 
 namespace Pulse {
