@@ -3,9 +3,8 @@
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 
 #include <GLFW/glfw3.h>
-#include "Pulse/Modules/ImGui/OpenGL/ImGuiOpenGLRenderer.h"
+
 #include "Pulse/Modules/ModuleManager.h"
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 
 namespace Pulse::Modules {
 
@@ -13,25 +12,45 @@ namespace Pulse::Modules {
 		ImGui::CreateContext();
 		ImGui::StyleColorsDark();
 
-		ImGuiIO& io = ImGui::GetIO();
-		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+		imGuiIO_ = &ImGui::GetIO();
+
+		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
 		ImGui_ImplOpenGL3_Init("#version 430");
 
+		// Add EventListeners via helper class
+		imGuiModuleEventListener_ = Events::IEventListener<ImGuiModuleEventListener>::Create(*this, *imGuiIO_);
+
+		window_ = Pulse::Modules::ModuleManager::GetInstance().GetModule<Pulse::Modules::Windows::WindowsWindow>();
+	}
+
+	ImGuiModule::ImGuiModuleEventListener::ImGuiModuleEventListener(ImGuiModule& parent, ImGuiIO& imGuiIO)
+		: parent_(parent), imGuiIO_(imGuiIO){
+
+		AddListener(Events::Input::MouseMovedEvent, &ImGuiModuleEventListener::OnMouseMoved);
+		AddListener(Events::Input::MouseMovedEvent, &ImGuiModuleEventListener::OnMouseScrolled);
+	}
+
+	void ImGuiModule::ImGuiModuleEventListener::OnMouseMoved(double xOffset, double yOffset) {
+		imGuiIO_.AddMousePosEvent((float)xOffset, (float)yOffset);
+	}
+
+	void ImGuiModule::ImGuiModuleEventListener::OnMouseScrolled(double xOffset, double yOffset) {
+		imGuiIO_.AddMouseWheelEvent((float)xOffset, (float)yOffset);
 	}
 
 	void ImGuiModule::Shutdown() {
-		
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui::DestroyContext();
 	}
 
 	void ImGuiModule::Update() {
 
-		ImGuiIO& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2((float)Pulse::Modules::ModuleManager::GetInstance().GetModule<Pulse::Modules::Windows::WindowsWindow>()->GetWidth(), (float)Pulse::Modules::ModuleManager::GetInstance().GetModule<Pulse::Modules::Windows::WindowsWindow>()->GetHeight());
+		imGuiIO_->DisplaySize = ImVec2((float)window_->GetWidth(), (float)window_->GetHeight());
 
 		float time = (float)glfwGetTime();
-		io.DeltaTime = time_ > 0.0f ? (time - time_) : (1.0f / 60.0f);
+		imGuiIO_->DeltaTime = time_ > 0.0f ? (time - time_) : (1.0f / 60.0f);
 		time_ = time;
 
 		ImGui_ImplOpenGL3_NewFrame();
