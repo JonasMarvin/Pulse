@@ -22,8 +22,8 @@ namespace Pulse::Modules::Windows {
 		bool IsVSync() const override; // function to get the vsync of the window
 
 	private:
-		WindowsWindow() = default;
-		~WindowsWindow() = default;
+		WindowsWindow() = default; // default constructor private to prevent creation of the window outside of the module manager
+		~WindowsWindow() = default; // default destructor private to prevent deletion of the window outside of the module manager
 
 		GLFWwindow* window_; // pointer to the GLFW window
 
