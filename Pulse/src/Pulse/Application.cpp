@@ -16,13 +16,14 @@ namespace Pulse {
 		PLS_CORE_INFO("Window closed");
 	}
 
-	Application::Application() {
+	Application::Application() :
+		moduleManager_(Pulse::Modules::ModuleManager::GetInstance()),
+		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
 		window_ = std::unique_ptr<Window>(Window::Create());
-		applicationEventListener_ = Events::IEventListener<ApplicationEventListener>::Create(*this);
 	}
 
 	Application::~Application() {
-		
+		moduleManager_.ShutdownModules();
 	}
 
 	void Application::Run() {
@@ -30,6 +31,7 @@ namespace Pulse {
 		while (isRunning_) {
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+			moduleManager_.UpdateModules();
 			window_->OnUpdate();
 		}
 	}

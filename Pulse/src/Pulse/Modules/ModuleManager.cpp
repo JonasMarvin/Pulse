@@ -4,7 +4,11 @@
 
 namespace Pulse::Modules {
 
-	 ModuleManager& ModuleManager::GetInstance() {
+	ModuleManager::ModuleManager() {
+		PLS_CORE_INFO("Module manager loaded.");
+	}
+
+	ModuleManager& ModuleManager::GetInstance() {
 		static ModuleManager instance;
 		return instance;
 	}
@@ -23,6 +27,7 @@ namespace Pulse::Modules {
 		}
 		modules_.clear();
 		modulesMap_.clear();
+		PLS_CORE_INFO("Modules have been shut down.");
 	}
 
 } // namespace Pulse::Modules

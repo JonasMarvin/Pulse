@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <typeindex>
 
 #include "Pulse/Modules/IModule.h"
 #include "Pulse/Core/Logging/Log.h"
@@ -38,7 +39,7 @@ namespace Pulse::Modules {
 		void ShutdownModules();
 
 	private:
-		ModuleManager() = default; // Private constructor for singleton
+		ModuleManager(); // Private constructor for singleton
 		~ModuleManager() = default; // Private destructor for singleton
 
 		std::vector<IModule*> modules_; // Vector of active modules safed as pointers
