@@ -4,27 +4,30 @@
 
 namespace Pulse::Modules {
 
-	ModuleManager::~ModuleManager(){
-		ShutdownModules();
+	ModuleManager::ModuleManager() {
+		PLS_CORE_INFO("Module manager loaded.");
 	}
 
-	void ModuleManager::InitializeModules() const {
-		for (const auto& module : modules_) {
-			module->Initialize();
-		}
+	ModuleManager& ModuleManager::GetInstance() {
+		static ModuleManager instance;
+		return instance;
 	}
 
-	void ModuleManager::UpdateModules(float deltaTime) const {
-		for (const auto& module : modules_) {
-			module->Update(deltaTime);
+	void ModuleManager::UpdateModules() {
+		for (auto& module : modules_) {
+			module->Update();
 		}
 	}
 
 	void ModuleManager::ShutdownModules() {
-		for (const auto& module : modules_) {
+		for (auto& module : modules_) {
 			module->Shutdown();
+			delete module;
+			module = nullptr;
 		}
 		modules_.clear();
+		modulesMap_.clear();
+		PLS_CORE_INFO("Modules have been shut down.");
 	}
 
 } // namespace Pulse::Modules

@@ -1,7 +1,12 @@
 #pragma once
 
+// Pulse functionality
+#include "Pulse/Core/Logging/Log.h"
+#include "Pulse/Events/Events.h"
+
 // STL includes
 #include <type_traits>
+#include <typeindex>
 #include <memory>
 #include <chrono>
 #include <functional>

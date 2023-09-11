@@ -37,9 +37,8 @@ namespace Pulse::Events {
     template<typename Derived>
     class IEventListener : public Internal::IEventListenerBase {
     public:
-        static std::shared_ptr<Derived> Create() { // Function to create an IEventListener using a shared_ptr.
-            return std::make_shared<Derived>();
-        }
+        template<typename... Args>
+        static std::shared_ptr<Derived> Create(Args&&... args); // Function to create an IEventListener using a shared_ptr. Takes any number of arguments as parameters and forwards them to the constructor of the derived class.
 
         IEventListener(const IEventListener&) = delete; // Delete copy constructor to avoid copying of the base class.
         IEventListener& operator=(const IEventListener&) = delete; // Delete copy assignment operator to avoid copying of the base class.

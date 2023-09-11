@@ -4,14 +4,29 @@
     <Filter Include="Pulse">
       <UniqueIdentifier>{6EABE80D-DABF-10BF-A341-B41E0F150DF0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pulse\Core">
+      <UniqueIdentifier>{86241CE5-72DC-5D32-DBE3-368EC7BAF822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pulse\Core\Logging">
+      <UniqueIdentifier>{1C2BF2FE-080F-B354-716F-ADA75D729DD6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Pulse\Events">
       <UniqueIdentifier>{926FD9A1-7ED2-6846-2758-A1FC139A34C9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pulse\Modules">
       <UniqueIdentifier>{36C67634-A286-F26A-6BC1-3BE8D7403747}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pulse\Modules\Window">
+      <UniqueIdentifier>{5DFACA88-4989-5452-F2A7-684DDE1565F8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Pulse\Utility">
       <UniqueIdentifier>{B1F747A8-1DB8-C3DE-E6F2-0C5C527208BB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pulse\Modules\Window\Platform">
+      <UniqueIdentifier>{512F4971-BD47-309B-86F4-BF34F2CBC434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pulse\Modules\Window\Platform\Windows">
+      <UniqueIdentifier>{8B9A75E4-F75E-74D4-C0C4-A49E2C48100A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -19,8 +34,11 @@
     <ClInclude Include="src\Pulse\Application.h">
       <Filter>Pulse</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Core.h">
-      <Filter>Pulse</Filter>
+    <ClInclude Include="src\Pulse\Core\Core.h">
+      <Filter>Pulse\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Core\Logging\Log.h">
+      <Filter>Pulse\Core\Logging</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\EntryPoint.h">
       <Filter>Pulse</Filter>
@@ -31,11 +49,11 @@
     <ClInclude Include="src\Pulse\Events\EventListener.h">
       <Filter>Pulse\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Events\IEventListener.h">
+    <ClInclude Include="src\Pulse\Events\Events.h">
       <Filter>Pulse\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Log.h">
-      <Filter>Pulse</Filter>
+    <ClInclude Include="src\Pulse\Events\IEventListener.h">
+      <Filter>Pulse\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\IModule.h">
       <Filter>Pulse\Modules</Filter>
@@ -43,14 +61,23 @@
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
       <Filter>Pulse\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h">
+      <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
       <Filter>Pulse\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Pulse\Modules\Window\Window.h">
+      <Filter>Pulse\Modules\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
       <Filter>Pulse</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Core\Logging\Log.cpp">
+      <Filter>Pulse\Core\Logging</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Events\EventListener.cpp">
       <Filter>Pulse\Events</Filter>
@@ -58,11 +85,11 @@
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp">
       <Filter>Pulse\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Log.cpp">
-      <Filter>Pulse</Filter>
-    </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
       <Filter>Pulse\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp">
       <Filter>Pulse\Utility</Filter>

@@ -1,6 +1,12 @@
 namespace Pulse::Events {
 
     template<typename Derived>
+    template <typename... Args>
+    std::shared_ptr<Derived> IEventListener<Derived>::Create(Args&&... args) { // Function to create an IEventListener using a shared_ptr. Takes any number of arguments as parameters and forwards them to the constructor of the derived class.
+        return std::make_shared<Derived>(std::forward<Args>(args)...);
+    }
+
+    template<typename Derived>
     IEventListener<Derived>::~IEventListener() {
         for (const auto& eventListener : eventListeners_) {
             eventListener->_RemoveFromEventBase();
