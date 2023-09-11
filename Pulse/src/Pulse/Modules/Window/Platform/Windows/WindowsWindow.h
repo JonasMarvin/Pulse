@@ -39,6 +39,3 @@ namespace Pulse::Modules::Windows {
 	}; // class WindowsWindow
 
 } // namespace Pulse
-
-
-
