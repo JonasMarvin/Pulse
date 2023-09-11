@@ -23,7 +23,7 @@ namespace Pulse::Modules {
 	// Interface representing a desktop system based Window
 	// Its a module that has to be managed by the module manager. Dont create it directly and use the ModuleManager to create it.
 	// This interface will be implemented by platform specific window classes.
-	class PLS_API Window : IModule {
+	class PLS_API Window : public IModule {
 	public:
 		void Update() override = 0; // Virtual function to handle update of the window.
 		void Initialize() override = 0; // Virtual function to handle initialization of the window.
