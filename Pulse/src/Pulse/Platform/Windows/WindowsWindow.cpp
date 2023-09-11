@@ -1,32 +1,26 @@
 #include "pch.h"
 
-#include "WindowsWindow.h"
+#include "Pulse/Platform/Windows/WindowsWindow.h"
 
 #include <glad/glad.h>
 
 #include "Pulse/Events/Events.h"
 
-namespace Pulse {
+// Define correspoding static events. Declaration is in Events.h
+std::shared_ptr<Pulse::Events::Event<int, int>> Pulse::Events::Window::WindowResizeEvent = Pulse::Events::Event<int, int>::Create();
+std::shared_ptr<Pulse::Events::Event<>> Pulse::Events::Window::WindowCloseEvent = Pulse::Events::Event<>::Create();
+std::shared_ptr<Pulse::Events::Event<int, int, int, int>> Pulse::Events::Input::KeyEvent = Pulse::Events::Event<int, int, int, int>::Create();
+std::shared_ptr<Pulse::Events::Event<int, int, int>> Pulse::Events::Input::MouseEvent = Pulse::Events::Event<int, int, int>::Create();
+std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::ScrollEvent = Pulse::Events::Event<double, double>::Create();
+std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::MouseMovedEvent = Pulse::Events::Event<double, double>::Create();
+
+namespace Pulse::Modules::Windows {
 
 	static bool isGLFWInitialized = false;
 
-	std::shared_ptr<Pulse::Events::Event<int, int>> Pulse::Events::Window::WindowResizeEvent = Pulse::Events::Event<int, int>::Create();
-	std::shared_ptr<Pulse::Events::Event<>> Pulse::Events::Window::WindowCloseEvent = Pulse::Events::Event<>::Create();
-	std::shared_ptr<Pulse::Events::Event<int, int, int, int>> Pulse::Events::Input::KeyEvent = Pulse::Events::Event<int, int, int, int>::Create();
-	std::shared_ptr<Pulse::Events::Event<int, int, int>> Pulse::Events::Input::MouseEvent = Pulse::Events::Event<int, int, int>::Create();
-	std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::ScrollEvent = Pulse::Events::Event<double, double>::Create();
-	std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::MouseMovedEvent = Pulse::Events::Event<double, double>::Create();
+	void WindowsWindow::Initialize() {
 
-	Window* Window::Create(const WindowProperties& properties) {
-		return new WindowsWindow(properties);
-	}
-
-	WindowsWindow::WindowsWindow(const WindowProperties& properties) {
-		data_.title = properties.title;
-		data_.width = properties.width;
-		data_.height = properties.height;
-
-		PLS_CORE_INFO("Creating window {0} ({1}, {2})", properties.title, properties.width, properties.height);
+		PLS_CORE_INFO("Creating window {0} ({1}, {2})", data_.title, data_.width, data_.height);
 	
 		if (!isGLFWInitialized) {
 			int success = glfwInit();
@@ -37,7 +31,7 @@ namespace Pulse {
 			isGLFWInitialized = true;
 		}
 
-		window_ = glfwCreateWindow((int)properties.width, (int)properties.height, data_.title.c_str(), nullptr, nullptr);
+		window_ = glfwCreateWindow((int)data_.width, (int)data_.height, data_.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(window_);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PLS_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -73,11 +67,11 @@ namespace Pulse {
 		});
 	}
 
-	WindowsWindow::~WindowsWindow() {
+	void WindowsWindow::Shutdown() {
 		glfwDestroyWindow(window_);
 	}
 
-	void WindowsWindow::OnUpdate() {
+	void WindowsWindow::Update() {
 		glfwPollEvents();
 		glfwSwapBuffers(window_);
 	}
@@ -104,4 +98,4 @@ namespace Pulse {
 		return data_.vsync;
 	}
 
-} // namespace Pulse
+} // namespace Pulse::Modules::Windows

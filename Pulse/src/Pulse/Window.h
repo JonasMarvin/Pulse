@@ -4,8 +4,9 @@
 
 #include "Pulse/Core/Core.h"
 #include "Pulse/Events/Events.h"
+#include "Pulse/Modules/IModule.h"
 
-namespace Pulse {
+namespace Pulse::Modules {
 
 	// Window properties
 	struct WindowProperties {
@@ -20,13 +21,13 @@ namespace Pulse {
 	};
 
 	// Interface representing a desktop system based Window
-	// Use the Create function to create a window because it has to be created on the heap.
+	// Its a module that has to be managed by the module manager. Dont create it directly and use the ModuleManager to create it.
 	// This interface will be implemented by platform specific window classes.
-	class PLS_API Window {
+	class PLS_API Window : IModule {
 	public:
-		virtual ~Window() {} // Virtual destructor to allow deletion of the derived class.
-
-		virtual void OnUpdate() = 0; // Virtual function to handle update of the window.
+		void Update() override = 0; // Virtual function to handle update of the window.
+		void Initialize() override = 0; // Virtual function to handle initialization of the window.
+		void Shutdown() override = 0; // Virtual function to handle shutdown of the window.
 
 		virtual unsigned int GetWidth() const = 0; // Virtual function to get the width of the window.
 		virtual unsigned int GetHeight() const = 0; // Virtual function to get the height of the window.
@@ -34,7 +35,11 @@ namespace Pulse {
 		virtual void SetVSync(bool enabled) = 0; // Virtual function to set the vsync of the window.
 		virtual bool IsVSync() const = 0; // Virtual function to get the vsync of the window.
 
-		static Window* Create(const WindowProperties& properties = WindowProperties()); // Static function to create a window. Returns a pointer to the created window of the platform in use.
+	protected:
+		Window() = default; // Default constructor protected so that it can only be created by the module manager.
+		virtual ~Window() = default; // Default destructor protected so that it can only be deleted by the module manager.
+
+		friend class ModuleManager; // The module manager is befriended with the module to allow it to call the Initialize, Update and Shutdown functions
 	};
 
-} // namespace Pulse
+} // namespace Pulse::Modules

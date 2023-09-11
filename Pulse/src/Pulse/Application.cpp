@@ -19,7 +19,9 @@ namespace Pulse {
 	Application::Application() :
 		moduleManager_(Pulse::Modules::ModuleManager::GetInstance()),
 		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
-		window_ = std::unique_ptr<Window>(Window::Create());
+		
+		// Registering core modules
+		// moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
 	}
 
 	Application::~Application() {
@@ -32,7 +34,6 @@ namespace Pulse {
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 			moduleManager_.UpdateModules();
-			window_->OnUpdate();
 		}
 	}
 

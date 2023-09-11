@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Pulse/Core/Window.h"
+#include "Pulse/Window.h"
 
 #include <GLFW/glfw3.h>
 
-namespace Pulse {
+namespace Pulse::Modules::Windows {
 
 	// Class for a Windows window
-	class WindowsWindow : public Window {
+	// Its a module and should only be created and managed by the module manager
+	class WindowsWindow : public Pulse::Modules::Window {
 	public:
-		WindowsWindow(const WindowProperties& properties); // constructor taking in window properties
-		virtual ~WindowsWindow(); // virtual destructor for inheritance reasons
-
-		void OnUpdate() override; // function to handle the update event of the window
+		void Initialize() override; // function to initialize the window
+		void Update() override; // function to handle the update event of the window
+		void Shutdown() override; // function to shutdown the window
 
 		unsigned int GetWidth() const override; // function to get the width of the window
 		unsigned int GetHeight() const override; // function to get the height of the window
@@ -22,6 +22,9 @@ namespace Pulse {
 		bool IsVSync() const override; // function to get the vsync of the window
 
 	private:
+		WindowsWindow() = default;
+		~WindowsWindow() = default;
+
 		GLFWwindow* window_; // pointer to the GLFW window
 
 		struct WindowData { // struct to store the window data
@@ -30,6 +33,8 @@ namespace Pulse {
 			unsigned int height = 0; // height of the window
 			bool vsync = false; // vsync of the window
 		} data_; // window data
+
+		friend class ModuleManager; // friend class to allow the module manager to create and manage the window
 
 	}; // class WindowsWindow
 

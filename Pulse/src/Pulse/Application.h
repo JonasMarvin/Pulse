@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Pulse/Core/Core.h"
-#include "Pulse/Core/Window.h"
+#include "Pulse/Platform/Windows/WindowsWindow.h"
 #include "Pulse/Events/Events.h"
 #include "Pulse/Modules/ModuleManager.h"
 
@@ -29,7 +29,6 @@ namespace Pulse
 	private:
 		std::shared_ptr<ApplicationEventListener> applicationEventListener_; // Shared pointer to the application event listener to allow lifetime management of the application by the event system
 		Pulse::Modules::ModuleManager& moduleManager_; // Module manager to manage all the modules of the application
-		std::unique_ptr<Window> window_; // Unique pointer to the window of the application
 		bool isRunning_ = true; // Boolean to check if the application is running
 	};
 
