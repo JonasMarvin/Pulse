@@ -50,7 +50,7 @@ namespace Pulse::Modules {
 		imGuiIO_->DisplaySize = ImVec2((float)window_->GetWidth(), (float)window_->GetHeight());
 
 		float time = (float)glfwGetTime();
-		imGuiIO_->DeltaTime = time_ > 0.0f ? (time - time_) : (1.0f / 60.0f);
+		 imGuiIO_->DeltaTime = time_ > 0.0f ? (time - time_) : (1.0f / 60.0f);
 		time_ = time;
 
 		ImGui_ImplOpenGL3_NewFrame();
