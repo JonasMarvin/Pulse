@@ -4,14 +4,14 @@ namespace Pulse::Modules {
 	void ModuleManager::RegisterModule() {
 		std::type_index typeIndex(typeid(T));
 		if (modulesMap_.find(typeIndex) != modulesMap_.end()) {
-			PLS_CORE_ERROR("Module {0} already registered!", T);
+			PLS_CORE_ERROR("Module {0} already registered!", typeIndex.name());
 		}
 		else {
 			T* module = new T();
 			modules_.push_back(module);
 			modulesMap_[typeIndex] = module;
 			module->Initialize();
-			PLS_CORE_INFO("Module {0} has been registered.", T);
+			PLS_CORE_INFO("Module {0} has been registered.", typeIndex.name());
 		}
 	}
 
@@ -19,7 +19,7 @@ namespace Pulse::Modules {
 	T* ModuleManager::GetModule() {
 		std::type_index typeIndex(typeid(T));
 		if (modulesMap_.find(typeIndex) == modulesMap_.end()) {
-			PLS_CORE_ERROR("Module {0} is not registered!", T);
+			PLS_CORE_ERROR("Module {0} is not registered!", typeIndex.name());
 			return nullptr;
 		}
 		else {
@@ -31,7 +31,7 @@ namespace Pulse::Modules {
 	void ModuleManager::UnregisterModule() {
 		std::type_index typeIndex(typeid(T));
 		if (modulesMap_.find(typeIndex) == modulesMap_.end()) {
-			PLS_CORE_ERROR("Module {0} is not registered!", T);
+			PLS_CORE_ERROR("Module {0} is not registered!", typeIndex.name());
 		}
 		else {
 			T* module = modulesMap_[typeIndex];
@@ -40,7 +40,7 @@ namespace Pulse::Modules {
 			module->Shutdown();
 			delete module;
 			module = nullptr;
-			PLS_CORE_INFO("Module {0} has been unregistered.", T);
+			PLS_CORE_INFO("Module {0} has been unregistered.", typeIndex.name());
 		}
 	}
 

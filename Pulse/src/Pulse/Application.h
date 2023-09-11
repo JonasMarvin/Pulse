@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Pulse/Core/Core.h"
-#include "Pulse/Platform/Windows/WindowsWindow.h"
 #include "Pulse/Events/Events.h"
 #include "Pulse/Modules/ModuleManager.h"
 

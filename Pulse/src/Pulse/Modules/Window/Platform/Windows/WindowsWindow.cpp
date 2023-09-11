@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "Pulse/Platform/Windows/WindowsWindow.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 
 #include <glad/glad.h>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pulse/Window.h"
+#include "Pulse/Modules/Window/Window.h"
 
 #include <GLFW/glfw3.h>
 
@@ -29,8 +29,8 @@ namespace Pulse::Modules::Windows {
 
 		struct WindowData { // struct to store the window data
 			std::string title = ""; // title of the window
-			unsigned int width = 0; // width of the window
-			unsigned int height = 0; // height of the window
+			unsigned int width = 500; // width of the window
+			unsigned int height = 500; // height of the window
 			bool vsync = false; // vsync of the window
 		} data_; // window data
 

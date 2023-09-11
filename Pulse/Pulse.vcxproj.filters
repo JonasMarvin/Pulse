@@ -22,10 +22,10 @@
     <Filter Include="Pulse\Utility">
       <UniqueIdentifier>{B1F747A8-1DB8-C3DE-E6F2-0C5C527208BB}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pulse\Platform">
+    <Filter Include="Pulse\Modules\Window\Platform">
       <UniqueIdentifier>{512F4971-BD47-309B-86F4-BF34F2CBC434}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pulse\Platform\Windows">
+    <Filter Include="Pulse\Modules\Window\Platform\Windows">
       <UniqueIdentifier>{8B9A75E4-F75E-74D4-C0C4-A49E2C48100A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -61,15 +61,15 @@
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
       <Filter>Pulse\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Platform\Windows\WindowsWindow.h">
-      <Filter>Pulse\Platform\Windows</Filter>
+    <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h">
+      <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
       <Filter>Pulse\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Pulse\Window.h">
-      <Filter>Pulse</Filter>
+    <ClInclude Include="src\Pulse\Modules\Window\Window.h">
+      <Filter>Pulse\Modules\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,8 +88,8 @@
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
       <Filter>Pulse\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Pulse\Platform\Windows</Filter>
+    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp">
       <Filter>Pulse\Utility</Filter>
