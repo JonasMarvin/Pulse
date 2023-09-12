@@ -92,7 +92,7 @@
       <ImportLibrary>..\bin\Debug-windows-x86_64\Pulse\Pulse.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Pulse\Pulse.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Pulse\Pulse.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Pulse\Pulse.dll ..\bin\Debug-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\Pulse\Pulse.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\Pulse\Pulse.dll "..\bin\Debug-windows-x86_64\Sandbox\" &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\Pulse\Pulse.dll "..\bin\Debug-windows-x86_64\Sandbox\" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,7 +119,7 @@
       <ImportLibrary>..\bin\Release-windows-x86_64\Pulse\Pulse.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\Pulse\Pulse.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Pulse\Pulse.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Pulse\Pulse.dll ..\bin\Release-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\Pulse\Pulse.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\Pulse\Pulse.dll "..\bin\Release-windows-x86_64\Sandbox\" &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\Pulse\Pulse.dll "..\bin\Release-windows-x86_64\Sandbox\" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -146,7 +146,7 @@
       <ImportLibrary>..\bin\Dist-windows-x86_64\Pulse\Pulse.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Pulse\Pulse.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Pulse\Pulse.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Pulse\Pulse.dll ..\bin\Dist-windows-x86_64\Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Dist-windows-x86_64\Pulse\Pulse.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\Pulse\Pulse.dll "..\bin\Dist-windows-x86_64\Sandbox\" &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\Pulse\Pulse.dll "..\bin\Dist-windows-x86_64\Sandbox\" &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -160,6 +160,8 @@
     <ClInclude Include="src\Pulse\Events\Events.h" />
     <ClInclude Include="src\Pulse\Events\IEventListener.h" />
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
+    <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h" />
+    <ClInclude Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Window.h" />
@@ -171,6 +173,8 @@
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp" />
     <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
+    <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp" />
+    <ClCompile Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />

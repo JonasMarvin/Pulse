@@ -9,11 +9,11 @@ namespace Pulse
 	// This is the base class for all Pulse applications.
 	class PLS_API Application {
 	public:
-		// This internal class is used by Application to allow proper lifetime managements by listeners of the application. Dont use this at all except in the application class it is not meant to be used outside of it.
+		// This class is used by Application to allow proper lifetime managements by listeners of the application. Dont use this at all except in the application class it is not meant to be used outside of it.
 		class PLS_API ApplicationEventListener : public Events::IEventListener<ApplicationEventListener> {
 		public:
 			ApplicationEventListener(Application& application); // Constructor to add the event listeners to the events.
-			virtual ~ApplicationEventListener() override = default; // Virtual destructor to allow deletion of the derived class.
+			~ApplicationEventListener() override = default; // Destructor to remove the event listeners from the events.
 			void OnWindowClose(); // Function to be called when the window is closed.
 
 		private:

@@ -16,17 +16,23 @@
     <Filter Include="Pulse\Modules">
       <UniqueIdentifier>{36C67634-A286-F26A-6BC1-3BE8D7403747}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pulse\Modules\ImGui">
+      <UniqueIdentifier>{E08BC46F-4CED-A17D-D55A-E82F41BBD83C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pulse\Modules\ImGui\OpenGL">
+      <UniqueIdentifier>{1419D1E5-0029-7DB6-69E2-E1D455116C4F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Pulse\Modules\Window">
       <UniqueIdentifier>{5DFACA88-4989-5452-F2A7-684DDE1565F8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Pulse\Utility">
-      <UniqueIdentifier>{B1F747A8-1DB8-C3DE-E6F2-0C5C527208BB}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pulse\Modules\Window\Platform">
       <UniqueIdentifier>{512F4971-BD47-309B-86F4-BF34F2CBC434}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pulse\Modules\Window\Platform\Windows">
       <UniqueIdentifier>{8B9A75E4-F75E-74D4-C0C4-A49E2C48100A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pulse\Utility">
+      <UniqueIdentifier>{B1F747A8-1DB8-C3DE-E6F2-0C5C527208BB}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,19 +64,25 @@
     <ClInclude Include="src\Pulse\Modules\IModule.h">
       <Filter>Pulse\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h">
+      <Filter>Pulse\Modules\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Pulse\Modules\ImGui\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
       <Filter>Pulse\Modules</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h">
       <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Window\Window.h">
+      <Filter>Pulse\Modules\Window</Filter>
+    </ClInclude>
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
       <Filter>Pulse\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Pulse\Modules\Window\Window.h">
-      <Filter>Pulse\Modules\Window</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -84,6 +96,12 @@
     </ClCompile>
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp">
       <Filter>Pulse\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp">
+      <Filter>Pulse\Modules\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Pulse\Modules\ImGui\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
       <Filter>Pulse\Modules</Filter>

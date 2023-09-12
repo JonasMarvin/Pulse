@@ -13,6 +13,7 @@ std::shared_ptr<Pulse::Events::Event<int, int, int, int>> Pulse::Events::Input::
 std::shared_ptr<Pulse::Events::Event<int, int, int>> Pulse::Events::Input::MouseEvent = Pulse::Events::Event<int, int, int>::Create();
 std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::ScrollEvent = Pulse::Events::Event<double, double>::Create();
 std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::MouseMovedEvent = Pulse::Events::Event<double, double>::Create();
+std::shared_ptr<Pulse::Events::Event<unsigned int>> Pulse::Events::Input::CharEvent = Pulse::Events::Event<unsigned int>::Create();
 
 namespace Pulse::Modules::Windows {
 
@@ -64,6 +65,10 @@ namespace Pulse::Modules::Windows {
 
 		glfwSetCursorPosCallback(window_, [](GLFWwindow* window, double xPos, double yPos) {
 			Pulse::Events::Input::MouseMovedEvent->Trigger(xPos, yPos);
+		});
+
+		glfwSetCharCallback(window_, [](GLFWwindow* window, unsigned int character) {
+			Pulse::Events::Input::CharEvent->Trigger(character);
 		});
 	}
 

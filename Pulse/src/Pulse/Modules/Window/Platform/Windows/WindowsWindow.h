@@ -22,15 +22,15 @@ namespace Pulse::Modules::Windows {
 		bool IsVSync() const override; // function to get the vsync of the window
 
 	private:
-		WindowsWindow() = default; // default constructor private to prevent creation of the window outside of the module manager
+		WindowsWindow() : window_(nullptr) {}; // default constructor private to prevent creation of the window outside of the module manager
 		~WindowsWindow() = default; // default destructor private to prevent deletion of the window outside of the module manager
 
-		GLFWwindow* window_; // pointer to the GLFW window
+		GLFWwindow* window_ = nullptr; // pointer to the GLFW window
 
 		struct WindowData { // struct to store the window data
-			std::string title = ""; // title of the window
-			unsigned int width = 500; // width of the window
-			unsigned int height = 500; // height of the window
+			std::string title = "Pulse"; // title of the window
+			unsigned int width = 1920; // width of the window
+			unsigned int height = 1080; // height of the window
 			bool vsync = false; // vsync of the window
 		} data_; // window data
 

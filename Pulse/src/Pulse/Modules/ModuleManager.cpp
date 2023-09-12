@@ -14,8 +14,8 @@ namespace Pulse::Modules {
 	}
 
 	void ModuleManager::UpdateModules() {
-		for (auto& module : modules_) {
-			module->Update();
+		for (auto it = modules_.rbegin(); it != modules_.rend(); ++it) {
+			(*it)->Update();
 		}
 	}
 
