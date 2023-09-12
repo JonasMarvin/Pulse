@@ -28,9 +28,9 @@ namespace Pulse::Modules::Windows {
 		GLFWwindow* window_ = nullptr; // pointer to the GLFW window
 
 		struct WindowData { // struct to store the window data
-			std::string title = ""; // title of the window
-			unsigned int width = 500; // width of the window
-			unsigned int height = 500; // height of the window
+			std::string title = "Pulse"; // title of the window
+			unsigned int width = 1920; // width of the window
+			unsigned int height = 1080; // height of the window
 			bool vsync = false; // vsync of the window
 		} data_; // window data
 
