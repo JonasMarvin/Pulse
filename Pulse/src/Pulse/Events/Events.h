@@ -18,6 +18,7 @@ namespace Pulse::Events {
 		extern std::shared_ptr<Pulse::Events::Event<int, int, int>> MouseEvent; // Format: <int button, int action, int mods>.Gets triggered when a mouse interaction takes place.
 		extern std::shared_ptr<Pulse::Events::Event<double, double>> ScrollEvent; // Format: <double xOffset, double yOffset>.Gets triggered scrolling with a device takes place.
 		extern std::shared_ptr<Pulse::Events::Event<double, double>> MouseMovedEvent; // Format: <double xPos, double yPos>.Gets triggered when the mouse moves.
+		extern std::shared_ptr<Pulse::Events::Event<unsigned int>> CharEvent; // Format: <unsigned int character>.Gets triggered when a character is entered.
 
 	} // namespace Input
 

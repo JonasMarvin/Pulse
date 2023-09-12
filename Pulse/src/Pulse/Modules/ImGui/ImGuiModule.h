@@ -18,6 +18,10 @@ namespace Pulse::Modules {
 
 			void OnMouseMoved(double xOffset, double yOffset);
 			void OnMouseScrolled(double xOffset, double yOffset);
+			void OnMouseButton(int button, int action, int mods);
+			void OnKey(int key, int scancode, int action, int mods);
+			void OnChar(unsigned int character);
+			void OnWindowResize(int width, int height);
 		private:
 			ImGuiModule& parent_; // reference to the parent 
 			ImGuiIO& imGuiIO_; // reference to the ImGui IO object to allow faster access to the ImGui IO object
