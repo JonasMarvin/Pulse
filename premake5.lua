@@ -1,5 +1,6 @@
 workspace "Pulse"
 	architecture "x86_64"
+	startproject "Sandbox"
 
 	configurations{
 		"Debug",
@@ -7,16 +8,19 @@ workspace "Pulse"
 		"Dist"
 	}
 
-outputDirectory = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+	outputDirectory = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Pulse/vendor/GLFW/include"
 IncludeDir["Glad"] = "Pulse/vendor/Glad/include"
 IncludeDir["ImGui"] = "Pulse/vendor/imgui"
 
-include "Pulse/vendor/GLFW"
-include "Pulse/vendor/Glad"
-include "Pulse/vendor/imgui"
+group "Dependencies"
+	include "Pulse/vendor/GLFW"
+	include "Pulse/vendor/Glad"
+	include "Pulse/vendor/imgui"
+
+group ""
 
 project "Pulse"
 	location "Pulse"
@@ -63,7 +67,7 @@ project "Pulse"
 		}
 
 		postbuildcommands{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" ..  outputDirectory .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" ..  outputDirectory .. "/Sandbox/\"")
 		}
 	
 	filter "configurations:Debug"
