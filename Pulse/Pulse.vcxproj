@@ -162,7 +162,11 @@
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
     <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h" />
     <ClInclude Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\GamepadCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\Input.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\JoystickCodes.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\KeyCodes.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Window.h" />
