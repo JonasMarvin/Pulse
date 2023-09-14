@@ -162,11 +162,13 @@
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
     <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h" />
     <ClInclude Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\Input.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Window.h" />
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp" />
@@ -181,6 +183,7 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

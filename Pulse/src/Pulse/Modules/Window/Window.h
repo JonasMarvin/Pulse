@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "Pulse/Core/Core.h"
-#include "Pulse/Events/Events.h"
 #include "Pulse/Modules/IModule.h"
 
 namespace Pulse::Modules {

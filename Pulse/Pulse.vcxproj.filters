@@ -83,6 +83,8 @@
       <Filter>Pulse\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\Input.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -113,5 +115,6 @@
       <Filter>Pulse\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>
