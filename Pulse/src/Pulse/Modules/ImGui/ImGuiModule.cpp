@@ -17,7 +17,6 @@ namespace Pulse::Modules {
 		imGuiIO_ = &ImGui::GetIO();
 
 		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasGamepad;
 		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
 		ImGui_ImplOpenGL3_Init("#version 430");
