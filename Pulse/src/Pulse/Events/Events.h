@@ -2,6 +2,9 @@
 #pragma once
 
 #include "Pulse/Events/IEventListener.h"
+#include "Pulse/Modules/Input/KeyCodes.h"
+#include "Pulse/Modules/Input/MouseCodes.h"
+#include "Pulse/Modules/Input/InputActions.h"
 
 namespace Pulse::Events {
 
@@ -14,11 +17,11 @@ namespace Pulse::Events {
 
 	namespace Input {
 
-		inline std::shared_ptr<Pulse::Events::Event<int, int, int, int>> KeyEvent = Pulse::Events::Event<int, int, int, int>::Create(); // Format: <int key, int scancode, int action, int mods>.Gets triggered when a key interaction takes place.
-		inline std::shared_ptr<Pulse::Events::Event<int, int, int>> MouseEvent = Pulse::Events::Event<int, int, int>::Create(); // Format: <int button, int action, int mods>.Gets triggered when a mouse interaction takes place.
+		inline std::shared_ptr<Pulse::Events::Event<Pulse::Input::KeyCode, Pulse::Input::InputAction>> KeyEvent = Pulse::Events::Event<Pulse::Input::KeyCode, Pulse::Input::InputAction>::Create(); // Format: <Pulse::Input::KeyCode keyCode, Pulse::Input::InputAction inputAction>.Gets triggered when a key interaction takes place.
+		inline std::shared_ptr<Pulse::Events::Event<Pulse::Input::MouseCode, Pulse::Input::InputAction>> MouseEvent = Pulse::Events::Event<Pulse::Input::MouseCode, Pulse::Input::InputAction>::Create(); // Format: <Pulse::Input::MouseCode mouseCode, Pulse::Input::InputAction inputAction>.Gets triggered when a mouse interaction takes place.
 		inline std::shared_ptr<Pulse::Events::Event<double, double>> ScrollEvent = Pulse::Events::Event<double, double>::Create(); // Format: <double xOffset, double yOffset>.Gets triggered scrolling with a device takes place.
 		inline std::shared_ptr<Pulse::Events::Event<double, double>> MouseMovedEvent = Pulse::Events::Event<double, double>::Create(); // Format: <double xPos, double yPos>.Gets triggered when the mouse moves.
-		inline std::shared_ptr<Pulse::Events::Event<unsigned int>> CharEvent = Pulse::Events::Event<unsigned int>::Create(); // Format: <unsigned int character>.Gets triggered when a character is entered.
+		inline std::shared_ptr<Pulse::Events::Event<unsigned int>> CharEvent = Pulse::Events::Event<unsigned int>::Create(); // Format: <unsigned int unicode codepoint>.Gets triggered when a character is entered.
 
 	} // namespace Input
 

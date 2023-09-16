@@ -3,10 +3,10 @@
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 
 // TODO: Remove glfw and glad here and move functionality to own modules
-#include <GLFW/glfw3.h> 
 #include <glad/glad.h>
 
 #include "Pulse/Modules/ModuleManager.h"
+#include "Pulse/Modules/ImGui/MapCodeToImGuiCode.h"
 
 namespace Pulse::Modules {
 
@@ -17,6 +17,7 @@ namespace Pulse::Modules {
 		imGuiIO_ = &ImGui::GetIO();
 
 		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasGamepad;
 		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
 		ImGui_ImplOpenGL3_Init("#version 430");
@@ -29,7 +30,7 @@ namespace Pulse::Modules {
 
 	ImGuiModule::ImGuiModuleEventListener::ImGuiModuleEventListener(ImGuiModule& parent, ImGuiIO& imGuiIO)
 		: parent_(parent), imGuiIO_(imGuiIO){
-
+		
 		AddListener(Events::Input::MouseMovedEvent, &ImGuiModuleEventListener::OnMouseMoved);
 		AddListener(Events::Input::ScrollEvent , &ImGuiModuleEventListener::OnMouseScrolled);
 		AddListener(Events::Input::MouseEvent, &ImGuiModuleEventListener::OnMouseButton);
@@ -46,24 +47,36 @@ namespace Pulse::Modules {
 		imGuiIO_.AddMouseWheelEvent(static_cast<float>(xOffset), static_cast<float>(yOffset));
 	}
 
-	void ImGuiModule::ImGuiModuleEventListener::OnMouseButton(int button, int action, int mods) {
-		if (action == GLFW_REPEAT) {
-			return;
-		}
-		else if (action == GLFW_RELEASE) {
-			imGuiIO_.AddMouseButtonEvent(button, false);
-		}
-		else if(action == GLFW_PRESS) {
-			imGuiIO_.AddMouseButtonEvent(button, true);
+	void ImGuiModule::ImGuiModuleEventListener::OnMouseButton(Pulse::Input::MouseCode mouseCode, Pulse::Input::InputAction inputAction) {
+		int mouseCodeImGui = Pulse::Input::MapCodeToImGuiCode::MapMouseCodeToImGuiMouse(mouseCode);
+		if (mouseCodeImGui == -1) return;
+		switch (inputAction) {
+			case Pulse::Input::InputAction::Pressed:
+				imGuiIO_.AddMouseButtonEvent(mouseCodeImGui, true);
+				break;
+			case Pulse::Input::InputAction::Released:
+				imGuiIO_.AddMouseButtonEvent(mouseCodeImGui, false);
+				break;
+			default:
+				break;
 		}
 	}
 
-	void ImGuiModule::ImGuiModuleEventListener::OnKey(int key, int scancode, int action, int mods) {
-		// TODO: Inputsystem
+	void ImGuiModule::ImGuiModuleEventListener::OnKey(Pulse::Input::KeyCode keyCode, Pulse::Input::InputAction inputAction) {
+		switch (inputAction) {
+			case Pulse::Input::InputAction::Pressed:
+				imGuiIO_.AddKeyEvent(Pulse::Input::MapCodeToImGuiCode::MapKeyCodeToImGuiKey(keyCode), true);
+				break;
+			case Pulse::Input::InputAction::Released:
+				imGuiIO_.AddKeyEvent(Pulse::Input::MapCodeToImGuiCode::MapKeyCodeToImGuiKey(keyCode), false);
+				break;
+			default:
+				break;
+		}
 	}
 
-	void ImGuiModule::ImGuiModuleEventListener::OnChar(unsigned int character) {
-		// TODO: Inputsystem
+	void ImGuiModule::ImGuiModuleEventListener::OnChar(unsigned int unicodeCodepoint) {
+		imGuiIO_.AddInputCharacter(unicodeCodepoint);
 	}
 
 	void ImGuiModule::ImGuiModuleEventListener::OnWindowResize(int width, int height) {

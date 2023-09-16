@@ -11,11 +11,11 @@ namespace Pulse::Modules::Windows {
 		window_ = static_cast<GLFWwindow*>(ModuleManager::GetInstance().GetModule<WindowsWindow>()->GetNativeWindow());
 
 		glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			Pulse::Events::Input::KeyEvent->Trigger(key, scancode, action, mods);
+			Pulse::Events::Input::KeyEvent->Trigger(static_cast<Pulse::Input::KeyCode>(key), static_cast<Pulse::Input::InputAction>(action));
 		});
 
 		glfwSetMouseButtonCallback(window_, [](GLFWwindow* window, int button, int action, int mods) {
-			Pulse::Events::Input::MouseEvent->Trigger(button, action, mods);
+			Pulse::Events::Input::MouseEvent->Trigger(static_cast<Pulse::Input::MouseCode>(button), static_cast<Pulse::Input::InputAction>(action));
 		});
 
 		glfwSetScrollCallback(window_, [](GLFWwindow* window, double xOffset, double yOffset) {

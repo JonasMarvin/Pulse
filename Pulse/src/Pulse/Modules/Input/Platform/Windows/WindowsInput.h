@@ -36,7 +36,7 @@ namespace Pulse::Modules::Windows {
 		bool GetGamepadLeftTrigger(float& value, Pulse::Input::JoystickCode joystickCode = Pulse::Input::JoystickCode::Joystick1) override; // Function to get the left trigger of the gamepad.
 
 	private:
-		WindowsInput() = default; // default constructor private to prevent instantiation.
+		WindowsInput() : gamepadStates_{} {}; // default constructor private to prevent instantiation.
 		~WindowsInput() = default; // default destructor private to prevent instantiation
 
 		GLFWwindow* window_ = nullptr; // pointer to the window.
