@@ -25,6 +25,14 @@ namespace Pulse::Events{
 	}
 
     template<typename... Args>
+    void Event<Args...>::RemoveAllListeners() {
+        for (const auto& eventListener : eventListeners_) {
+			eventListener->_RemoveFromIEventListenerBase();
+		}
+		eventListeners_.clear();
+	}
+
+    template<typename... Args>
     void Event<Args...>::Trigger(Args... args) {
 
         auto argsTupleForSt = std::make_tuple(std::forward<Args>(args)...);

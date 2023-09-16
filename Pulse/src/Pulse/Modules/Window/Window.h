@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "Pulse/Core/Core.h"
-#include "Pulse/Events/Events.h"
 #include "Pulse/Modules/IModule.h"
 
 namespace Pulse::Modules {
@@ -22,6 +20,7 @@ namespace Pulse::Modules {
 
 		virtual void SetVSync(bool enabled) = 0; // Virtual function to set the vsync of the window.
 		virtual bool IsVSync() const = 0; // Virtual function to get the vsync of the window.
+		virtual void* GetNativeWindow() const = 0; // Virtual function to get the native window of the window.
 
 	protected:
 		Window() = default; // Default constructor protected so that it can only be created by the module manager.

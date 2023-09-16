@@ -5,6 +5,7 @@
 #include "Application.h"
 
 #include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
+#include "Pulse/Modules/Input/Platform/Windows/WindowsInput.h"
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 
 namespace Pulse {
@@ -25,6 +26,7 @@ namespace Pulse {
 		
 		// Registering core modules
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
+		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInput>();
 		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
 	}
 

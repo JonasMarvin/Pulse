@@ -8,3 +8,4 @@
 #include "Pulse/EntryPoint.h"
 #include "Pulse/Events/Events.h"
 #include "Pulse/Utility/Stopwatch.h"
+#include "Pulse/Utility/UnicodeConverter.h"

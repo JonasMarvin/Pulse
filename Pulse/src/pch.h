@@ -10,6 +10,7 @@
 #include <memory>
 #include <chrono>
 #include <functional>
+#include <cstdint>
 
 // Data structures
 #include <string>

@@ -29,7 +29,7 @@ namespace Pulse
 		std::shared_ptr<ApplicationEventListener> applicationEventListener_; // Shared pointer to the application event listener to allow lifetime management of the application by the event system
 		Pulse::Modules::ModuleManager& moduleManager_; // Module manager to manage all the modules of the application
 		bool isRunning_ = true; // Boolean to check if the application is running
-	};
+	}; // class Application
 
 	Application* CreateApplication(); // To be defined in CLIENT
 

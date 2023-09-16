@@ -38,6 +38,7 @@ namespace Pulse::Events{
 
 		void _AddListener(const std::shared_ptr<EventListener<Args...>>& eventListener); // Internal function to add an event listener to the event. Dont use this function directly but use the AddListener function of an IEventListener instead.
 		void _RemoveListenerFromUnorderedSet(const std::shared_ptr<Internal::EventListenerBase>& eventListener) override; // Internal function to remove an event listener from the event. Dont use this function directly but use the RemoveListener function of an IEventListener instead.
+		void RemoveAllListeners(); // Function to remove all event listeners from the event.
 
 		void Trigger(Args... args); // Function to trigger the event and call all event listeners.
 

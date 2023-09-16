@@ -8,7 +8,7 @@ namespace Pulse::Modules::Windows {
 
 	// Class for a Windows window
 	// Its a module and should only be created and managed by the module manager
-	class WindowsWindow : public Pulse::Modules::Window {
+	class PLS_API WindowsWindow : public Pulse::Modules::Window {
 	public:
 		void Initialize() override; // function to initialize the window
 		void Update() override; // function to handle the update event of the window
@@ -20,6 +20,8 @@ namespace Pulse::Modules::Windows {
 		// Window attributes
 		void SetVSync(bool enabled) override; // function to set the vsync of the window
 		bool IsVSync() const override; // function to get the vsync of the window
+
+		void* GetNativeWindow() const override; // function to get the native window
 
 	private:
 		WindowsWindow() : window_(nullptr) {}; // default constructor private to prevent creation of the window outside of the module manager
