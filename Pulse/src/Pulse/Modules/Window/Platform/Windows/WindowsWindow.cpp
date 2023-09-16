@@ -6,15 +6,6 @@
 
 #include "Pulse/Events/Events.h"
 
-// Define correspoding static events. Declaration is in Events.h
-std::shared_ptr<Pulse::Events::Event<int, int>> Pulse::Events::Window::WindowResizeEvent = Pulse::Events::Event<int, int>::Create();
-std::shared_ptr<Pulse::Events::Event<>> Pulse::Events::Window::WindowCloseEvent = Pulse::Events::Event<>::Create();
-std::shared_ptr<Pulse::Events::Event<int, int, int, int>> Pulse::Events::Input::KeyEvent = Pulse::Events::Event<int, int, int, int>::Create();
-std::shared_ptr<Pulse::Events::Event<int, int, int>> Pulse::Events::Input::MouseEvent = Pulse::Events::Event<int, int, int>::Create();
-std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::ScrollEvent = Pulse::Events::Event<double, double>::Create();
-std::shared_ptr<Pulse::Events::Event<double, double>> Pulse::Events::Input::MouseMovedEvent = Pulse::Events::Event<double, double>::Create();
-std::shared_ptr<Pulse::Events::Event<unsigned int>> Pulse::Events::Input::CharEvent = Pulse::Events::Event<unsigned int>::Create();
-
 namespace Pulse::Modules::Windows {
 
 	static bool isGLFWInitialized = false;
@@ -50,26 +41,6 @@ namespace Pulse::Modules::Windows {
 		glfwSetWindowCloseCallback(window_, [](GLFWwindow* window) {
 			Pulse::Events::Window::WindowCloseEvent->Trigger();
 		});
-
-		glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			Pulse::Events::Input::KeyEvent->Trigger(key, scancode, action, mods);
-		});
-
-		glfwSetMouseButtonCallback(window_, [](GLFWwindow* window, int button, int action, int mods) {
-			Pulse::Events::Input::MouseEvent->Trigger(button, action, mods);
-		});
-
-		glfwSetScrollCallback(window_, [](GLFWwindow* window, double xOffset, double yOffset) {
-			Pulse::Events::Input::ScrollEvent->Trigger(xOffset, yOffset);
-		});
-
-		glfwSetCursorPosCallback(window_, [](GLFWwindow* window, double xPos, double yPos) {
-			Pulse::Events::Input::MouseMovedEvent->Trigger(xPos, yPos);
-		});
-
-		glfwSetCharCallback(window_, [](GLFWwindow* window, unsigned int character) {
-			Pulse::Events::Input::CharEvent->Trigger(character);
-		});
 	}
 
 	void WindowsWindow::Shutdown() {
@@ -101,6 +72,10 @@ namespace Pulse::Modules::Windows {
 
 	bool WindowsWindow::IsVSync() const {
 		return data_.vsync;
+	}
+
+	void* WindowsWindow::GetNativeWindow() const {
+		return window_;
 	}
 
 } // namespace Pulse::Modules::Windows

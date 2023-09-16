@@ -21,6 +21,8 @@ namespace Pulse::Modules::Windows {
 		void SetVSync(bool enabled) override; // function to set the vsync of the window
 		bool IsVSync() const override; // function to get the vsync of the window
 
+		void* GetNativeWindow() const override; // function to get the native window
+
 	private:
 		WindowsWindow() : window_(nullptr) {}; // default constructor private to prevent creation of the window outside of the module manager
 		~WindowsWindow() = default; // default destructor private to prevent deletion of the window outside of the module manager

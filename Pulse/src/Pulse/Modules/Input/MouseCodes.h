@@ -21,6 +21,6 @@ namespace Pulse::Input {
 		ButtonRight = Button2,
 		ButtonMiddle = Button3
 
-	}; // End of enum class MouseCode : uint32_t
+	}; // enum class MouseCode
 
-} // End of namespace Pulse::Input
+} // namespace Pulse::Input

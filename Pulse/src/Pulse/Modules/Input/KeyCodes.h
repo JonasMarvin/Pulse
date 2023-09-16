@@ -130,6 +130,6 @@ namespace Pulse::Input {
         RightSuper = 347,
         Menu = 348
 
-	}; // End of enum class KeyCode : uint32_t
+	}; // enum class KeyCode
 
-} // End of namespace Pulse::Input
+} // namespace Pulse::Input

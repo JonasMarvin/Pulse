@@ -22,7 +22,7 @@ namespace Pulse::Input {
 		DpadRight = 12,
 		DpadDown = 13,
 		DpadLeft = 14,
-	};
+	}; // enum class GamepadButtonCode
 
 	// From glfw3.h
 	// Represents a gamepad axis
@@ -33,6 +33,6 @@ namespace Pulse::Input {
 		RightY = 3,
 		LeftTrigger = 4,
 		RightTrigger = 5,
-	};
+	}; // enum class GamepadAxisCode
 
-} // End of namespace Pulse::Input
+} // namespace Pulse::Input
