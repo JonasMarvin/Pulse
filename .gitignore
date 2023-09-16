@@ -5,6 +5,9 @@
 *.userosscache
 *.sln.docstates
 
+# imgui ini
+**/imgui.ini
+
 # Build results
 bin
 bin-int
