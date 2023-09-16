@@ -87,7 +87,6 @@
     <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Pulse\Modules\Input\KeyCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h" />
-    <ClInclude Include="src\Pulse\Modules\Input\JoystickCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\GamepadCodes.h" />
   </ItemGroup>
   <ItemGroup>
