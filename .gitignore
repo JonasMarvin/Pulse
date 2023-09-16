@@ -6,7 +6,7 @@
 *.sln.docstates
 
 # imgui ini
-**/imgui.ini
+/**/imgui.ini
 
 # Build results
 bin
@@ -14,4 +14,3 @@ bin-int
 
 # Visual studio files
 .vs
-/Sandbox/imgui.ini
