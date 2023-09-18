@@ -1,42 +1,28 @@
 #pragma once
 
-#include "Pulse/Modules/IModule.h"
-#include "Pulse/Modules/ImGui/OpenGL/ImGuiOpenGLRenderer.h"
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
-#include "Pulse/Events/Events.h"
+#include "Pulse/Modules/IRenderImGuiModule.h"
+
+// Uses GLFW and OpenGL3 as the backend for ImGui with glad as the OpenGL loader
+#define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 
 namespace Pulse::Modules {
 
 	// class to manage the imgui functionality
-	class PLS_API ImGuiModule : public IModule {
+	class PLS_API ImGuiModule : public IRenderImGuiModule {
 	public:
-		// This class is used by ImGuiModule to listen to events with a proper lifetime management
-		class PLS_API ImGuiModuleEventListener : public Pulse::Events::IEventListener<ImGuiModuleEventListener> {
-		public:
-			ImGuiModuleEventListener(ImGuiModule& parent, ImGuiIO& imGuiIO); // Constructor to add the event listener to the events
-			~ImGuiModuleEventListener() override = default; // Destructor to remove the event listener from the events
-
-			void OnMouseMoved(double xOffset, double yOffset);
-			void OnMouseScrolled(double xOffset, double yOffset);
-			void OnMouseButton(Pulse::Input::MouseCode mouseCode, Pulse::Input::InputAction inputAction);
-			void OnKey(Pulse::Input::KeyCode keyCode, Pulse::Input::InputAction inputAction);
-			void OnChar(unsigned int unicodeCodepoint);
-			void OnWindowResize(int width, int height);
-		private:
-			ImGuiModule& parent_; // reference to the parent 
-			ImGuiIO& imGuiIO_; // reference to the ImGui IO object to allow faster access to the ImGui IO object
-		}; // class ImGuiModuleEventListener
-
 		void Initialize() override; // function to initialize the module
 		void Shutdown() override; // function to shutdown the module
-		void Update() override; // function to update the module
+		void RenderImGui() override; // function to update the ImGui rendering
+		void BeginFrame(); // function to update the ImGui IO object at the beginning of the frame
+		void EndFrame(); // function to update the ImGui IO object at the end of the frame
 
 	private:
-		ImGuiModule() : window_(nullptr), imGuiIO_(nullptr) {}// private constructor to prevent creation of the module outside of the module manager
+		ImGuiModule() : imGuiIO_(nullptr), window_(nullptr) {}// private constructor to prevent creation of the module outside of the module manager
 		~ImGuiModule() = default; // private destructor to prevent deletion of the module outside of the module manager
 
-		std::shared_ptr<ImGuiModuleEventListener> imGuiModuleEventListener_; // pointer to the event listener
-		Pulse::Modules::Windows::WindowsWindow* window_; // pointer to the window object
+		GLFWwindow* window_; // pointer to the GLFW window to allow faster access to the GLFW window
 		ImGuiIO* imGuiIO_; // pointer to the ImGui IO object to allow faster access to the ImGui IO object
 		float time_ = 0.0f; // time since the module was last updated
 

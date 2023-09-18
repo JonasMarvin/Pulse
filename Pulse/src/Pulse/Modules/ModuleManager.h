@@ -4,7 +4,8 @@
 #include <vector>
 #include <typeindex>
 
-#include "Pulse/Modules/IModule.h"
+#include "Pulse/Modules/IRenderImGuiModule.h"
+#include "Pulse/Modules/IUpdatableModule.h"
 #include "Pulse/Core/Logging/Log.h"
 
 namespace Pulse::Modules {
@@ -28,8 +29,11 @@ namespace Pulse::Modules {
 		template <typename T>
 		T* GetModule();
 
-		// Updates all modules by calling the modules Update() function. Gets called in Application::Run()
+		// Updates all updatable modules by calling the modules Update() function. Gets called in Application::Run()
 		void UpdateModules();
+
+		// Updates all ImGuiRenderable modules by calling the modules Update() function. Gets called in Application::Run()
+		void RenderAllToImGui();
 
 		// Shuts down a module of type T by calling the modules Shutdown() function and removes it from the module manager
 		template <typename T>
@@ -42,8 +46,24 @@ namespace Pulse::Modules {
 		ModuleManager(); // Private constructor for singleton
 		~ModuleManager() = default; // Private destructor for singleton
 
+		// Adds a module to the according modules maps
+		template <typename T>
+		void _AddModuleToSpecificMaps(T* module, std::type_index& typeIndex);
+
+		// Checks if a module of type T exists and returns it if it does, otherwise returns nullptr
+		template <typename T>
+		T* _GetModule(std::type_index& typeIndex);
+
+		// Removes a module from the according modules maps
+		template <typename T>
+		void _RemoveModuleFromSpecificMaps(T* module, std::type_index& typeIndex);
+
 		std::vector<IModule*> modules_; // Vector of active modules safed as pointers
+		std::vector<IUpdatableModule*> updatableModules_; // Vector for modules that are updatable
+		std::vector<IRenderImGuiModule*> imGuiRenderableModules_; // Vector for modules that are ImGui renderable
 		std::unordered_map<std::type_index, IModule*> modulesMap_; // Map of active modules safed as pointers
+		std::unordered_map<std::type_index, IUpdatableModule*> updatableModulesMap_; // Map of active updatable modules safed as pointers
+		std::unordered_map<std::type_index, IRenderImGuiModule*> imGuiRenderableModulesMap_; // Map of active imgui renderable modules safed as pointers
 	}; // class ModuleManager
 
 } // namespace Pulse::Modules

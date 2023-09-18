@@ -37,7 +37,9 @@ project "Pulse"
 
 	files{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.cpp",
+		"%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.cpp"
 	}
 
 	includedirs{

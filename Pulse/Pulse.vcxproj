@@ -85,6 +85,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,8 +162,6 @@
     <ClInclude Include="src\Pulse\Events\IEventListener.h" />
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
     <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h" />
-    <ClInclude Include="src\Pulse\Modules\ImGui\MapCodeToImGuiCode.h" />
-    <ClInclude Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Pulse\Modules\Input\GamepadCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\Input.h" />
     <ClInclude Include="src\Pulse\Modules\Input\InputActions.h" />
@@ -170,6 +169,8 @@
     <ClInclude Include="src\Pulse\Modules\Input\KeyCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Pulse\Modules\IRenderImGuiModule.h" />
+    <ClInclude Include="src\Pulse\Modules\IUpdatableModule.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Window.h" />
@@ -183,8 +184,6 @@
     <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp" />
-    <ClCompile Include="src\Pulse\Modules\ImGui\MapCodeToImGuiCode.cpp" />
-    <ClCompile Include="src\Pulse\Modules\ImGui\OpenGL\ImGuiOpenGLRenderer.cpp" />
     <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp" />
@@ -193,6 +192,8 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

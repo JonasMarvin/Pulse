@@ -34,6 +34,8 @@ namespace Pulse::Modules::Windows {
 			unsigned int width = 1920; // width of the window
 			unsigned int height = 1080; // height of the window
 			bool vsync = false; // vsync of the window
+			WindowData()
+				: title("Pulse"), width(1920), height(1080), vsync(false) {} // default constructor
 		} data_; // window data
 
 		friend class ModuleManager; // friend class to allow the module manager to create and manage the window
