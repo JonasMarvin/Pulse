@@ -11,7 +11,7 @@ namespace Pulse::Events{
 	namespace Internal {
 
 		// Pure virtual base class for providing a virtual function allowing removal of event listeners without knowing the Parameter types of the event.
-		class PLS_API EventBase {
+		class EventBase {
 		public:
 			virtual void _RemoveListenerFromUnorderedSet(const std::shared_ptr<Internal::EventListenerBase>& eventListener) = 0; // Pure virtual function to allow removal of event listeners without knowing the Parameter types of the event.
 

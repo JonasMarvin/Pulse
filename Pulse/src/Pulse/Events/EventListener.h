@@ -13,7 +13,7 @@ namespace Pulse::Events {
 		class EventBase; // Forward declaration to avoid circular dependency
 
 		// Internal Base class for the EventListener class to connect the Events to the IEventListeners and vice versa to be able to remove the EventListener from the Event and the IEventListener without having to know each other.
-		class PLS_API EventListenerBase : public std::enable_shared_from_this<EventListenerBase> {
+		class  EventListenerBase : public std::enable_shared_from_this<EventListenerBase> {
 		public:
 			void _RemoveFromIEventListenerBase(); // Internal usage only. Removes the EventListener from the IEventListenerBase.
 			void _RemoveFromEventBase(); // Internal usage only. Removes the EventListener from the EventBase.

@@ -9,7 +9,7 @@ namespace Pulse::Modules {
 	// Interface representing a desktop system based Window
 	// Its a module that has to be managed by the module manager. Dont create it directly and use the ModuleManager to create it.
 	// This interface will be implemented by platform specific window classes.
-	class PLS_API Window : public IUpdatableModule {
+	class Window : public IUpdatableModule {
 	public:
 		virtual unsigned int GetWidth() const = 0; // Virtual function to get the width of the window.
 		virtual unsigned int GetHeight() const = 0; // Virtual function to get the height of the window.

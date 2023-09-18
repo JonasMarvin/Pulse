@@ -5,7 +5,7 @@
 namespace Pulse::Modules {
     
     // Interface for modules that need to be updated every frame
-    class PLS_API IUpdatableModule : public virtual IModule {
+    class IUpdatableModule : public virtual IModule {
     public:
         IUpdatableModule(const IUpdatableModule&) = delete; // Copy constructor deleted as we don't want to copy modules
         IUpdatableModule& operator=(const IUpdatableModule&) = delete;  // Copy assignment operator deleted as we don't want to copy modules

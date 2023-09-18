@@ -7,7 +7,7 @@
 namespace Pulse {
 
 	// Class for logging
-	class PLS_API Log {
+	class Log {
 	public:
 		static void Init(); // Initialize the logger
 

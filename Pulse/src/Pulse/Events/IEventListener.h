@@ -12,7 +12,7 @@ namespace Pulse::Events {
 
         // Internal class to allow EventListeners to be removed without having to know the EventListener template parameters in the events
         // Not to be used directly
-        class PLS_API IEventListenerBase : public std::enable_shared_from_this<IEventListenerBase> {
+        class IEventListenerBase : public std::enable_shared_from_this<IEventListenerBase> {
         public:
             void _RemoveListenerFromUnorderedSet(const std::shared_ptr<EventListenerBase>& eventListener); // Internal usage only. Removes the EventListener from the IEventListenerBase.
 

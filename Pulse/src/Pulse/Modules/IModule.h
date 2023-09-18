@@ -7,7 +7,7 @@ namespace Pulse::Modules {
 	// Base Interface for modules that can be registered with the module manager.
 	// You can use the constructor and destructor in derived classes. Use Initialize and Shutdown preferably.
 	// Addtionally the actual module class should have the constructor and destructor private and befriended with the module manager to prevent direct instantiation.
-	class PLS_API IModule {
+	class IModule {
 	public:
 		IModule(const IModule&) = delete; // Copy constructor deleted as we don't want to copy modules
 		IModule& operator=(const IModule&) = delete; // Copy assignment operator deleted as we don't want to copy modules

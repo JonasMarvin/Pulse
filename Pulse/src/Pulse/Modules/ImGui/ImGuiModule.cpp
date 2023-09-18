@@ -59,7 +59,7 @@ namespace Pulse::Modules {
 
 	void ImGuiModule::EndFrame() {
 		// Actualize ImGui windows
-		imGuiIO_->DisplaySize = ImVec2((float)ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetWidth(), (float)ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetHeight());
+		imGuiIO_->DisplaySize = ImVec2(static_cast<float>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetWidth()), static_cast<float>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetHeight()));
 
 		// Rendering
 		ImGui::Render();

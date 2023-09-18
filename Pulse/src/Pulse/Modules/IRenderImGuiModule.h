@@ -5,7 +5,7 @@
 namespace Pulse::Modules {
 
     // Interface for modules that need to be renderered with ImGui every frame
-    class PLS_API IRenderImGuiModule : public virtual IModule {
+    class IRenderImGuiModule : public virtual IModule {
     public:
         IRenderImGuiModule(const IRenderImGuiModule&) = delete; // Copy constructor deleted as we don't want to copy modules
         IRenderImGuiModule& operator=(const IRenderImGuiModule&) = delete; // Copy assignment operator deleted as we don't want to copy modules

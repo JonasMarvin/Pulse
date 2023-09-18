@@ -10,7 +10,7 @@
 namespace Pulse::Modules {
 
 	// class to manage the imgui functionality
-	class PLS_API ImGuiModule : public IRenderImGuiModule {
+	class ImGuiModule : public IRenderImGuiModule {
 	public:
 		void Initialize() override; // function to initialize the module
 		void Shutdown() override; // function to shutdown the module

@@ -8,7 +8,7 @@
 namespace Pulse::Utility {
 	
 	// Class for measuring time using chrono
-	class PLS_API Stopwatch {
+	class Stopwatch {
 	public:
 		using Clock = std::chrono::high_resolution_clock; // Using high resolution clock to measure time with nanosecond precision
 		
