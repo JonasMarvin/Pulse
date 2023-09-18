@@ -11,7 +11,6 @@ namespace Pulse::Modules::Windows {
 	class PLS_API WindowsInput : public Input {
 	public:
 		void Initialize() override; // function to initialize the input module.
-		void Update() override; // function to handle the update event of the input module.
 		void Shutdown() override; // function to shutdown the module.
 
 		// Functions for Keyboard

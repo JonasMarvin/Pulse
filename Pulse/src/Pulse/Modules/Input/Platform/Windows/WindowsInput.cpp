@@ -31,10 +31,6 @@ namespace Pulse::Modules::Windows {
 		});
 	}
 
-	void WindowsInput::Update() {
-
-	}
-
 	void WindowsInput::Shutdown() {
 		glfwSetKeyCallback(window_, nullptr);
 		glfwSetMouseButtonCallback(window_, nullptr);

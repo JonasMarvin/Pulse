@@ -10,10 +10,7 @@ namespace Pulse::Modules {
         }
 
         T* module = new T();
-        modules_.push_back(module);
-
         _AddModuleToSpecificMaps<T>(module, typeIndex);
-
         module->Initialize();
         PLS_CORE_INFO("Module {0} has been registered.", typeIndex.name());
     }
@@ -21,12 +18,10 @@ namespace Pulse::Modules {
     template<typename T>
     T* ModuleManager::GetModule() {
         std::type_index typeIndex(typeid(T));
-
         T* module = _GetModule<T>(typeIndex);
         if (module == nullptr) {
             PLS_CORE_ERROR("Module {0} is not registered!", typeIndex.name());
         }
-        
         return module;
     }
 
@@ -40,8 +35,6 @@ namespace Pulse::Modules {
         }
 
         _RemoveModuleFromSpecificMaps<T>(module, typeIndex);
-
-        modules_.erase(std::remove(modules_.begin(), modules_.end(), module), modules_.end());
         module->Shutdown();
         delete module;
         module = nullptr;
@@ -58,6 +51,7 @@ namespace Pulse::Modules {
             imGuiRenderableModules_.push_back(module);
             imGuiRenderableModulesMap_[typeIndex] = module;
         }
+        modules_.push_back(module);
     }
 
     template<typename T>
@@ -68,13 +62,16 @@ namespace Pulse::Modules {
                 return static_cast<T*>(updatableModulesMap_.at(typeIndex));
             }
         }
-
         if constexpr (std::is_base_of_v<IRenderImGuiModule, T>) {
             if (imGuiRenderableModulesMap_.find(typeIndex) != imGuiRenderableModulesMap_.end()) {
                 return static_cast<T*>(imGuiRenderableModulesMap_.at(typeIndex));
             }
         }
-
+        if constexpr (!std::is_base_of_v<IUpdatableModule, T> && !std::is_base_of_v<IRenderImGuiModule, T>) {
+            if (modulesMap_.find(typeIndex) != modulesMap_.end()) {
+                return static_cast<T*>(modulesMap_.at(typeIndex));
+            }
+        }
         return nullptr;
     }
 
@@ -88,5 +85,6 @@ namespace Pulse::Modules {
             imGuiRenderableModules_.erase(std::remove(imGuiRenderableModules_.begin(), imGuiRenderableModules_.end(), module), imGuiRenderableModules_.end());
             imGuiRenderableModulesMap_.erase(typeIndex);
         }
+        modules_.erase(std::remove(modules_.begin(), modules_.end(), module), modules_.end());
     }
 } // namespace Pulse::Modules
