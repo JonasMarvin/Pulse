@@ -2,9 +2,9 @@
 
 #include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 
-#include <glad/glad.h> //TODO: Proper place or module
-
 #include "Pulse/Events/Events.h"
+#include "Pulse/Modules/ModuleManager.h"
+#include "Pulse/Modules/Rendering/Renderer.h"
 
 namespace Pulse::Modules::Windows {
 
@@ -24,9 +24,8 @@ namespace Pulse::Modules::Windows {
 		}
 
 		window_ = glfwCreateWindow((int)data_.width, (int)data_.height, data_.title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(window_);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); // TODO: Proper place or module
-		PLS_CORE_ASSERT(status, "Failed to initialize Glad!");
+		ModuleManager::GetInstance().GetModule<Rendering::Renderer>()->SetContextWindow(window_);
+		
 		glfwSetWindowUserPointer(window_, &data_);
 		SetVSync(true);
 
@@ -50,7 +49,6 @@ namespace Pulse::Modules::Windows {
 
 	void WindowsWindow::Update() {
 		glfwPollEvents();
-		glfwSwapBuffers(window_);
 	}
 
 	unsigned int WindowsWindow::GetWidth() const {

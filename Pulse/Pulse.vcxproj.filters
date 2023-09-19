@@ -132,6 +132,9 @@
     <ClInclude Include="src\pch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\Renderer.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -155,9 +158,6 @@
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
       <Filter>src\Pulse\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp">
-      <Filter>src\Pulse\Modules\Window\Platform\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp">
       <Filter>src\Pulse\Utility</Filter>
     </ClCompile>
@@ -173,5 +173,9 @@
     <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>vendor\imgui\backends</Filter>
     </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\Renderer.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.cpp" />
   </ItemGroup>
 </Project>
