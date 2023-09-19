@@ -25,9 +25,10 @@ group ""
 
 project "Pulse"
 	location "Pulse"
-	kind "SharedLib"
-
+	kind "StaticLib"
 	language "C++"
+	cppdialect "c++20"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputDirectory .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputDirectory .. "/%{prj.name}")
@@ -37,7 +38,13 @@ project "Pulse"
 
 	files{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.cpp",
+		"%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.cpp"
+	}
+
+	defines{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs{
@@ -58,43 +65,29 @@ project "Pulse"
 	}
 
 	filter "system:windows"
-		cppdialect "c++20"
-		staticruntime "Off"
 		systemversion "latest"
 
 		defines{
 			"PLS_PLATFORM_WINDOWS",
-			"PLS_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
-		}
-
-		postbuildcommands{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" ..  outputDirectory .. "/Sandbox/\"")
 		}
 	
 	filter "configurations:Debug"
 		defines "PLS_DEBUG"
-		staticruntime "off"
 		runtime "Debug"
-		optimize "Off"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "PLS_RELEASE"
-		staticruntime "off"
 		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Dist"
-		defines "PLS_DIST"
-		staticruntime "off"
-		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
-
 	language "C++"
+	cppdialect "c++20"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputDirectory .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputDirectory .. "/%{prj.name}")
@@ -107,7 +100,8 @@ project "Sandbox"
 	includedirs{
 		"Pulse/vendor/spdlog/include",
 		"%{IncludeDir.glm}",
-		"Pulse/src"
+		"Pulse/src",
+		"Pulse/vendor"
 	}
 
 	links{
@@ -115,8 +109,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "c++20"
-		staticruntime "Off"
 		systemversion "latest"
 
 		defines{
@@ -125,18 +117,10 @@ project "Sandbox"
 	
 	filter "configurations:Debug"
 		defines "PLS_DEBUG"
-		staticruntime "off"
 		runtime "Debug"
-		optimize "Off"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "PLS_RELEASE"
-		staticruntime "off"
 		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Dist"
-		defines "PLS_DIST"
-		staticruntime "off"
-		runtime "Release"
-		optimize "On"
+		optimize "on"

@@ -7,10 +7,10 @@
 namespace Pulse
 {
 	// This is the base class for all Pulse applications.
-	class PLS_API Application {
+	class Application {
 	public:
 		// This class is used by Application to allow proper lifetime managements by listeners of the application. Dont use this at all except in the application class it is not meant to be used outside of it.
-		class PLS_API ApplicationEventListener : public Events::IEventListener<ApplicationEventListener> {
+		class  ApplicationEventListener : public Events::IEventListener<ApplicationEventListener> {
 		public:
 			ApplicationEventListener(Application& application); // Constructor to add the event listeners to the events.
 			~ApplicationEventListener() override = default; // Destructor to remove the event listeners from the events.

@@ -2,7 +2,7 @@
 
 #include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 
-#include <glad/glad.h>
+#include <glad/glad.h> //TODO: Proper place or module
 
 #include "Pulse/Events/Events.h"
 
@@ -19,13 +19,13 @@ namespace Pulse::Modules::Windows {
 			PLS_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback([](int error, const char* description) {
 				PLS_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
-			});
+				});
 			isGLFWInitialized = true;
 		}
 
 		window_ = glfwCreateWindow((int)data_.width, (int)data_.height, data_.title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(window_);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); // TODO: Proper place or module
 		PLS_CORE_ASSERT(status, "Failed to initialize Glad!");
 		glfwSetWindowUserPointer(window_, &data_);
 		SetVSync(true);
@@ -45,6 +45,7 @@ namespace Pulse::Modules::Windows {
 
 	void WindowsWindow::Shutdown() {
 		glfwDestroyWindow(window_);
+		glfwTerminate();
 	}
 
 	void WindowsWindow::Update() {

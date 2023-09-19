@@ -14,19 +14,28 @@ namespace Pulse::Modules {
 	}
 
 	void ModuleManager::UpdateModules() {
-		for (auto it = modules_.rbegin(); it != modules_.rend(); ++it) {
+		for (auto it = updatableModules_.rbegin(); it != updatableModules_.rend(); ++it) {
 			(*it)->Update();
 		}
 	}
 
+	void ModuleManager::RenderAllToImGui() {
+		for (auto it = imGuiRenderableModules_.rbegin(); it != imGuiRenderableModules_.rend(); ++it) {
+			(*it)->RenderImGui();
+		}
+	}
+
 	void ModuleManager::ShutdownModules() {
-		for (auto& module : modules_) {
-			module->Shutdown();
-			delete module;
-			module = nullptr;
+		for (auto module = modules_.rbegin(); module != modules_.rend(); ++module) {
+			(*module)->Shutdown();
+			delete (*module);
+			(*module) = nullptr;
 		}
 		modules_.clear();
-		modulesMap_.clear();
+		imGuiRenderableModulesMap_.clear();
+		imGuiRenderableModules_.clear();
+		updatableModulesMap_.clear();
+		updatableModules_.clear();
 		PLS_CORE_INFO("Modules have been shut down.");
 	}
 

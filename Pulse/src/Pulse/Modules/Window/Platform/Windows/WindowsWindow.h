@@ -8,7 +8,7 @@ namespace Pulse::Modules::Windows {
 
 	// Class for a Windows window
 	// Its a module and should only be created and managed by the module manager
-	class PLS_API WindowsWindow : public Pulse::Modules::Window {
+	class WindowsWindow : public Pulse::Modules::Window {
 	public:
 		void Initialize() override; // function to initialize the window
 		void Update() override; // function to handle the update event of the window
@@ -34,6 +34,8 @@ namespace Pulse::Modules::Windows {
 			unsigned int width = 1920; // width of the window
 			unsigned int height = 1080; // height of the window
 			bool vsync = false; // vsync of the window
+			WindowData()
+				: title("Pulse"), width(1920), height(1080), vsync(false) {} // default constructor
 		} data_; // window data
 
 		friend class ModuleManager; // friend class to allow the module manager to create and manage the window

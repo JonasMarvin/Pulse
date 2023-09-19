@@ -2,19 +2,15 @@
 
 #include <string>
 
-#include "Pulse/Modules/IModule.h"
+#include "Pulse/Modules/IUpdatableModule.h"
 
 namespace Pulse::Modules {
 
 	// Interface representing a desktop system based Window
 	// Its a module that has to be managed by the module manager. Dont create it directly and use the ModuleManager to create it.
 	// This interface will be implemented by platform specific window classes.
-	class PLS_API Window : public IModule {
+	class Window : public IUpdatableModule {
 	public:
-		void Update() override = 0; // Virtual function to handle update of the window.
-		void Initialize() override = 0; // Virtual function to handle initialization of the window.
-		void Shutdown() override = 0; // Virtual function to handle shutdown of the window.
-
 		virtual unsigned int GetWidth() const = 0; // Virtual function to get the width of the window.
 		virtual unsigned int GetHeight() const = 0; // Virtual function to get the height of the window.
 

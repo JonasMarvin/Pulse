@@ -2,109 +2,77 @@
 
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 
-// TODO: Remove glfw and glad here and move functionality to own modules
 #include <glad/glad.h>
 
 #include "Pulse/Modules/ModuleManager.h"
-#include "Pulse/Modules/ImGui/MapCodeToImGuiCode.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 
 namespace Pulse::Modules {
 
 	void ImGuiModule::Initialize() {
+
+		// Setup Dear ImGui context
+		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		ImGui::StyleColorsDark();
-
 		imGuiIO_ = &ImGui::GetIO();
+		imGuiIO_->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		// imGuiIO_->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls // TODO: Add gamepad detection to be able to set the backend flag
+		imGuiIO_->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+		imGuiIO_->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+		// imGuiIO_->ConfigViewportsNoAutoMerge = true;
+		// imGuiIO_->ConfigViewportsNoTaskBarIcon = true;
 
-		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
-		imGuiIO_->BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
+		// Setup Dear ImGui style
+		ImGui::StyleColorsDark();
+		//ImGui::StyleColorsLight();
 
+		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (imGuiIO_->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+
+		// Setup Platform/Renderer backends
+		window_ = static_cast<GLFWwindow*>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetNativeWindow());
+		ImGui_ImplGlfw_InitForOpenGL(window_, true);
 		ImGui_ImplOpenGL3_Init("#version 430");
-
-		// Add EventListeners via helper class
-		imGuiModuleEventListener_ = Events::IEventListener<ImGuiModuleEventListener>::Create(*this, *imGuiIO_);
-
-		window_ = Pulse::Modules::ModuleManager::GetInstance().GetModule<Pulse::Modules::Windows::WindowsWindow>();
-	}
-
-	ImGuiModule::ImGuiModuleEventListener::ImGuiModuleEventListener(ImGuiModule& parent, ImGuiIO& imGuiIO)
-		: parent_(parent), imGuiIO_(imGuiIO){
-		
-		AddListener(Events::Input::MouseMovedEvent, &ImGuiModuleEventListener::OnMouseMoved);
-		AddListener(Events::Input::ScrollEvent , &ImGuiModuleEventListener::OnMouseScrolled);
-		AddListener(Events::Input::MouseEvent, &ImGuiModuleEventListener::OnMouseButton);
-		AddListener(Events::Input::KeyEvent, &ImGuiModuleEventListener::OnKey);
-		AddListener(Events::Input::CharEvent, &ImGuiModuleEventListener::OnChar);
-		AddListener(Events::Window::WindowResizeEvent, &ImGuiModuleEventListener::OnWindowResize);
-	}
-
-	void ImGuiModule::ImGuiModuleEventListener::OnMouseMoved(double xOffset, double yOffset) {
-		imGuiIO_.AddMousePosEvent(static_cast<float>(xOffset), static_cast<float>(yOffset));
-	}
-
-	void ImGuiModule::ImGuiModuleEventListener::OnMouseScrolled(double xOffset, double yOffset) {
-		imGuiIO_.AddMouseWheelEvent(static_cast<float>(xOffset), static_cast<float>(yOffset));
-	}
-
-	void ImGuiModule::ImGuiModuleEventListener::OnMouseButton(Pulse::Input::MouseCode mouseCode, Pulse::Input::InputAction inputAction) {
-		int mouseCodeImGui = Pulse::Input::MapCodeToImGuiCode::MapMouseCodeToImGuiMouse(mouseCode);
-		if (mouseCodeImGui == -1) return;
-		switch (inputAction) {
-			case Pulse::Input::InputAction::Pressed:
-				imGuiIO_.AddMouseButtonEvent(mouseCodeImGui, true);
-				break;
-			case Pulse::Input::InputAction::Released:
-				imGuiIO_.AddMouseButtonEvent(mouseCodeImGui, false);
-				break;
-			default:
-				break;
-		}
-	}
-
-	void ImGuiModule::ImGuiModuleEventListener::OnKey(Pulse::Input::KeyCode keyCode, Pulse::Input::InputAction inputAction) {
-		switch (inputAction) {
-			case Pulse::Input::InputAction::Pressed:
-				imGuiIO_.AddKeyEvent(Pulse::Input::MapCodeToImGuiCode::MapKeyCodeToImGuiKey(keyCode), true);
-				break;
-			case Pulse::Input::InputAction::Released:
-				imGuiIO_.AddKeyEvent(Pulse::Input::MapCodeToImGuiCode::MapKeyCodeToImGuiKey(keyCode), false);
-				break;
-			default:
-				break;
-		}
-	}
-
-	void ImGuiModule::ImGuiModuleEventListener::OnChar(unsigned int unicodeCodepoint) {
-		imGuiIO_.AddInputCharacter(unicodeCodepoint);
-	}
-
-	void ImGuiModule::ImGuiModuleEventListener::OnWindowResize(int width, int height) {
-		imGuiIO_.DisplaySize = ImVec2((float)width, (float)height);
-		imGuiIO_.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
-		glViewport(0, 0, width, height);
 	}
 
 	void ImGuiModule::Shutdown() {
 		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiModule::Update() {
-
-		imGuiIO_->DisplaySize = ImVec2((float)window_->GetWidth(), (float)window_->GetHeight());
-
-		float time = (float)glfwGetTime();
-		 imGuiIO_->DeltaTime = time_ > 0.0f ? (time - time_) : (1.0f / 60.0f);
-		time_ = time;
-
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui::NewFrame();
-
+	void ImGuiModule::RenderImGui() {
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);
+	}
 
+	void ImGuiModule::BeginFrame() {
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+	}
+
+	void ImGuiModule::EndFrame() {
+		// Actualize ImGui windows
+		imGuiIO_->DisplaySize = ImVec2(static_cast<float>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetWidth()), static_cast<float>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetHeight()));
+
+		// Rendering
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		// Update and Render additional Platform Windows
+		if (imGuiIO_->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow* backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
 	}
 
 } // namespace Pulse::Modules
