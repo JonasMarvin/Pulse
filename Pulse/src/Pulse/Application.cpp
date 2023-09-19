@@ -39,7 +39,7 @@ namespace Pulse {
 
 	void Application::Run() {
 		while (isRunning_) {
-			glClearColor(1, 0, 1, 1);
+			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
 			moduleManager_.RenderAllToImGui();

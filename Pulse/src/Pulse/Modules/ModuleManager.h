@@ -29,6 +29,10 @@ namespace Pulse::Modules {
 		template <typename T>
 		T* GetModule();
 
+		// Returns a boolean based on the existence of a module of type T
+		template <typename T>
+		bool HasModule();
+
 		// Updates all updatable modules by calling the modules Update() function. Gets called in Application::Run()
 		void UpdateModules();
 
