@@ -9,6 +9,7 @@
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 #include "Pulse/Modules/Rendering/Renderer.h"
 
+
 namespace Pulse {
 		
 	Application::ApplicationEventListener::ApplicationEventListener(Application& application)
@@ -53,6 +54,33 @@ namespace Pulse {
 
 		unsigned int indices[3] = { 0, 1, 2 };
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		std::string vertexSource = R"(
+			#version 430 core
+			
+			layout(location = 0) in vec3 a_Position;
+
+			out vec3 v_Position;			
+
+			void main() {
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string fragmentSource = R"(
+			#version 430 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_Position;
+
+			void main() {
+				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+			}
+		)";
+
+		shader_ = std::make_unique<Modules::Rendering::OpenGLShader>(vertexSource, fragmentSource);
 	}
 
 	Application::~Application() {
@@ -64,7 +92,7 @@ namespace Pulse {
 		while (isRunning_) {
 			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
-
+			shader_->Bind();
 			glBindVertexArray(vertexArray_);
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 

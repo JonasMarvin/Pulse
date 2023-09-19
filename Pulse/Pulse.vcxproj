@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\Renderer.h" />
     <ClInclude Include="src\Pulse.h" />
     <ClInclude Include="src\Pulse\Application.h" />
@@ -170,6 +171,7 @@
   <ItemGroup>
     <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Pulse\Application.cpp" />
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp" />

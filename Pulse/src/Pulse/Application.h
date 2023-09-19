@@ -4,6 +4,8 @@
 #include "Pulse/Events/Events.h"
 #include "Pulse/Modules/ModuleManager.h"
 
+#include "Pulse/Modules/Rendering/OpenGL/OpenGLShader.h"
+
 namespace Pulse
 {
 	// This is the base class for all Pulse applications.
@@ -27,6 +29,7 @@ namespace Pulse
 
 	private:
 		unsigned int vertexArray_, vertexBuffer_, indexBuffer_; // Vertex array, vertex buffer and index buffer for testing
+		std::unique_ptr<Modules::Rendering::OpenGLShader> shader_; // Unique pointer to the shader to allow lifetime management of the shader by the application
 
 		std::shared_ptr<ApplicationEventListener> applicationEventListener_; // Shared pointer to the application event listener to allow lifetime management of the application by the event system
 		Pulse::Modules::ModuleManager& moduleManager_; // Module manager to manage all the modules of the application
