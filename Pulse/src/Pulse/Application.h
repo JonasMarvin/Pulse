@@ -26,6 +26,8 @@ namespace Pulse
 		void Run(); // Main loop of the application
 
 	private:
+		unsigned int vertexArray_, vertexBuffer_, indexBuffer_; // Vertex array, vertex buffer and index buffer for testing
+
 		std::shared_ptr<ApplicationEventListener> applicationEventListener_; // Shared pointer to the application event listener to allow lifetime management of the application by the event system
 		Pulse::Modules::ModuleManager& moduleManager_; // Module manager to manage all the modules of the application
 		bool isRunning_ = true; // Boolean to check if the application is running

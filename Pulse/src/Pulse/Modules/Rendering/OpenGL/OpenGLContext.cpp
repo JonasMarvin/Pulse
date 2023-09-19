@@ -13,6 +13,8 @@ namespace Pulse::Modules::Rendering {
 		glfwMakeContextCurrent(window_);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PLS_CORE_ASSERT(status, "Failed to initialize Glad!");
+
+		PLS_CORE_INFO("OpenGL Context initialized with GLFWwindow");
 	}
 
 	void OpenGLContext::SwapBuffers() {
