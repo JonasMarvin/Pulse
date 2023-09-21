@@ -1,3 +1,4 @@
+#include "ModuleManager.h"
 namespace Pulse::Modules {
 
     template<typename T>
@@ -23,6 +24,17 @@ namespace Pulse::Modules {
             PLS_CORE_ERROR("Module {0} is not registered!", typeIndex.name());
         }
         return module;
+    }
+
+    template<typename T>
+    bool ModuleManager::HasModule()
+    {
+        std::type_index typeIndex(typeid(T));
+        T* module = _GetModule<T>(typeIndex);
+        if (module) {
+			return true;
+		}
+        return false;
     }
 
     template<typename T>

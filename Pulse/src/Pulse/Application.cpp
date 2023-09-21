@@ -1,12 +1,11 @@
 #include "pch.h"
 
-#include <glad/glad.h>
-
 #include "Application.h"
 
 #include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 #include "Pulse/Modules/Input/Platform/Windows/WindowsInput.h"
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
+#include "Pulse/Modules/Rendering/Renderer.h"
 
 namespace Pulse {
 		
@@ -25,23 +24,25 @@ namespace Pulse {
 		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
 		
 		// Registering core modules
+		moduleManager_.RegisterModule<Pulse::Modules::Renderer>();
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInput>();
 		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
 	}
 
 	Application::~Application() {
+		isRunning_ = false;
 		moduleManager_.ShutdownModules();
 	}
 
 	void Application::Run() {
 		while (isRunning_) {
-			glClearColor(1, 0, 1, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			moduleManager_.GetModule < Modules::Renderer>()->BeginScene();
+			moduleManager_.UpdateModules();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
-			moduleManager_.UpdateModules();
+			moduleManager_.GetModule<Modules::Renderer>()->EndScene();
 		}
 	}
 
