@@ -11,7 +11,7 @@ namespace Pulse::Modules {
 	}
 
 	void Renderer::Update() {
-		
+		// TODO: Implement command queue and execute commands here or start a thread for it
 	}
 
 	void Renderer::Shutdown() {
