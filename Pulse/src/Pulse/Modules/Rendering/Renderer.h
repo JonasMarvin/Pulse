@@ -2,6 +2,8 @@
 
 #include "Pulse/Modules/IUpdatableModule.h"
 #include "Pulse/Modules/Rendering/GraphicsContext.h"
+#include "Pulse/Modules/Rendering/Buffer.h"
+#include "Pulse/Modules/Rendering/Shader.h"
 
 // Class for rendering to a graphics api
 // Used to abstract the different graphics api's to be easy to use
@@ -20,12 +22,17 @@ namespace Pulse::Modules::Rendering {
 		void Shutdown() override; // function to shutdown the renderer
 
 		void SetContextWindow(void* window); // function to set the context window of the renderer
+
 		API GetRendererAPI() const; // function to get the set api of the renderer
 
 	private:
-		API rendererAPI_ = API::OpenGL; // the api of the renderer
+		API rendererAPI_ = API::OpenGL; // the api of the renderer TODO: changable
 
 		GraphicsContext* graphicsContext_ = nullptr; // pointer to the graphics context
+		Shader* shader_ = nullptr; // pointer to the shader
+		VertexBuffer* vertexBuffer_ = nullptr; // pointer to the vertex buffer
+		IndexBuffer* indexBuffer_ = nullptr; // pointer to the index buffer
+		uint32_t vertexArray_ = 0; // vertex array object
 
 		Renderer() = default;
 		~Renderer() = default;

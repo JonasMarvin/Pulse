@@ -137,7 +137,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Pulse\Modules\Rendering\Buffer.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\Renderer.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\Shader.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Window.h" />
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
@@ -169,7 +172,9 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Pulse\Modules\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\Renderer.cpp" />
@@ -180,6 +185,7 @@
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp" />
     <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\Shader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />
     <ClCompile Include="src\Pulse\Utility\UnicodeConverter.cpp" />
