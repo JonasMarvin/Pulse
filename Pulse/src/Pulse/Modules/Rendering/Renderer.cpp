@@ -19,6 +19,14 @@ namespace Pulse::Modules {
 		graphicsContext_ = nullptr;
 	}
 
+	void Renderer::SetViewProjectionMatrixReference(const glm::mat4* viewProjectionMatrix) {
+		viewProjectionMatrix_ = viewProjectionMatrix;
+	}
+
+	void Renderer::ResetViewProjectionMatrixReference() {
+		viewProjectionMatrix_ = &defaultViewProjectionMatrix_;
+	}
+
 	void Renderer::BeginScene() {
 		rendererAPI_->SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		rendererAPI_->Clear();

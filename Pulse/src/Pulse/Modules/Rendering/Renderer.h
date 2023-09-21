@@ -16,6 +16,9 @@ namespace Pulse::Modules {
 		void Update() override; // function to handle the update event of the renderer
 		void Shutdown() override; // function to shutdown the renderer
 
+		void SetViewProjectionMatrixReference(const glm::mat4* viewProjectionMatrix); // function to set the view projection matrix of the renderer to point to the given matrix
+		void ResetViewProjectionMatrixReference(); // function to reset the view projection matrix of the renderer to point to the default matrix
+
 		void BeginScene(); // function to begin the frame
 		void Submit(const std::shared_ptr<Rendering::VertexArray>& vertexArray);
 		void EndScene(); // function to end the frame
@@ -28,13 +31,15 @@ namespace Pulse::Modules {
 
 	private:
 		Rendering::RendererAPI* rendererAPI_ = nullptr; // pointer to the renderer api
-
 		Rendering::GraphicsContext* graphicsContext_ = nullptr; // pointer to the graphics context
 		
-		Renderer() = default;
-		~Renderer() = default;
+		const glm::mat4* viewProjectionMatrix_ = nullptr; // pointer to the view projection matrix
+		const glm::mat4 defaultViewProjectionMatrix_ = glm::mat4(1.0f); // default view projection matrix
 
-		friend class ModuleManager;
+		Renderer() = default; // default constructor private to prevent creation of the renderer outside of the module manager
+		~Renderer() = default; // default destructor private to prevent deletion of the renderer outside of the module manager
+
+		friend class ModuleManager; // friend class to allow the module manager to create and manage the renderer
 	}; // class Renderer
 
 } // namespace Pulse::Modules::Rendering

@@ -2,8 +2,6 @@
 
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 
-#include <glad/glad.h>
-
 #include "Pulse/Modules/ModuleManager.h"
 #include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
 
