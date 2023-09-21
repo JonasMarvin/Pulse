@@ -11,8 +11,8 @@ namespace Pulse::Modules::Rendering {
     GraphicsContext* GraphicsContext::Create(void* window)
     {
 		switch (ModuleManager::GetInstance().GetModule<Renderer>()->GetRendererAPI()) {
-			case Renderer::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");	return nullptr;
-			case Renderer::API::OpenGL:																					return new OpenGLContext(window);
+			case RendererAPI::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");	return nullptr;
+			case RendererAPI::API::OpenGL:																					return new OpenGLContext(window);
 		}
 
 		PLS_CORE_ASSERT(false, "Unknown renderer API!");

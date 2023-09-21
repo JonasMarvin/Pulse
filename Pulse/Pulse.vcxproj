@@ -165,6 +165,7 @@
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\RendererAPI.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\Shader.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />

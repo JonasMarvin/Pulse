@@ -20,24 +20,16 @@ namespace Pulse::Modules {
 	}
 
 	void Renderer::Shutdown() {
-		delete graphicsContext_;
+		delete(graphicsContext_);
 		graphicsContext_ = nullptr;
-		delete vertexBuffer_;
-		vertexBuffer_ = nullptr;
-		delete indexBuffer_;
-		indexBuffer_ = nullptr;
-		delete shader_;
-		shader_ = nullptr;
-		delete vertexArray_;
-		vertexArray_ = nullptr;
 	}
 
-	void Renderer::BeginFrame() {
+	void Renderer::BeginScene() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void Renderer::EndFrame() {
+	void Renderer::EndScene() {
 		graphicsContext_->SwapBuffers();
 	}
 
@@ -73,14 +65,14 @@ namespace Pulse::Modules {
 			-0.2f,  0.2, 0.0f
 		};
 
-		Rendering::VertexBuffer* squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		std::shared_ptr<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ Rendering::ShaderDataType::Float3, "a_Position" }
 		});
 		squareVertexArray_->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		Rendering::IndexBuffer* squareIB = Rendering::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		std::shared_ptr<Rendering::IndexBuffer> squareIB = Rendering::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		squareVertexArray_->SetIndexBuffer(squareIB);
 
 		std::string vertexSource = R"(
@@ -135,7 +127,7 @@ namespace Pulse::Modules {
 		squareShader_ = Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
 	}
 
-	Renderer::API Renderer::GetRendererAPI() const {
+	Rendering::RendererAPI::API Renderer::GetRendererAPI() const {
 		return rendererAPI_;
 	}
 } // namespace Pulse::Modules::Rendering

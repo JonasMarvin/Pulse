@@ -48,6 +48,14 @@ namespace Pulse::Modules::Rendering {
 		return elements_.end();
 	}
 
+	std::vector<BufferElement>::const_iterator BufferLayout::begin() const {
+		return elements_.begin();
+	}
+
+	std::vector<BufferElement>::const_iterator BufferLayout::end() const {
+		return elements_.end();
+	}
+
 	void BufferLayout::CalculateOffsetsAndStride() {
 		uint32_t offset = 0;
 		stride_ = 0;
@@ -59,10 +67,10 @@ namespace Pulse::Modules::Rendering {
 	}
 
 	// Implementation of VertexBuffer
-	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size) {
+	std::shared_ptr<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size) {
 		switch (ModuleManager::GetInstance().GetModule<Renderer>()->GetRendererAPI()) {
-			case Renderer::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by VertexBuffer!");	return nullptr;
-			case Renderer::API::OpenGL:																					return new OpenGLVertexBuffer(vertices, size);
+			case RendererAPI::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by VertexBuffer!");	return nullptr;
+			case RendererAPI::API::OpenGL:																									return std::make_shared<OpenGLVertexBuffer>(vertices, size);
 		}
 
 		PLS_CORE_ASSERT(false, "Unknown renderer API!");
@@ -70,10 +78,10 @@ namespace Pulse::Modules::Rendering {
 	}
 
 	// Implementation of IndexBuffer
-	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t size) {
+	std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t size) {
 		switch (ModuleManager::GetInstance().GetModule<Renderer>()->GetRendererAPI()) {
-			case Renderer::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by IndexBuffer!");	return nullptr;
-			case Renderer::API::OpenGL:																					return new OpenGLIndexBuffer(indices, size);
+			case RendererAPI::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by IndexBuffer!");	return nullptr;
+			case RendererAPI::API::OpenGL:																								return std::make_shared<OpenGLIndexBuffer>(indices, size);
 		}
 
 		PLS_CORE_ASSERT(false, "Unknown renderer API!");

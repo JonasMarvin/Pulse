@@ -57,8 +57,10 @@ namespace Pulse::Modules::Rendering {
 
 		std::vector<BufferElement>::iterator begin(); // get the begin iterator of the buffer layout
 		std::vector<BufferElement>::iterator end(); // get the end iterator of the buffer layout
+		std::vector<BufferElement>::const_iterator begin() const; // get the begin iterator of the buffer layout (const)
+		std::vector<BufferElement>::const_iterator end() const; // get the end iterator of the buffer layout (const)
 	private:
-		void CalculateOffsetsAndStride();
+		void CalculateOffsetsAndStride(); // calculate the offsets and stride of the buffer layout
 
 		std::vector<BufferElement> elements_; // elements of the buffer layout
 		uint32_t stride_ = 0; // stride of the buffer layout
@@ -75,7 +77,7 @@ namespace Pulse::Modules::Rendering {
 		virtual const BufferLayout& GetLayout() const = 0; // get the buffer layout of the vertex buffer
 		virtual void SetLayout(const BufferLayout& layout) = 0; // set the buffer layout of the vertex buffer
 
-		static VertexBuffer* Create(float* vertices, uint32_t size); // factory method to create vertex buffer of the current API
+		static std::shared_ptr<VertexBuffer> Create(float* vertices, uint32_t size); // factory method to create vertex buffer of the current API
 	}; // class VertexBuffer
 
 	// interface class for index buffer. Implementation is API specific
@@ -88,7 +90,7 @@ namespace Pulse::Modules::Rendering {
 		
 		virtual uint32_t GetCount() const = 0; // get the number of indices in the index buffer
 
-		static IndexBuffer* Create(uint32_t* indices, uint32_t size); // factory method to create index buffer of the current API
+		static std::shared_ptr<IndexBuffer> Create(uint32_t* indices, uint32_t size); // factory method to create index buffer of the current API
 	}; // class IndexBuffer
 
 } // namespace Pulse::Modules::Rendering

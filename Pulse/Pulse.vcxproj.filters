@@ -141,6 +141,7 @@
     <ClInclude Include="src\Pulse\Modules\Rendering\Shader.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\RendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">

@@ -23,15 +23,15 @@ namespace Pulse::Modules::Rendering {
 		glBindVertexArray(0);
 	}
 	
-	void OpenGLVertexArray::AddVertexBuffer(const VertexBuffer* vertexBuffer) {
+	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer) {
 		glBindVertexArray(rendererID_);
 		vertexBuffer->Bind();
 
 		PLS_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex buffer has no layout!");
 
-		BufferLayout layout = vertexBuffer->GetLayout();
+		const BufferLayout& layout = vertexBuffer->GetLayout();
 		uint32_t index = 0;
-		for (auto& element : layout) {
+		for (const auto& element : layout) {
 			glEnableVertexAttribArray(index);
 			glVertexAttribPointer(
 				index,
@@ -43,21 +43,21 @@ namespace Pulse::Modules::Rendering {
 			index++;
 		}
 
-		vertexBuffers_.push_back((VertexBuffer*)vertexBuffer);
+		vertexBuffers_.push_back(vertexBuffer);
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const IndexBuffer* indexBuffer) {
+	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) {
 		glBindVertexArray(rendererID_);
 		indexBuffer->Bind();
 
-		indexBuffer_ = (IndexBuffer*)indexBuffer;
+		indexBuffer_ = indexBuffer;
 	}
 
-	const std::vector<VertexBuffer*> OpenGLVertexArray::GetVertexBuffers() const {
+	const std::vector<std::shared_ptr<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const {
 		return vertexBuffers_;
 	}
 
-	const IndexBuffer* OpenGLVertexArray::GetIndexBuffer() const {
+	const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const {
 		return indexBuffer_;
 	}
 

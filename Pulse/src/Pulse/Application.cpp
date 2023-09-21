@@ -37,12 +37,12 @@ namespace Pulse {
 
 	void Application::Run() {
 		while (isRunning_) {
-			moduleManager_.GetModule < Modules::Renderer>()->BeginFrame();
+			moduleManager_.GetModule < Modules::Renderer>()->BeginScene();
+			moduleManager_.UpdateModules();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
-			moduleManager_.UpdateModules();
-			moduleManager_.GetModule<Modules::Renderer>()->EndFrame();
+			moduleManager_.GetModule<Modules::Renderer>()->EndScene();
 		}
 	}
 

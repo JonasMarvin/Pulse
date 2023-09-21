@@ -8,10 +8,10 @@
 
 namespace Pulse::Modules::Rendering {
 
-	Shader* Shader::Create(const std::string& vertexSource, const std::string& fragmentSource) {
+	std::shared_ptr<Shader> Shader::Create(const std::string& vertexSource, const std::string& fragmentSource) {
 		switch (ModuleManager::GetInstance().GetModule<Renderer>()->GetRendererAPI()) {
-			case Renderer::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by Shader!");	return nullptr;
-			case Renderer::API::OpenGL:																							return new OpenGLShader(vertexSource, fragmentSource);
+			case RendererAPI::API::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by Shader!");	return nullptr;
+			case RendererAPI::API::OpenGL:																							return std::make_shared<OpenGLShader>(vertexSource, fragmentSource);
 		}
 
 		PLS_CORE_ASSERT(false, "Unknown renderer API!");
