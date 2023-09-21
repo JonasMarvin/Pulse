@@ -24,8 +24,8 @@ namespace Pulse::Modules::Windows {
 		}
 
 		window_ = glfwCreateWindow((int)data_.width, (int)data_.height, data_.title.c_str(), nullptr, nullptr);
-		if (ModuleManager::GetInstance().HasModule<Rendering::Renderer>()) {
-			ModuleManager::GetInstance().GetModule<Rendering::Renderer>()->SetContextWindow(window_);
+		if (ModuleManager::GetInstance().HasModule<Renderer>()) {
+			ModuleManager::GetInstance().GetModule<Renderer>()->SetContextWindow(window_);
 		}
 
 		glfwSetWindowUserPointer(window_, &data_);

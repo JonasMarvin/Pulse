@@ -7,7 +7,7 @@ namespace Pulse::Modules::Rendering {
 	// Vertex buffer implementation
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) {
 		glCreateBuffers(1, &rendererID_);
-		Bind();
+		glBindBuffer(GL_ARRAY_BUFFER, rendererID_);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 
@@ -35,7 +35,7 @@ namespace Pulse::Modules::Rendering {
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) : count_(count) {
 		;
 		glCreateBuffers(1, &rendererID_);
-		Bind();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID_);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count_ * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 	}
 

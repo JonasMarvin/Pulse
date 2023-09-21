@@ -7,7 +7,6 @@
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 #include "Pulse/Modules/Rendering/Renderer.h"
 
-
 namespace Pulse {
 		
 	Application::ApplicationEventListener::ApplicationEventListener(Application& application)
@@ -25,7 +24,7 @@ namespace Pulse {
 		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
 		
 		// Registering core modules
-		moduleManager_.RegisterModule<Pulse::Modules::Rendering::Renderer>();
+		moduleManager_.RegisterModule<Pulse::Modules::Renderer>();
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInput>();
 		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
@@ -38,10 +37,12 @@ namespace Pulse {
 
 	void Application::Run() {
 		while (isRunning_) {
+			moduleManager_.GetModule < Modules::Renderer>()->BeginFrame();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
 			moduleManager_.UpdateModules();
+			moduleManager_.GetModule<Modules::Renderer>()->EndFrame();
 		}
 	}
 
