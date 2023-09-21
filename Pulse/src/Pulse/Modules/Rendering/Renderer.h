@@ -19,14 +19,17 @@ namespace Pulse::Modules {
 		void Shutdown() override; // function to shutdown the renderer
 
 		void BeginScene(); // function to begin the frame
+		void Submit(const std::shared_ptr<Rendering::VertexArray>& vertexArray);
 		void EndScene(); // function to end the frame
 
 		void SetContextWindow(void* window); // function to set the context window of the renderer
 
-		Rendering::RendererAPI::API GetRendererAPI() const; // function to get the set api of the renderer
+		const Rendering::RendererAPI::Type GetRendererAPIType() const; // function to get the set api of the renderer
+
+		const Rendering::RendererAPI& GetRendererAPI() const; // function to get the renderer api
 
 	private:
-		Rendering::RendererAPI::API rendererAPI_ = Rendering::RendererAPI::API::OpenGL; // the api of the renderer TODO: changable
+		Rendering::RendererAPI* rendererAPI_ = nullptr; // pointer to the renderer api
 
 		Rendering::GraphicsContext* graphicsContext_ = nullptr; // pointer to the graphics context
 		std::shared_ptr<Rendering::Shader> shader_ = nullptr; // pointer to the shader

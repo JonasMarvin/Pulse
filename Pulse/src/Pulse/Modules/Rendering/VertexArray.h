@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "Pulse/Modules/Rendering/Buffer.h"
 

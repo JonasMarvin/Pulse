@@ -2,21 +2,19 @@
 
 #include "Renderer.h"
 
-#include <glad/glad.h>
-#include "Pulse/Modules/Rendering/OpenGL/OpenGLBuffer.h"
-
 namespace Pulse::Modules {
 
 	void Renderer::Initialize() {
+		rendererAPI_ = Rendering::RendererAPI::Create(Rendering::RendererAPI::Type::OpenGL);
 	}
 
 	void Renderer::Update() {
 		shader_->Bind();
 		vertexArray_->Bind();
-		glDrawElements(GL_TRIANGLES, indexBuffer_->GetCount(), GL_UNSIGNED_INT, nullptr);
+		rendererAPI_->DrawIndexed(vertexArray_);
 		squareShader_->Bind();
 		squareVertexArray_->Bind();
-		glDrawElements(GL_TRIANGLES, squareVertexArray_->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		rendererAPI_->DrawIndexed(squareVertexArray_);
 	}
 
 	void Renderer::Shutdown() {
@@ -25,8 +23,12 @@ namespace Pulse::Modules {
 	}
 
 	void Renderer::BeginScene() {
-		glClearColor(0.1f, 0.1f, 0.1f, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		rendererAPI_->SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		rendererAPI_->Clear();
+	}
+
+	void Renderer::Submit(const std::shared_ptr<Rendering::VertexArray>& vertexArray) {
+		rendererAPI_->DrawIndexed(vertexArray);
 	}
 
 	void Renderer::EndScene() {
@@ -62,7 +64,7 @@ namespace Pulse::Modules {
 			-0.2f, -0.2f, 0.0f,
 			 0.2f, -0.2f, 0.0f,
 			 0.2f,  0.2f, 0.0f,
-			-0.2f,  0.2, 0.0f
+			-0.2f,  0.2f, 0.0f
 		};
 
 		std::shared_ptr<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
@@ -127,7 +129,11 @@ namespace Pulse::Modules {
 		squareShader_ = Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
 	}
 
-	Rendering::RendererAPI::API Renderer::GetRendererAPI() const {
-		return rendererAPI_;
+	const Rendering::RendererAPI::Type Renderer::GetRendererAPIType() const {
+		return rendererAPI_->GetAPIType();
+	}
+
+	const Rendering::RendererAPI& Renderer::GetRendererAPI() const{
+		return *rendererAPI_;
 	}
 } // namespace Pulse::Modules::Rendering

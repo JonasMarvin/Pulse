@@ -142,6 +142,7 @@
     <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\RendererAPI.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -190,5 +191,7 @@
     <ClCompile Include="src\Pulse\Modules\Rendering\Shader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\VertexArray.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\RendererAPI.cpp" />
   </ItemGroup>
 </Project>
