@@ -2,8 +2,6 @@
 
 #include "Pulse/Modules/IUpdatableModule.h"
 #include "Pulse/Modules/Rendering/GraphicsContext.h"
-#include "Pulse/Modules/Rendering/Buffer.h"
-#include "Pulse/Modules/Rendering/Shader.h"
 #include "Pulse/Modules/Rendering/VertexArray.h"
 #include "Pulse/Modules/Rendering/RendererAPI.h"
 
@@ -32,14 +30,7 @@ namespace Pulse::Modules {
 		Rendering::RendererAPI* rendererAPI_ = nullptr; // pointer to the renderer api
 
 		Rendering::GraphicsContext* graphicsContext_ = nullptr; // pointer to the graphics context
-		std::shared_ptr<Rendering::Shader> shader_ = nullptr; // pointer to the shader
-		std::shared_ptr<Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
-		std::shared_ptr<Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
-		std::shared_ptr<Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
 		
-		std::shared_ptr<Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
-		std::shared_ptr<Rendering::Shader> squareShader_ = nullptr; // pointer to the shader
-
 		Renderer() = default;
 		~Renderer() = default;
 
