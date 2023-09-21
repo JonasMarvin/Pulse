@@ -10,11 +10,9 @@ namespace Pulse::Modules {
 
 	void Renderer::Update() {
 		shader_->Bind();
-		vertexArray_->Bind();
-		rendererAPI_->DrawIndexed(vertexArray_);
+		Submit(vertexArray_);
 		squareShader_->Bind();
-		squareVertexArray_->Bind();
-		rendererAPI_->DrawIndexed(squareVertexArray_);
+		Submit(squareVertexArray_);
 	}
 
 	void Renderer::Shutdown() {
@@ -28,6 +26,7 @@ namespace Pulse::Modules {
 	}
 
 	void Renderer::Submit(const std::shared_ptr<Rendering::VertexArray>& vertexArray) {
+		vertexArray->Bind();
 		rendererAPI_->DrawIndexed(vertexArray);
 	}
 
