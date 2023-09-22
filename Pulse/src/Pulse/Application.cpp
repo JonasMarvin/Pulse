@@ -2,10 +2,10 @@
 
 #include "Application.h"
 
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
-#include "Pulse/Modules/Input/Platform/Windows/WindowsInput.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindowModule.h"
+#include "Pulse/Modules/Input/Platform/Windows/WindowsInputModule.h"
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
-#include "Pulse/Modules/Rendering/Renderer.h"
+#include "Pulse/Modules/Rendering/RendererModule.h"
 #include "Pulse/Modules/Camera/CameraModule.h"
 
 namespace Pulse {
@@ -25,9 +25,9 @@ namespace Pulse {
 		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
 		
 		// Registering core modules
-		moduleManager_.RegisterModule<Pulse::Modules::Renderer>();
-		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
-		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInput>();
+		moduleManager_.RegisterModule<Pulse::Modules::RendererModule>();
+		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindowModule>();
+		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInputModule>();
 		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
 		moduleManager_.RegisterModule<Pulse::Modules::CameraModule>();
 	}
@@ -39,12 +39,13 @@ namespace Pulse {
 
 	void Application::Run() {
 		while (isRunning_) {
-			moduleManager_.GetModule < Modules::Renderer>()->BeginScene();
+			moduleManager_.GetModule < Modules::RendererModule>()->BeginScene();
+			OnRender();
 			moduleManager_.UpdateModules();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
-			moduleManager_.GetModule<Modules::Renderer>()->EndScene();
+			moduleManager_.GetModule<Modules::RendererModule>()->EndScene();
 		}
 	}
 

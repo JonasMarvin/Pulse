@@ -6,6 +6,9 @@ class Sandbox : public Pulse::Application {
 public:
 	Sandbox() {
 
+		renderer_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::RendererModule>();
+		//input_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::Windows::WindowsInputModule>();
+
 		vertexArray_ = Rendering::VertexArray::Create();
 
 		float vertices[3 * 3] = {
@@ -82,7 +85,7 @@ public:
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 2.0);
 			}
 		)";
 
@@ -98,9 +101,17 @@ public:
 
 		shader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource, fragmentSource);
 		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
-		
-		ModuleManager::GetInstance().GetModule<Pulse::Modules::Renderer>()->Submit(shader_, vertexArray_);
-		ModuleManager::GetInstance().GetModule<Pulse::Modules::Renderer>()->Submit(squareShader_, squareVertexArray_);
+	}
+
+	void OnUpdate() override {
+		//if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
+			
+		//}
+	}
+
+	void OnRender() override {
+		renderer_->Submit(shader_, vertexArray_);
+		renderer_->Submit(squareShader_, squareVertexArray_);
 	}
 
 	~Sandbox() {
@@ -108,6 +119,9 @@ public:
 	}
 
 private:
+	//Windows::WindowsInputModule* input_ = nullptr; // input module
+	RendererModule* renderer_ = nullptr; // renderer module
+
 	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
 	std::shared_ptr<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer

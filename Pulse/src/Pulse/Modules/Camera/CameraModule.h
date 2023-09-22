@@ -4,7 +4,7 @@
 
 #include <glm/gtc/quaternion.hpp>
 
-#include "Pulse/Modules/Rendering/Renderer.h"
+#include "Pulse/Modules/Rendering/RendererModule.h"
 #include "Pulse/Modules/Camera/CameraTypeStrategy.h"
 
 namespace Pulse::Modules {
@@ -67,7 +67,7 @@ namespace Pulse::Modules {
 		Type type_ = Type::None; // type of the camera
 		Camera::ICameraTypeStrategy *cameraTypeStrategy_ = nullptr; // pointer to the camera type strategy to allow the camera module to calculate the projection matrix
 
-		Renderer* renderer_ = nullptr; // pointer to the renderer module to allow the camera module to access the renderer module faster
+		RendererModule* renderer_ = nullptr; // pointer to the renderer module to allow the camera module to access the renderer module faster
 
 		void CalculateViewMatrix(); // function to calculate the view matrix of the camera
 		void CalculateProjectionMatrix(); // function to calculate the projection matrix of the camera

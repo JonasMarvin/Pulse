@@ -1,16 +1,16 @@
 #include "pch.h"
 
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindowModule.h"
 
 #include "Pulse/Events/Events.h"
 #include "Pulse/Modules/ModuleManager.h"
-#include "Pulse/Modules/Rendering/Renderer.h"
+#include "Pulse/Modules/Rendering/RendererModule.h"
 
 namespace Pulse::Modules::Windows {
 
 	static bool isGLFWInitialized = false;
 
-	void WindowsWindow::Initialize() {
+	void WindowsWindowModule::Initialize() {
 
 		PLS_CORE_INFO("Creating window {0} ({1}, {2})", data_.title, data_.width, data_.height);
 	
@@ -24,8 +24,8 @@ namespace Pulse::Modules::Windows {
 		}
 
 		window_ = glfwCreateWindow((int)data_.width, (int)data_.height, data_.title.c_str(), nullptr, nullptr);
-		if (ModuleManager::GetInstance().HasModule<Renderer>()) {
-			ModuleManager::GetInstance().GetModule<Renderer>()->SetContextWindow(window_);
+		if (ModuleManager::GetInstance().HasModule<RendererModule>()) {
+			ModuleManager::GetInstance().GetModule<RendererModule>()->SetContextWindow(window_);
 		}
 
 		glfwSetWindowUserPointer(window_, &data_);
@@ -44,24 +44,24 @@ namespace Pulse::Modules::Windows {
 		});
 	}
 
-	void WindowsWindow::Shutdown() {
+	void WindowsWindowModule::Shutdown() {
 		glfwDestroyWindow(window_);
 		glfwTerminate();
 	}
 
-	void WindowsWindow::Update() {
+	void WindowsWindowModule::Update() {
 		glfwPollEvents();
 	}
 
-	unsigned int WindowsWindow::GetWidth() const {
+	unsigned int WindowsWindowModule::GetWidth() const {
 		return data_.width;
 	}
 
-	unsigned int WindowsWindow::GetHeight() const {
+	unsigned int WindowsWindowModule::GetHeight() const {
 		return data_.height;
 	}
 
-	void WindowsWindow::SetVSync(bool enabled) {
+	void WindowsWindowModule::SetVSync(bool enabled) {
 		if (enabled) {
 			glfwSwapInterval(1);
 		}
@@ -71,11 +71,11 @@ namespace Pulse::Modules::Windows {
 		data_.vsync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const {
+	bool WindowsWindowModule::IsVSync() const {
 		return data_.vsync;
 	}
 
-	void* WindowsWindow::GetNativeWindow() const {
+	void* WindowsWindowModule::GetNativeWindow() const {
 		return window_;
 	}
 

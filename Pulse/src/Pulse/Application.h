@@ -23,6 +23,9 @@ namespace Pulse
 		Application(); // Constructor
 		virtual ~Application(); // Virtual destructor for proper cleanup
 
+		virtual void OnUpdate() = 0; // Update function to be defined in CLIENT. Gets called in the main loop of the application automatically before updating and rendering.
+		virtual void OnRender() = 0; // Render function to be defined in CLIENT. Gets called in the main loop of the application automatically before rendering and after beginning the scene and after update.
+
 		void Run(); // Main loop of the application
 
 	private:

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Pulse/Modules/Input/Input.h"
+#include "Pulse/Modules/Input/InputModule.h"
 
 #include <GLFW/glfw3.h>
 
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindowModule.h"
 
 namespace Pulse::Modules::Windows {
 
-	class WindowsInput : public Input {
+	class WindowsInputModule : public InputModule {
 	public:
 		void Initialize() override; // function to initialize the input module.
 		void Shutdown() override; // function to shutdown the module.
@@ -35,8 +35,8 @@ namespace Pulse::Modules::Windows {
 		bool GetGamepadLeftTrigger(float& value, Pulse::Input::JoystickCode joystickCode = Pulse::Input::JoystickCode::Joystick1) override; // Function to get the left trigger of the gamepad.
 
 	private:
-		WindowsInput() : gamepadStates_{} {}; // default constructor private to prevent instantiation.
-		~WindowsInput() = default; // default destructor private to prevent instantiation
+		WindowsInputModule() : gamepadStates_{} {}; // default constructor private to prevent instantiation.
+		~WindowsInputModule() = default; // default destructor private to prevent instantiation
 
 		GLFWwindow* window_ = nullptr; // pointer to the window.
 		GLFWgamepadstate gamepadStates_[static_cast<uint32_t>(Pulse::Input::JoystickCode::JoystickLast)]; // state of the gamepads. update has do be done manually before a check

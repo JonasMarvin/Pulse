@@ -3,7 +3,10 @@
 #include "Pulse/Modules/IRenderImGuiModule.h"
 
 // Uses GLFW and OpenGL3 as the backend for ImGui with glad as the OpenGL loader
-#define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#ifndef IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+	#define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#endif // !IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
