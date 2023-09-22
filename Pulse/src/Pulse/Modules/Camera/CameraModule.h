@@ -60,7 +60,7 @@ namespace Pulse::Modules {
 
 		float fieldOfView_ = 45.0f; // field of view of the camera in degree
 		float aspectRatio_ = 1.0f; // aspect ratio of the camera
-		float nearPlane_ = 0.1f; // near plane of the camera
+		float nearPlane_ = 0; // near plane of the camera
 		float farPlane_ = 100.0f; // far plane of the camera
 		float zoomLevel_ = 1.0f; // zoom level of the camera
 		

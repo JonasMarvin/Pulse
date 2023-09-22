@@ -7,7 +7,8 @@ public:
 	Sandbox() {
 
 		renderer_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::RendererModule>();
-		//input_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::Windows::WindowsInputModule>();
+		input_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::InputModule>();
+		camera_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::CameraModule>();
 
 		vertexArray_ = Rendering::VertexArray::Create();
 
@@ -58,7 +59,7 @@ public:
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -85,7 +86,7 @@ public:
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 2.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -104,9 +105,77 @@ public:
 	}
 
 	void OnUpdate() override {
-		//if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
-			
-		//}
+		// Toggle Perspective and Orthographic:
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::P)) {
+			camera_->SetType(Pulse::Modules::CameraModule::Type::Perspective);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::O)) {
+			camera_->SetType(Pulse::Modules::CameraModule::Type::Orthographic);
+		}
+		// Change the camera settings:
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::K)) {
+			camera_->SetFieldOfView(camera_->GetFieldOfView() + 1.0f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
+			camera_->SetFieldOfView(camera_->GetFieldOfView() - 1.0f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::N)) {
+			camera_->SetAspectRatio(camera_->GetAspectRatio() + 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
+			camera_->SetAspectRatio(camera_->GetAspectRatio() - 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::B)) {
+			camera_->SetNearPlane(camera_->GetNearPlane() + 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::V)) {
+			camera_->SetNearPlane(camera_->GetNearPlane() - 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::C)) {
+			camera_->SetFarPlane(camera_->GetFarPlane() + 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::X)) {
+			camera_->SetFarPlane(camera_->GetFarPlane() - 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
+			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Apostrophe)) {
+			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f);
+		}
+
+		// Move with WASD
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
+			camera_->SetPosition(camera_->GetPosition() + glm::vec3(cameraSpeed_, 0.0f, 0.0f));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::D)) {
+			camera_->SetPosition(camera_->GetPosition() - glm::vec3(cameraSpeed_, 0.0f, 0.0f));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
+			camera_->SetPosition(camera_->GetPosition() - glm::vec3(0.0f, cameraSpeed_, 0.0f));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::S)) {
+			camera_->SetPosition(camera_->GetPosition() + glm::vec3(0.0f, cameraSpeed_, 0.0f));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Q)) {
+			camera_->SetPosition(camera_->GetPosition() + glm::vec3(0.0f, 0.0f, cameraSpeed_));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::E)) {
+			camera_->SetPosition(camera_->GetPosition() - glm::vec3(0.0f, 0.0f, cameraSpeed_));
+		}
+		// Rotation with Arrow Keys
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(-1.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(-1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+		}
 	}
 
 	void OnRender() override {
@@ -119,8 +188,11 @@ public:
 	}
 
 private:
-	//Windows::WindowsInputModule* input_ = nullptr; // input module
+	InputModule* input_ = nullptr; // input module
 	RendererModule* renderer_ = nullptr; // renderer module
+	CameraModule * camera_ = nullptr; // renderer module
+
+	float cameraSpeed_ = 0.01f; // speed of the camera
 
 	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object

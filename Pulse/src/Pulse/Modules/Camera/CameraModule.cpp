@@ -117,7 +117,7 @@ namespace Pulse::Modules {
 	void CameraModule::CalculateViewMatrix() {
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f), -position_);
 		glm::mat4 rotation = glm::mat4_cast(rotation_);
-		viewMatrix_ = rotation * translation;
+		viewMatrix_ = translation * rotation;
 		CalculateViewProjectionMatrix();
 	}
 

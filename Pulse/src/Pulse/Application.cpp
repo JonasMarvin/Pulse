@@ -40,6 +40,7 @@ namespace Pulse {
 	void Application::Run() {
 		while (isRunning_) {
 			moduleManager_.GetModule < Modules::RendererModule>()->BeginScene();
+			OnUpdate();
 			OnRender();
 			moduleManager_.UpdateModules();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
