@@ -104,7 +104,7 @@ public:
 		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
 	}
 
-	void OnUpdate() override {
+	void OnUpdate(const Pulse::TimeData& timeData) override {
 		// Toggle Perspective and Orthographic:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::P)) {
 			camera_->SetType(Pulse::Modules::CameraModule::Type::Perspective);
@@ -114,67 +114,67 @@ public:
 		}
 		// Change the camera settings:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::K)) {
-			camera_->SetFieldOfView(camera_->GetFieldOfView() + 1.0f);
+			camera_->SetFieldOfView(camera_->GetFieldOfView() + 1.0f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
-			camera_->SetFieldOfView(camera_->GetFieldOfView() - 1.0f);
+			camera_->SetFieldOfView(camera_->GetFieldOfView() - 1.0f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::N)) {
-			camera_->SetAspectRatio(camera_->GetAspectRatio() + 0.1f);
+			camera_->SetAspectRatio(camera_->GetAspectRatio() + 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
-			camera_->SetAspectRatio(camera_->GetAspectRatio() - 0.1f);
+			camera_->SetAspectRatio(camera_->GetAspectRatio() - 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::B)) {
-			camera_->SetNearPlane(camera_->GetNearPlane() + 0.1f);
+			camera_->SetNearPlane(camera_->GetNearPlane() + 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::V)) {
-			camera_->SetNearPlane(camera_->GetNearPlane() - 0.1f);
+			camera_->SetNearPlane(camera_->GetNearPlane() - 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::C)) {
-			camera_->SetFarPlane(camera_->GetFarPlane() + 0.1f);
+			camera_->SetFarPlane(camera_->GetFarPlane() + 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::X)) {
-			camera_->SetFarPlane(camera_->GetFarPlane() - 0.1f);
+			camera_->SetFarPlane(camera_->GetFarPlane() - 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
-			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f);
+			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f * timeData);
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
-			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f);
+			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f * timeData);
 		}
 
 		// Move with WASD
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
-			camera_->SetPosition(camera_->GetPosition() + glm::vec3(cameraSpeed_, 0.0f, 0.0f));
+			camera_->SetPosition(camera_->GetPosition() + glm::vec3(cameraSpeed_ * timeData, 0.0f, 0.0f));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::D)) {
-			camera_->SetPosition(camera_->GetPosition() - glm::vec3(cameraSpeed_, 0.0f, 0.0f));
+			camera_->SetPosition(camera_->GetPosition() - glm::vec3(cameraSpeed_ * timeData, 0.0f, 0.0f));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
-			camera_->SetPosition(camera_->GetPosition() - glm::vec3(0.0f, cameraSpeed_, 0.0f));
+			camera_->SetPosition(camera_->GetPosition() - glm::vec3(0.0f, cameraSpeed_ * timeData, 0.0f));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::S)) {
-			camera_->SetPosition(camera_->GetPosition() + glm::vec3(0.0f, cameraSpeed_, 0.0f));
+			camera_->SetPosition(camera_->GetPosition() + glm::vec3(0.0f, cameraSpeed_ * timeData, 0.0f));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Q)) {
-			camera_->SetPosition(camera_->GetPosition() + glm::vec3(0.0f, 0.0f, cameraSpeed_));
+			camera_->SetPosition(camera_->GetPosition() + glm::vec3(0.0f, 0.0f, cameraSpeed_ * timeData));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::E)) {
-			camera_->SetPosition(camera_->GetPosition() - glm::vec3(0.0f, 0.0f, cameraSpeed_));
+			camera_->SetPosition(camera_->GetPosition() - glm::vec3(0.0f, 0.0f, cameraSpeed_ * timeData));
 		}
 		// Rotation with Arrow Keys
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
-			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(cameraRotationSpeed_) * timeData, glm::vec3(0.0f, 1.0f, 0.0f)));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
-			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(-1.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(-cameraRotationSpeed_) * timeData, glm::vec3(0.0f, 1.0f, 0.0f)));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
-			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(cameraRotationSpeed_) * timeData, glm::vec3(1.0f, 0.0f, 0.0f)));
 		}
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
-			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(-1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+			camera_->SetRotation(glm::rotate(camera_->GetRotation(), glm::radians(-cameraRotationSpeed_) * timeData, glm::vec3(1.0f, 0.0f, 0.0f)));
 		}
 	}
 
@@ -192,7 +192,8 @@ private:
 	RendererModule* renderer_ = nullptr; // renderer module
 	CameraModule * camera_ = nullptr; // renderer module
 
-	float cameraSpeed_ = 0.01f; // speed of the camera
+	float cameraSpeed_ = 0.5f; // speed of the camera
+	float cameraRotationSpeed_ = 100; // rotation speed of the camera
 
 	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object

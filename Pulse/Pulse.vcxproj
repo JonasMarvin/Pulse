@@ -173,6 +173,7 @@
     <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h" />
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.h" />
     <ClInclude Include="src\Pulse\Modules\Window\WindowModule.h" />
+    <ClInclude Include="src\Pulse\TimeData.h" />
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
     <ClInclude Include="src\Pulse\Utility\UnicodeConverter.h" />
     <ClInclude Include="src\pch.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="src\Pulse\Modules\Rendering\Shader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\VertexArray.cpp" />
     <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.cpp" />
+    <ClCompile Include="src\Pulse\TimeData.cpp" />
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />
     <ClCompile Include="src\Pulse\Utility\UnicodeConverter.cpp" />
     <ClCompile Include="src\pch.cpp">
