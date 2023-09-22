@@ -140,7 +140,7 @@ public:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
 			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f);
 		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Apostrophe)) {
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
 			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f);
 		}
 
