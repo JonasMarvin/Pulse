@@ -105,7 +105,6 @@ public:
 	}
 
 	void OnUpdate(const Pulse::TimeData& timeData) override {
-		PLS_INFO("FPS: {0}", timeData);
 		// Print FPS:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::F)) {
 			PLS_INFO("FPS: {0}", 1.0f / timeData);
