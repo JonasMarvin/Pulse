@@ -6,7 +6,7 @@
 #include "Pulse/Modules/Input/Platform/Windows/WindowsInput.h"
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 #include "Pulse/Modules/Rendering/Renderer.h"
-#include "Pulse/Modules/Camera/Camera.h"
+#include "Pulse/Modules/Camera/CameraModule.h"
 
 namespace Pulse {
 		
@@ -29,7 +29,7 @@ namespace Pulse {
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
 		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInput>();
 		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
-		moduleManager_.RegisterModule<Pulse::Modules::Camera>();
+		moduleManager_.RegisterModule<Pulse::Modules::CameraModule>();
 	}
 
 	Application::~Application() {

@@ -137,7 +137,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Pulse\Modules\Camera\Camera.h" />
+    <ClInclude Include="src\Pulse\Modules\Camera\CameraModule.h" />
+    <ClInclude Include="src\Pulse\Modules\Camera\CameraTypeStrategy.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\Buffer.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.h" />
@@ -177,7 +178,8 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Pulse\Modules\Camera\Camera.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.cpp" />
@@ -215,6 +217,9 @@
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
