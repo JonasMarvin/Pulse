@@ -65,7 +65,7 @@ namespace Pulse::Modules {
 		glm::mat4 projectionMatrix_ = glm::mat4(1.0f); // projection matrix of the camera
 		glm::mat4 viewProjectionMatrix_ = glm::mat4(1.0f); // view projection matrix of the camera
 
-		float fieldOfView_ = 45.0f; // field of view of the camera in degree
+		float fieldOfView_ = 60.0f; // field of view of the camera in degree
 		float aspectRatio_ = 1.0f; // aspect ratio of the camera
 		float nearPlane_ = 0; // near plane of the camera
 		float farPlane_ = 100.0f; // far plane of the camera
