@@ -144,36 +144,35 @@ public:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
 			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f * timeData);
 		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::I)) {
 			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f * timeData);
 		}
 
 		// Movement
 		glm::vec3 translation = camera_->GetPosition();
-		glm::quat currentRotation = camera_->GetRotation();
 
 		glm::vec3 right = camera_->GetRight();
 		glm::vec3 up = camera_->GetUp();
 		glm::vec3 front = camera_->GetFront();
 
 		glm::vec3 movement;
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
-			movement = -right * (cameraSpeed_ * timeData); // Use the updated right vector
-			translation += movement;
-		}
-
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::D)) {
 			movement = right * (cameraSpeed_ * timeData); // Use the updated right vector
 			translation += movement;
 		}
 
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
-			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
+			movement = -right * (cameraSpeed_ * timeData); // Use the updated right vector
 			translation += movement;
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::S)) {
 			movement = -front * (cameraSpeed_ * timeData); // Use the updated front vector
+			translation += movement;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
+			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
 			translation += movement;
 		}
 
@@ -188,27 +187,26 @@ public:
 		}
 
 		camera_->SetPosition(translation);
+		glm::quat currentRotation = camera_->GetRotation();
 
-		// Rotation for yaw (left-right)
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_) * timeData, up); // Use updated up vector
-			currentRotation = rotationChange * currentRotation;
+			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
+			currentRotation = currentRotation * rotationChange;
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_) * timeData, up); // Use updated up vector
-			currentRotation = rotationChange * currentRotation;
+			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
+			currentRotation = currentRotation * rotationChange;
 		}
 
-		// Rotation for pitch (up-down)
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_) * timeData, right); // Use updated right vector
-			currentRotation = rotationChange * currentRotation;
+			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
+			currentRotation = currentRotation * rotationChange;
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_) * timeData, right); // Use updated right vector
-			currentRotation = rotationChange * currentRotation;
+			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
+			currentRotation = currentRotation * rotationChange;
 		}
 
 		camera_->SetRotation(currentRotation);
