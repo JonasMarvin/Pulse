@@ -137,6 +137,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Pulse\Modules\Camera\CameraModule.h" />
+    <ClInclude Include="src\Pulse\Modules\Camera\CameraTypeStrategy.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\Buffer.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.h" />
@@ -144,7 +146,7 @@
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\Renderer.h" />
+    <ClInclude Include="src\Pulse\Modules\Rendering\RendererModule.h" />
     <ClInclude Include="src\Pulse.h" />
     <ClInclude Include="src\Pulse\Application.h" />
     <ClInclude Include="src\Pulse\Core\Core.h" />
@@ -159,23 +161,26 @@
     <ClInclude Include="src\Pulse\Modules\IUpdatableModule.h" />
     <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h" />
     <ClInclude Include="src\Pulse\Modules\Input\GamepadCodes.h" />
-    <ClInclude Include="src\Pulse\Modules\Input\Input.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\InputModule.h" />
     <ClInclude Include="src\Pulse\Modules\Input\InputActions.h" />
     <ClInclude Include="src\Pulse\Modules\Input\JoystickCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\KeyCodes.h" />
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h" />
-    <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModuleImpl.h" />
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\RendererAPI.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\Shader.h" />
     <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h" />
-    <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\Pulse\Modules\Window\Window.h" />
+    <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.h" />
+    <ClInclude Include="src\Pulse\Modules\Window\WindowModule.h" />
+    <ClInclude Include="src\Pulse\TimeData.h" />
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h" />
     <ClInclude Include="src\Pulse\Utility\UnicodeConverter.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.cpp" />
@@ -183,18 +188,19 @@
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\Renderer.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Rendering\RendererModule.cpp" />
     <ClCompile Include="src\Pulse\Application.cpp" />
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp" />
     <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModule.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\RendererAPI.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\Shader.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\VertexArray.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.cpp" />
+    <ClCompile Include="src\Pulse\TimeData.cpp" />
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp" />
     <ClCompile Include="src\Pulse\Utility\UnicodeConverter.cpp" />
     <ClCompile Include="src\pch.cpp">

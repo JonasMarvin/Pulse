@@ -6,12 +6,9 @@ class Sandbox : public Pulse::Application {
 public:
 	Sandbox() {
 
-		//TODO: NEEDS TO BE FEEDED IN THE COMMAND QUEUE
-
-		// shader_->Bind();
-		// Submit(vertexArray_);
-		// squareShader_->Bind();
-		// Submit(squareVertexArray_);
+		renderer_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::RendererModule>();
+		input_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::InputModule>();
+		camera_ = ModuleManager::GetInstance().GetModule<Pulse::Modules::CameraModule>();
 
 		vertexArray_ = Rendering::VertexArray::Create();
 
@@ -55,12 +52,14 @@ public:
 			#version 430 core
 			
 			layout(location = 0) in vec3 a_Position;
+			
+			uniform mat4 u_ViewProjection;
 
-			out vec3 v_Position;			
+			out vec3 v_Position;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -81,11 +80,13 @@ public:
 			
 			layout(location = 0) in vec3 a_Position;
 
-			out vec3 v_Position;			
+			uniform mat4 u_ViewProjection;
+
+			out vec3 v_Position;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -103,11 +104,133 @@ public:
 		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
 	}
 
+	void OnUpdate(const Pulse::TimeData& timeData) override {
+		// Print FPS:
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::F)) {
+			PLS_INFO("FPS: {0}", 1.0f / timeData);
+		}
+		// Toggle Perspective and Orthographic:
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::P)) {
+			camera_->SetType(Pulse::Modules::CameraModule::Type::Perspective);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::O)) {
+			camera_->SetType(Pulse::Modules::CameraModule::Type::Orthographic);
+		}
+		// Change the camera settings:
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::K)) {
+			camera_->SetFieldOfView(camera_->GetFieldOfView() + 1.0f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
+			camera_->SetFieldOfView(camera_->GetFieldOfView() - 1.0f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::N)) {
+			camera_->SetAspectRatio(camera_->GetAspectRatio() + 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
+			camera_->SetAspectRatio(camera_->GetAspectRatio() - 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::B)) {
+			camera_->SetNearPlane(camera_->GetNearPlane() + 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::V)) {
+			camera_->SetNearPlane(camera_->GetNearPlane() - 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::C)) {
+			camera_->SetFarPlane(camera_->GetFarPlane() + 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::X)) {
+			camera_->SetFarPlane(camera_->GetFarPlane() - 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
+			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f * timeData);
+		}
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
+			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f * timeData);
+		}
+
+		// Movement
+		glm::vec3 translation = camera_->GetPosition();
+		glm::quat currentRotation = camera_->GetRotation();
+
+		glm::vec3 right = camera_->GetRight();
+		glm::vec3 up = camera_->GetUp();
+		glm::vec3 front = camera_->GetFront();
+
+		glm::vec3 movement;
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
+			movement = -right * (cameraSpeed_ * timeData); // Use the updated right vector
+			translation += movement;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::D)) {
+			movement = right * (cameraSpeed_ * timeData); // Use the updated right vector
+			translation += movement;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
+			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
+			translation += movement;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::S)) {
+			movement = -front * (cameraSpeed_ * timeData); // Use the updated front vector
+			translation += movement;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Q)) {
+			movement = -up * (cameraSpeed_ * timeData); // Use the updated up vector
+			translation += movement;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::E)) {
+			movement = up * (cameraSpeed_ * timeData); // Use the updated up vector
+			translation += movement;
+		}
+
+		camera_->SetPosition(translation);
+
+		// Rotation for yaw (left-right)
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
+			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_) * timeData, up); // Use updated up vector
+			currentRotation = rotationChange * currentRotation;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
+			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_) * timeData, up); // Use updated up vector
+			currentRotation = rotationChange * currentRotation;
+		}
+
+		// Rotation for pitch (up-down)
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
+			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_) * timeData, right); // Use updated right vector
+			currentRotation = rotationChange * currentRotation;
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
+			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_) * timeData, right); // Use updated right vector
+			currentRotation = rotationChange * currentRotation;
+		}
+
+		camera_->SetRotation(currentRotation);
+	}
+
+	void OnRender() override {
+		renderer_->Submit(shader_, vertexArray_);
+		renderer_->Submit(squareShader_, squareVertexArray_);
+	}
+
 	~Sandbox() {
 
 	}
 
 private:
+	InputModule* input_ = nullptr; // input module
+	RendererModule* renderer_ = nullptr; // renderer module
+	CameraModule * camera_ = nullptr; // renderer module
+
+	float cameraSpeed_ = 0.5f; // speed of the camera
+	float cameraRotationSpeed_ = 100; // rotation speed of the camera
+
 	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
 	std::shared_ptr<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer

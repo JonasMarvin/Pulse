@@ -5,6 +5,7 @@
 namespace Pulse::Input {
 
 	// This enum class is based on GLFW's key codes and is used to represent keyboard keys.
+    // Right now its using the american keyboard layout.
 	enum class KeyCode : uint32_t {
 
         Unknown = 0,

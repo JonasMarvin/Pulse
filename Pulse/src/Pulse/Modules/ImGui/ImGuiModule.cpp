@@ -2,10 +2,10 @@
 
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
 
-#include <glad/glad.h>
-
 #include "Pulse/Modules/ModuleManager.h"
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
+#include "Pulse/Modules/Window/WindowModule.h"
+
+#include <GLFW/glfw3.h>
 
 namespace Pulse::Modules {
 
@@ -35,7 +35,7 @@ namespace Pulse::Modules {
 		}
 
 		// Setup Platform/Renderer backends
-		window_ = static_cast<GLFWwindow*>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetNativeWindow());
+		window_ = static_cast<GLFWwindow*>(ModuleManager::GetInstance().GetModule<WindowModule>()->GetNativeWindow());
 		ImGui_ImplGlfw_InitForOpenGL(window_, true);
 		ImGui_ImplOpenGL3_Init("#version 430");
 	}
@@ -47,8 +47,7 @@ namespace Pulse::Modules {
 	}
 
 	void ImGuiModule::RenderImGui() {
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
+		//TODO: Add ImGui rendering
 	}
 
 	void ImGuiModule::BeginFrame() {
@@ -59,7 +58,7 @@ namespace Pulse::Modules {
 
 	void ImGuiModule::EndFrame() {
 		// Actualize ImGui windows
-		imGuiIO_->DisplaySize = ImVec2(static_cast<float>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetWidth()), static_cast<float>(ModuleManager::GetInstance().GetModule<Windows::WindowsWindow>()->GetHeight()));
+		imGuiIO_->DisplaySize = ImVec2(static_cast<float>(ModuleManager::GetInstance().GetModule<WindowModule>()->GetWidth()), static_cast<float>(ModuleManager::GetInstance().GetModule<WindowModule>()->GetHeight()));
 
 		// Rendering
 		ImGui::Render();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pulse/Modules/Window/Window.h"
+#include "Pulse/Modules/Window/WindowModule.h"
 
 #include <GLFW/glfw3.h>
 
@@ -8,7 +8,7 @@ namespace Pulse::Modules::Windows {
 
 	// Class for a Windows window
 	// Its a module and should only be created and managed by the module manager
-	class WindowsWindow : public Pulse::Modules::Window {
+	class WindowsWindowModuleImpl : public Pulse::Modules::WindowModule {
 	public:
 		void Initialize() override; // function to initialize the window
 		void Update() override; // function to handle the update event of the window
@@ -24,8 +24,8 @@ namespace Pulse::Modules::Windows {
 		void* GetNativeWindow() const override; // function to get the native window
 
 	private:
-		WindowsWindow() : window_(nullptr) {}; // default constructor private to prevent creation of the window outside of the module manager
-		~WindowsWindow() = default; // default destructor private to prevent deletion of the window outside of the module manager
+		WindowsWindowModuleImpl() : window_(nullptr) {}; // default constructor private to prevent creation of the window outside of the module manager
+		~WindowsWindowModuleImpl() = default; // default destructor private to prevent deletion of the window outside of the module manager
 
 		GLFWwindow* window_ = nullptr; // pointer to the GLFW window
 
@@ -40,6 +40,6 @@ namespace Pulse::Modules::Windows {
 
 		friend class ModuleManager; // friend class to allow the module manager to create and manage the window
 
-	}; // class WindowsWindow
+	}; // class WindowsWindowModuleImpl
 
 } // namespace Pulse

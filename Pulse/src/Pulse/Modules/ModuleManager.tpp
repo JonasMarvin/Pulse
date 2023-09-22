@@ -16,12 +16,27 @@ namespace Pulse::Modules {
         PLS_CORE_INFO("Module {0} has been registered.", typeIndex.name());
     }
 
+    template <typename Base, typename Derived>
+    void ModuleManager::RegisterModule() {
+        std::type_index typeIndex(typeid(Base));
+		Base* existingModule = _GetModule<Base>(typeIndex);
+		if (existingModule) {
+			PLS_CORE_ERROR("Module {0} already registered!", typeIndex.name());
+			return;
+		}
+
+		Derived* module = new Derived();
+		_AddModuleToSpecificMaps<Base>(module, typeIndex);
+		module->Initialize();
+		PLS_CORE_INFO("Module {0} has been registered.", typeIndex.name());
+    }
+
     template<typename T>
     T* ModuleManager::GetModule() {
         std::type_index typeIndex(typeid(T));
         T* module = _GetModule<T>(typeIndex);
         if (module == nullptr) {
-            PLS_CORE_ERROR("Module {0} is not registered!", typeIndex.name());
+            PLS_CORE_ERROR("Module {0} is not registered! Maybe you tried using a implementation module. Don't do that and use the parent module!", typeIndex.name());
         }
         return module;
     }
@@ -64,6 +79,7 @@ namespace Pulse::Modules {
             imGuiRenderableModulesMap_[typeIndex] = module;
         }
         modules_.push_back(module);
+        modulesMap_[typeIndex] = module;
     }
 
     template<typename T>
@@ -98,5 +114,6 @@ namespace Pulse::Modules {
             imGuiRenderableModulesMap_.erase(typeIndex);
         }
         modules_.erase(std::remove(modules_.begin(), modules_.end(), module), modules_.end());
+        modulesMap_.erase(typeIndex);
     }
 } // namespace Pulse::Modules

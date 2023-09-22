@@ -2,10 +2,11 @@
 
 #include "Application.h"
 
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindow.h"
-#include "Pulse/Modules/Input/Platform/Windows/WindowsInput.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindowModuleImpl.h"
+#include "Pulse/Modules/Input/Platform/Windows/WindowsInputModuleImpl.h"
 #include "Pulse/Modules/ImGui/ImGuiModule.h"
-#include "Pulse/Modules/Rendering/Renderer.h"
+#include "Pulse/Modules/Rendering/RendererModule.h"
+#include "Pulse/Modules/Camera/CameraModule.h"
 
 namespace Pulse {
 		
@@ -24,10 +25,11 @@ namespace Pulse {
 		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
 		
 		// Registering core modules
-		moduleManager_.RegisterModule<Pulse::Modules::Renderer>();
-		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsWindow>();
-		moduleManager_.RegisterModule<Pulse::Modules::Windows::WindowsInput>();
+		moduleManager_.RegisterModule<Pulse::Modules::RendererModule>();
+		moduleManager_.RegisterModule<Pulse::Modules::WindowModule, Pulse::Modules::Windows::WindowsWindowModuleImpl>();
+		moduleManager_.RegisterModule<Pulse::Modules::InputModule, Pulse::Modules::Windows::WindowsInputModuleImpl>();
 		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
+		moduleManager_.RegisterModule<Pulse::Modules::CameraModule>();
 	}
 
 	Application::~Application() {
@@ -36,13 +38,17 @@ namespace Pulse {
 	}
 
 	void Application::Run() {
+		timeData_.Initialize();
 		while (isRunning_) {
-			moduleManager_.GetModule < Modules::Renderer>()->BeginScene();
+			moduleManager_.GetModule < Modules::RendererModule>()->BeginScene();
+			OnUpdate(timeData_);
+			OnRender();
 			moduleManager_.UpdateModules();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
-			moduleManager_.GetModule<Modules::Renderer>()->EndScene();
+			moduleManager_.GetModule<Modules::RendererModule>()->EndScene();
+			timeData_.Update();
 		}
 	}
 

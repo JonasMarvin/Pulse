@@ -2,7 +2,7 @@
 
 #include "Pulse/Modules/Rendering/Buffer.h"
 #include "Pulse/Modules/ModuleManager.h"
-#include "Pulse/Modules/Rendering/Renderer.h"
+#include "Pulse/Modules/Rendering/RendererModule.h"
 #include "Pulse/Modules/Rendering/OpenGL/OpenGLBuffer.h"
 
 namespace Pulse::Modules::Rendering {
@@ -68,7 +68,7 @@ namespace Pulse::Modules::Rendering {
 
 	// Implementation of VertexBuffer
 	std::shared_ptr<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size) {
-		switch (ModuleManager::GetInstance().GetModule<Renderer>()->GetRendererAPIType()) {
+		switch (ModuleManager::GetInstance().GetModule<RendererModule>()->GetRendererAPIType()) {
 			case RendererAPI::Type::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by VertexBuffer!");	return nullptr;
 			case RendererAPI::Type::OpenGL:																									return std::make_shared<OpenGLVertexBuffer>(vertices, size);
 		}
@@ -79,7 +79,7 @@ namespace Pulse::Modules::Rendering {
 
 	// Implementation of IndexBuffer
 	std::shared_ptr<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t size) {
-		switch (ModuleManager::GetInstance().GetModule<Renderer>()->GetRendererAPIType()) {
+		switch (ModuleManager::GetInstance().GetModule<RendererModule>()->GetRendererAPIType()) {
 			case RendererAPI::Type::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by IndexBuffer!");	return nullptr;
 			case RendererAPI::Type::OpenGL:																								return std::make_shared<OpenGLIndexBuffer>(indices, size);
 		}

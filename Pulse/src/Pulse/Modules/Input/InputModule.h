@@ -9,7 +9,8 @@
 namespace Pulse::Modules {
 
 	// interface class for input on different platforms
-	class Input : public IModule {
+	// Access this module by using the ModuleManager. Implementation will be chosen at compile time.
+	class InputModule : public IModule {
 	public:
 		void Initialize() override = 0; // Virtual function to handle initialization of the input.
 		void Shutdown() override = 0; // Virtual function to handle shutdown of the input.
@@ -36,10 +37,10 @@ namespace Pulse::Modules {
 		virtual bool GetGamepadLeftTrigger(float& value, Pulse::Input::JoystickCode joystickCode = Pulse::Input::JoystickCode::Joystick1) = 0; // Virtual function to get the left trigger of the gamepad. Implemented by the platform-specific input module.
 
 	protected:
-		Input() = default; // Default constructor is protected to only allow module manager to create it.
-		virtual ~Input() = default; // Default destructor is protected to only allow module manager to destroy it.
+		InputModule() = default; // Default constructor is protected to only allow module manager to create it.
+		virtual ~InputModule() = default; // Default destructor is protected to only allow module manager to destroy it.
 
 		friend class ModuleManager; // Module manager is a friend to allow it to create and destroy modules.
-	}; // class Input
+	}; // class InputModule
 
 } // namespace Pulse::Modules
