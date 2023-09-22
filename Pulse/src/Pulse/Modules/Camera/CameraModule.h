@@ -39,6 +39,9 @@ namespace Pulse::Modules {
 		// Getters
 		const glm::vec3& GetPosition() const; // function to get the position of the camera
 		const glm::quat& GetRotation() const; // function to get the rotation of the camera
+		const glm::vec3& GetUp() const;  // function to get the up vector of the camera
+		const glm::vec3& GetFront() const; // function to get the front vector of the camera
+		const glm::vec3& GetRight() const; // function to get the right vector of the camera
 
 		const glm::mat4& GetViewProjectionMatrix() const; // function to get the view projection matrix of the camera
 
@@ -53,6 +56,10 @@ namespace Pulse::Modules {
 	private:
 		glm::vec3 position_ = glm::vec3(0.0f, 0.0f, 0.0f); // position of the camera
 		glm::quat rotation_ = glm::quat(1.0f, 0.0f, 0.0f, 0.0f); // rotation of the camera
+		
+		glm::vec3 up_ = glm::vec3(0.0f, 1.0f, 0.0f);  // up vector of the camera
+		glm::vec3 front_ = glm::vec3(0.0f, 0.0f, -1.0f); // front vector of the camera
+		glm::vec3 right_ = glm::vec3(1.0f, 0.0f, 0.0f); // right vector of the camera
 
 		glm::mat4 viewMatrix_ = glm::mat4(1.0f); // view matrix of the camera
 		glm::mat4 projectionMatrix_ = glm::mat4(1.0f); // projection matrix of the camera

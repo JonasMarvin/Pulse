@@ -86,6 +86,18 @@ namespace Pulse::Modules {
 		return rotation_;
 	}
 
+	const glm::vec3& CameraModule::GetUp() const {
+		return up_;
+	}
+
+	const glm::vec3& CameraModule::GetFront() const {
+		return front_;
+	}
+
+	const glm::vec3& CameraModule::GetRight() const {
+		return right_;
+	}
+
 	float CameraModule::GetFieldOfView() const {
 		return fieldOfView_;
 	}
@@ -117,6 +129,9 @@ namespace Pulse::Modules {
 	void CameraModule::CalculateViewMatrix() {
 		glm::mat4 translation = glm::translate(glm::mat4(1.0f), -position_);
 		glm::mat4 rotation = glm::mat4_cast(rotation_);
+		up_ = glm::vec3(rotation * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
+		front_ = glm::vec3(rotation * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f));
+		right_ = glm::vec3(rotation * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
 		viewMatrix_ = translation * rotation;
 		CalculateViewProjectionMatrix();
 	}
