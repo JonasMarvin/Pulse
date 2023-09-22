@@ -29,7 +29,7 @@ namespace Pulse {
 	}
 
 	void TimeData::Initialize() {
-		lastFrameTime_ = stopwatch_.GetTime<std::chrono::nanoseconds>();
+		deltaTime_ = std::numeric_limits<double>::min();
 	}
 
 	void TimeData::Update() {

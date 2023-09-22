@@ -40,7 +40,6 @@ namespace Pulse {
 	void Application::Run() {
 		timeData_.Initialize();
 		while (isRunning_) {
-			timeData_.Update();
 			moduleManager_.GetModule < Modules::RendererModule>()->BeginScene();
 			OnUpdate(timeData_);
 			OnRender();
@@ -49,6 +48,7 @@ namespace Pulse {
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
 			moduleManager_.GetModule<Modules::RendererModule>()->EndScene();
+			timeData_.Update();
 		}
 	}
 
