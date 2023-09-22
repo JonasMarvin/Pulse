@@ -25,6 +25,10 @@ namespace Pulse::Modules {
 		template <typename T>
 		void RegisterModule();
 
+		// Registers a interface module Base to the module manager by using the implementation in Derived and initializes it by calling the modules Initialize() function
+		template <typename Base, typename Derived>
+		void RegisterModule();
+
 		// Returns a module of type T if it exists, otherwise returns nullptr
 		template <typename T>
 		T* GetModule();

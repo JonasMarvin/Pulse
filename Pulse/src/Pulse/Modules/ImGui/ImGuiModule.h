@@ -30,6 +30,6 @@ namespace Pulse::Modules {
 		float time_ = 0.0f; // time since the module was last updated
 
 		friend class ModuleManager; // friend class to allow the module manager to create and manage the window
-	}; // class ImGui
+	}; // class ImGuiModule
 
 } // namespace Pulse::Modules

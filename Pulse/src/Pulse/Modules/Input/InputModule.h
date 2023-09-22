@@ -9,6 +9,7 @@
 namespace Pulse::Modules {
 
 	// interface class for input on different platforms
+	// Access this module by using the ModuleManager. Implementation will be chosen at compile time.
 	class InputModule : public IModule {
 	public:
 		void Initialize() override = 0; // Virtual function to handle initialization of the input.
@@ -40,6 +41,6 @@ namespace Pulse::Modules {
 		virtual ~InputModule() = default; // Default destructor is protected to only allow module manager to destroy it.
 
 		friend class ModuleManager; // Module manager is a friend to allow it to create and destroy modules.
-	}; // class Input
+	}; // class InputModule
 
 } // namespace Pulse::Modules

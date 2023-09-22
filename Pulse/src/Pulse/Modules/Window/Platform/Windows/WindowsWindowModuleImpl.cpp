@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "Pulse/Modules/Window/Platform/Windows/WindowsWindowModule.h"
+#include "Pulse/Modules/Window/Platform/Windows/WindowsWindowModuleImpl.h"
 
 #include "Pulse/Events/Events.h"
 #include "Pulse/Modules/ModuleManager.h"
@@ -10,7 +10,7 @@ namespace Pulse::Modules::Windows {
 
 	static bool isGLFWInitialized = false;
 
-	void WindowsWindowModule::Initialize() {
+	void WindowsWindowModuleImpl::Initialize() {
 
 		PLS_CORE_INFO("Creating window {0} ({1}, {2})", data_.title, data_.width, data_.height);
 	
@@ -44,24 +44,24 @@ namespace Pulse::Modules::Windows {
 		});
 	}
 
-	void WindowsWindowModule::Shutdown() {
+	void WindowsWindowModuleImpl::Shutdown() {
 		glfwDestroyWindow(window_);
 		glfwTerminate();
 	}
 
-	void WindowsWindowModule::Update() {
+	void WindowsWindowModuleImpl::Update() {
 		glfwPollEvents();
 	}
 
-	unsigned int WindowsWindowModule::GetWidth() const {
+	unsigned int WindowsWindowModuleImpl::GetWidth() const {
 		return data_.width;
 	}
 
-	unsigned int WindowsWindowModule::GetHeight() const {
+	unsigned int WindowsWindowModuleImpl::GetHeight() const {
 		return data_.height;
 	}
 
-	void WindowsWindowModule::SetVSync(bool enabled) {
+	void WindowsWindowModuleImpl::SetVSync(bool enabled) {
 		if (enabled) {
 			glfwSwapInterval(1);
 		}
@@ -71,11 +71,11 @@ namespace Pulse::Modules::Windows {
 		data_.vsync = enabled;
 	}
 
-	bool WindowsWindowModule::IsVSync() const {
+	bool WindowsWindowModuleImpl::IsVSync() const {
 		return data_.vsync;
 	}
 
-	void* WindowsWindowModule::GetNativeWindow() const {
+	void* WindowsWindowModuleImpl::GetNativeWindow() const {
 		return window_;
 	}
 

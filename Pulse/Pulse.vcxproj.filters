@@ -111,13 +111,13 @@
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h">
       <Filter>src\Pulse\Modules\Input</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModule.h">
+    <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModuleImpl.h">
       <Filter>src\Pulse\Modules\Input\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
       <Filter>src\Pulse\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModule.h">
+    <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.h">
       <Filter>src\Pulse\Modules\Window\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Window\WindowModule.h">
@@ -183,7 +183,7 @@
     <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>vendor\imgui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModule.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\RendererModule.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.cpp" />

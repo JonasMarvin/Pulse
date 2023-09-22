@@ -79,6 +79,6 @@ namespace Pulse::Modules {
 		friend class Camera::OrthographicCameraTypeStrategy; // friend class to allow the camera type strategies to access the camera module for faster access to the camera module
 		friend class Camera::PerspectiveCameraTypeStrategy; // friend class to allow the camera type strategies to access the camera module for faster access to the camera module
 		friend class ModuleManager; // friend class to allow the module manager to create and manage the camera module
-	}; // class Camera
+	}; // class CameraModule
 
 } // namespace Pulse::Modules
