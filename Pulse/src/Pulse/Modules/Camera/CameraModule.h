@@ -16,6 +16,7 @@ namespace Pulse::Modules {
 	public:
 		// Type of the camera
 		enum class Type {
+			None = 0,
 			Orthographic,
 			Perspective
 		}; // enum Type
@@ -63,7 +64,7 @@ namespace Pulse::Modules {
 		float farPlane_ = 100.0f; // far plane of the camera
 		float zoomLevel_ = 1.0f; // zoom level of the camera
 		
-		Type type_ = Type::Orthographic; // type of the camera
+		Type type_ = Type::None; // type of the camera
 		Camera::ICameraTypeStrategy *cameraTypeStrategy_ = nullptr; // pointer to the camera type strategy to allow the camera module to calculate the projection matrix
 
 		Renderer* renderer_ = nullptr; // pointer to the renderer module to allow the camera module to access the renderer module faster

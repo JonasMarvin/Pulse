@@ -6,13 +6,6 @@ class Sandbox : public Pulse::Application {
 public:
 	Sandbox() {
 
-		//TODO: NEEDS TO BE FEEDED IN THE COMMAND QUEUE
-
-		// shader_->Bind();
-		// Submit(vertexArray_);
-		// squareShader_->Bind();
-		// Submit(squareVertexArray_);
-
 		vertexArray_ = Rendering::VertexArray::Create();
 
 		float vertices[3 * 3] = {
@@ -55,12 +48,14 @@ public:
 			#version 430 core
 			
 			layout(location = 0) in vec3 a_Position;
+			
+			uniform mat4 u_ViewProjection;
 
-			out vec3 v_Position;			
+			out vec3 v_Position;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -81,11 +76,13 @@ public:
 			
 			layout(location = 0) in vec3 a_Position;
 
-			out vec3 v_Position;			
+			uniform mat4 u_ViewProjection;
+
+			out vec3 v_Position;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -101,6 +98,9 @@ public:
 
 		shader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource, fragmentSource);
 		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
+		
+		ModuleManager::GetInstance().GetModule<Pulse::Modules::Renderer>()->Submit(shader_, vertexArray_);
+		ModuleManager::GetInstance().GetModule<Pulse::Modules::Renderer>()->Submit(squareShader_, squareVertexArray_);
 	}
 
 	~Sandbox() {

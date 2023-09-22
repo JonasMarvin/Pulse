@@ -198,7 +198,4 @@
     <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp" />
     <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
 </Project>

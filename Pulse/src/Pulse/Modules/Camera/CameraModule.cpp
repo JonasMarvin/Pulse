@@ -62,6 +62,11 @@ namespace Pulse::Modules {
 		type_ = type;
 		delete(cameraTypeStrategy_);
 		switch (type_) {
+			case Type::None:
+				renderer_->ResetViewProjectionMatrixReference();
+				delete(cameraTypeStrategy_);
+				cameraTypeStrategy_ = nullptr;
+				break;
 			case Type::Perspective:
 				cameraTypeStrategy_ = new Camera::PerspectiveCameraTypeStrategy(*this);
 				break;

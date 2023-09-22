@@ -2,8 +2,6 @@
 
 #include "Pulse/Modules/Rendering/Renderer.h"
 
-#include "Pulse/Modules/Rendering/Shader.h"
-
 namespace Pulse::Modules {
 
 	void Renderer::Initialize() {
@@ -32,7 +30,9 @@ namespace Pulse::Modules {
 		rendererAPI_->Clear();
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Rendering::VertexArray>& vertexArray) {
+	void Renderer::Submit(const std::shared_ptr<Rendering::Shader> shader, const std::shared_ptr<Rendering::VertexArray>& vertexArray) {
+		shader->Bind();
+		shader->UploadUniformMat4("u_ViewProjection", *viewProjectionMatrix_);
 		vertexArray->Bind();
 		rendererAPI_->DrawIndexed(vertexArray);
 	}

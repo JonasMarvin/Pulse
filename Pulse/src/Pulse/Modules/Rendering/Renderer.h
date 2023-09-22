@@ -4,6 +4,7 @@
 #include "Pulse/Modules/Rendering/GraphicsContext.h"
 #include "Pulse/Modules/Rendering/VertexArray.h"
 #include "Pulse/Modules/Rendering/RendererAPI.h"
+#include "Pulse/Modules/Rendering/Shader.h"
 
 // Class for rendering to a graphics api
 // Used to abstract the different graphics api's to be easy to use
@@ -16,11 +17,11 @@ namespace Pulse::Modules {
 		void Update() override; // function to handle the update event of the renderer
 		void Shutdown() override; // function to shutdown the renderer
 
-		void SetViewProjectionMatrixReference(const glm::mat4* viewProjectionMatrix); // function to set the view projection matrix of the renderer to point to the given matrix
-		void ResetViewProjectionMatrixReference(); // function to reset the view projection matrix of the renderer to point to the default matrix
+		void SetViewProjectionMatrixReference(const glm::mat4* viewProjectionMatrix); // function to set the view projection matrix of the renderer to point to the given matrix. Used by the camera module
+		void ResetViewProjectionMatrixReference(); // function to reset the view projection matrix of the renderer to point to the default matrix. Used by the camera module
 
 		void BeginScene(); // function to begin the frame
-		void Submit(const std::shared_ptr<Rendering::VertexArray>& vertexArray);
+		void Submit(const std::shared_ptr<Rendering::Shader> shader, const std::shared_ptr<Rendering::VertexArray>& vertexArray);
 		void EndScene(); // function to end the frame
 
 		void SetContextWindow(void* window); // function to set the context window of the renderer

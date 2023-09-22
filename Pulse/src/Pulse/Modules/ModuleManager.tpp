@@ -64,6 +64,7 @@ namespace Pulse::Modules {
             imGuiRenderableModulesMap_[typeIndex] = module;
         }
         modules_.push_back(module);
+        modulesMap_[typeIndex] = module;
     }
 
     template<typename T>
@@ -98,5 +99,6 @@ namespace Pulse::Modules {
             imGuiRenderableModulesMap_.erase(typeIndex);
         }
         modules_.erase(std::remove(modules_.begin(), modules_.end(), module), modules_.end());
+        modulesMap_.erase(typeIndex);
     }
 } // namespace Pulse::Modules
