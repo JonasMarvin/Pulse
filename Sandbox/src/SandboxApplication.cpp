@@ -144,7 +144,7 @@ public:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
 			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f * timeData);
 		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::I)) {
 			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f * timeData);
 		}
 
