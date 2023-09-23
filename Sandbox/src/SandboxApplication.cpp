@@ -97,8 +97,10 @@ public:
 			
 			layout(location = 0) out vec4 color;
 
+			uniform vec4 u_Color;
+
 			void main() {
-				color = vec4(0.8, 0.2, 0.3, 1.0);
+				color = u_Color;
 			}
 		)";
 
@@ -183,11 +185,11 @@ public:
 		camera_->SetRotation(currentRotation);
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
-			squarePosition_.x -= squareMoveSpeed * timeData; // Use the updated right vector
+			squarePosition_.x += squareMoveSpeed * timeData; // Use the updated right vector
 		}
 
 		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::J)) {
-			squarePosition_.x += squareMoveSpeed * timeData; // Use the updated right vector
+			squarePosition_.x -= squareMoveSpeed * timeData; // Use the updated right vector
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::K)) {
@@ -197,16 +199,23 @@ public:
 		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::I)) {
 			squarePosition_.y += squareMoveSpeed * timeData; // Use the updated right vector
 		}
-
 	}
 
 	void OnRender() override {
 		renderer_->Submit(shader_, vertexArray_);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		glm::vec4 redColor = glm::vec4(0.8f, 0.2f, 0.3f, 1.0f);
+		glm::vec4 blueColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
-				renderer_->Submit(squareShader_, squareVertexArray_, transform);
+				if (x % 2 == 0) {
+					squareShader_->UploadUniformFloat4("u_Color", redColor);
+				}
+				else {
+					squareShader_->UploadUniformFloat4("u_Color", blueColor);
+				}
+				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 			}
 		}
 	}
