@@ -6,6 +6,7 @@
 #include "Pulse/Modules/Window/WindowModule.h"
 
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 namespace Pulse::Modules {
 
@@ -47,7 +48,7 @@ namespace Pulse::Modules {
 	}
 
 	void ImGuiModule::RenderImGui() {
-		//TODO: Add ImGui rendering
+		
 	}
 
 	void ImGuiModule::BeginFrame() {

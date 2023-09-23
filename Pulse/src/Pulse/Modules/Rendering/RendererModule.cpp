@@ -2,6 +2,8 @@
 
 #include "Pulse/Modules/Rendering/RendererModule.h"
 
+#include "Pulse/Modules/Rendering/OpenGL/OpenGLShader.h"
+
 namespace Pulse::Modules {
 
 	void RendererModule::Initialize() {
@@ -32,8 +34,8 @@ namespace Pulse::Modules {
 
 	void RendererModule::Submit(const std::shared_ptr<Rendering::Shader> shader, const std::shared_ptr<Rendering::VertexArray>& vertexArray, const glm::mat4& transform) {
 		shader->Bind();
-		shader->UploadUniformMat4("u_ViewProjection", *viewProjectionMatrix_);
-		shader->UploadUniformMat4("u_Transform", transform);
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", *viewProjectionMatrix_);
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(shader)->UploadUniformMat4("u_Transform", transform);
 		vertexArray->Bind();
 		rendererAPI_->DrawIndexed(vertexArray);
 	}

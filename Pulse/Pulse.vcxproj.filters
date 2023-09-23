@@ -1,203 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    <Filter Include="Pulse">
+      <UniqueIdentifier>{6EABE80D-DABF-10BF-A341-B41E0F150DF0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse">
-      <UniqueIdentifier>{C5B9A5B3-3124-5A2A-7A62-0BD0E60B387F}</UniqueIdentifier>
+    <Filter Include="Pulse\Core">
+      <UniqueIdentifier>{86241CE5-72DC-5D32-DBE3-368EC7BAF822}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Core">
-      <UniqueIdentifier>{3DC1221C-298F-1622-1223-8748FE8FF286}</UniqueIdentifier>
+    <Filter Include="Pulse\Core\Logging">
+      <UniqueIdentifier>{1C2BF2FE-080F-B354-716F-ADA75D729DD6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Core\Logging">
-      <UniqueIdentifier>{D38EC9F5-BF88-F247-A8F5-8858948E58B4}</UniqueIdentifier>
+    <Filter Include="Pulse\Events">
+      <UniqueIdentifier>{926FD9A1-7ED2-6846-2758-A1FC139A34C9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Events">
-      <UniqueIdentifier>{0916FAB4-F50E-1907-1E41-FE8B0A99F812}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules">
+      <UniqueIdentifier>{36C67634-A286-F26A-6BC1-3BE8D7403747}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules">
-      <UniqueIdentifier>{8D3BACAB-F951-AA41-42C9-3563AE1E7BC9}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Camera">
+      <UniqueIdentifier>{EE819259-DA10-1C23-832F-301E6F9D2CC9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\ImGui">
-      <UniqueIdentifier>{77668841-E39D-D0D8-ECA7-34FC585EF7D1}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\ImGui">
+      <UniqueIdentifier>{E08BC46F-4CED-A17D-D55A-E82F41BBD83C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\Input">
-      <UniqueIdentifier>{4CA18941-B8D8-D1D8-C1E2-35FC2D99F8D1}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Input">
+      <UniqueIdentifier>{B5C6C56F-2128-A37D-AA95-E92F16F6D93C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\Input\Platform">
-      <UniqueIdentifier>{2013C07F-0C64-ABC1-35C8-998321783E2B}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Input\Platform">
+      <UniqueIdentifier>{A95ECBA0-9519-BB4C-3ED1-33972A6B05DD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\Input\Platform\Windows">
-      <UniqueIdentifier>{5ADDBE91-465A-B2D4-6FD7-B2E85BB34E68}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Input\Platform\Windows">
+      <UniqueIdentifier>{E3A17D59-CF88-3F51-78D9-A56E649FB8B7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\Window">
-      <UniqueIdentifier>{D4270A93-C04C-5913-E997-3EA3D51B5831}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Rendering">
+      <UniqueIdentifier>{034BA8DD-6F82-F074-788C-5498E442176E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\Window\Platform">
-      <UniqueIdentifier>{A872D42E-14E1-29AE-5DCA-E4ADC9771F4A}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Rendering\OpenGL">
+      <UniqueIdentifier>{D71228E1-C338-F247-AC7E-771398431714}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Modules\Window\Platform\Windows">
-      <UniqueIdentifier>{E244DE24-4E5F-41C6-9781-515A03DB68CD}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Window">
+      <UniqueIdentifier>{5DFACA88-4989-5452-F2A7-684DDE1565F8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Pulse\Utility">
-      <UniqueIdentifier>{086D7D1F-7483-7BB5-BDFA-06D729504C3D}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Window\Platform">
+      <UniqueIdentifier>{512F4971-BD47-309B-86F4-BF34F2CBC434}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vendor">
-      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    <Filter Include="Pulse\Modules\Window\Platform\Windows">
+      <UniqueIdentifier>{8B9A75E4-F75E-74D4-C0C4-A49E2C48100A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vendor\imgui">
-      <UniqueIdentifier>{5D3BD0F0-499E-5F95-F223-984BDE652B18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="vendor\imgui\backends">
-      <UniqueIdentifier>{27CEAEAF-933A-6AAA-5C2E-0208C8598C12}</UniqueIdentifier>
+    <Filter Include="Pulse\Utility">
+      <UniqueIdentifier>{B1F747A8-1DB8-C3DE-E6F2-0C5C527208BB}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Pulse.h">
-      <Filter>src</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Pulse.h" />
     <ClInclude Include="src\Pulse\Application.h">
-      <Filter>src\Pulse</Filter>
+      <Filter>Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Core\Core.h">
-      <Filter>src\Pulse\Core</Filter>
+      <Filter>Pulse\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Core\Logging\Log.h">
-      <Filter>src\Pulse\Core\Logging</Filter>
+      <Filter>Pulse\Core\Logging</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\EntryPoint.h">
-      <Filter>src\Pulse</Filter>
+      <Filter>Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\Event.h">
-      <Filter>src\Pulse\Events</Filter>
+      <Filter>Pulse\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\EventListener.h">
-      <Filter>src\Pulse\Events</Filter>
+      <Filter>Pulse\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\Events.h">
-      <Filter>src\Pulse\Events</Filter>
+      <Filter>Pulse\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\IEventListener.h">
-      <Filter>src\Pulse\Events</Filter>
+      <Filter>Pulse\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Camera\CameraModule.h">
+      <Filter>Pulse\Modules\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Camera\CameraTypeStrategy.h">
+      <Filter>Pulse\Modules\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\IModule.h">
-      <Filter>src\Pulse\Modules</Filter>
+      <Filter>Pulse\Modules</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\IRenderImGuiModule.h">
-      <Filter>src\Pulse\Modules</Filter>
+      <Filter>Pulse\Modules</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\IUpdatableModule.h">
-      <Filter>src\Pulse\Modules</Filter>
+      <Filter>Pulse\Modules</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\ImGui\ImGuiModule.h">
-      <Filter>src\Pulse\Modules\ImGui</Filter>
+      <Filter>Pulse\Modules\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Input\GamepadCodes.h">
-      <Filter>src\Pulse\Modules\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Pulse\Modules\Input\InputModule.h">
-      <Filter>src\Pulse\Modules\Input</Filter>
+      <Filter>Pulse\Modules\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Input\InputActions.h">
-      <Filter>src\Pulse\Modules\Input</Filter>
+      <Filter>Pulse\Modules\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Input\InputModule.h">
+      <Filter>Pulse\Modules\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Input\JoystickCodes.h">
-      <Filter>src\Pulse\Modules\Input</Filter>
+      <Filter>Pulse\Modules\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Input\KeyCodes.h">
-      <Filter>src\Pulse\Modules\Input</Filter>
+      <Filter>Pulse\Modules\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Input\MouseCodes.h">
-      <Filter>src\Pulse\Modules\Input</Filter>
+      <Filter>Pulse\Modules\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModuleImpl.h">
-      <Filter>src\Pulse\Modules\Input\Platform\Windows</Filter>
+      <Filter>Pulse\Modules\Input\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\ModuleManager.h">
-      <Filter>src\Pulse\Modules</Filter>
+      <Filter>Pulse\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\Buffer.h">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.h">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.h">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.h">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.h">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.h">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\RendererAPI.h">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\RendererModule.h">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\Shader.h">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h">
+      <Filter>Pulse\Modules\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.h">
-      <Filter>src\Pulse\Modules\Window\Platform\Windows</Filter>
+      <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\Window\WindowModule.h">
-      <Filter>src\Pulse\Modules\Window</Filter>
+      <Filter>Pulse\Modules\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pulse\TimeData.h">
+      <Filter>Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
-      <Filter>src\Pulse\Utility</Filter>
+      <Filter>Pulse\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Utility\UnicodeConverter.h">
-      <Filter>src\Pulse\Utility</Filter>
+      <Filter>Pulse\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\pch.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Pulse\Modules\Rendering\RendererModule.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\GraphicsContext.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\Buffer.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\Shader.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\VertexArray.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\RendererAPI.h" />
-    <ClInclude Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Pulse\Modules\Camera\CameraModule.h" />
-    <ClInclude Include="src\Pulse\Modules\Camera\CameraTypeStrategy.h" />
-    <ClInclude Include="src\Pulse\TimeData.h" />
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
-      <Filter>src\Pulse</Filter>
+      <Filter>Pulse</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp">
-      <Filter>src\Pulse\Core\Logging</Filter>
+      <Filter>Pulse\Core\Logging</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Events\EventListener.cpp">
-      <Filter>src\Pulse\Events</Filter>
+      <Filter>Pulse\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp">
-      <Filter>src\Pulse\Events</Filter>
+      <Filter>Pulse\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp">
+      <Filter>Pulse\Modules\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp">
+      <Filter>Pulse\Modules\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiBuild.cpp">
+      <Filter>Pulse\Modules\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp">
-      <Filter>src\Pulse\Modules\ImGui</Filter>
+      <Filter>Pulse\Modules\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModule.cpp">
-      <Filter>src\Pulse\Modules\Input\Platform\Windows</Filter>
+      <Filter>Pulse\Modules\Input\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
-      <Filter>src\Pulse\Modules</Filter>
+      <Filter>Pulse\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\Buffer.cpp">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.cpp">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.cpp">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.cpp">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.cpp">
+      <Filter>Pulse\Modules\Rendering\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\RendererAPI.cpp">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\RendererModule.cpp">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\Shader.cpp">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Rendering\VertexArray.cpp">
+      <Filter>Pulse\Modules\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.cpp">
+      <Filter>Pulse\Modules\Window\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pulse\TimeData.cpp">
+      <Filter>Pulse</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp">
-      <Filter>src\Pulse\Utility</Filter>
+      <Filter>Pulse\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Utility\UnicodeConverter.cpp">
-      <Filter>src\Pulse\Utility</Filter>
+      <Filter>Pulse\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\pch.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>vendor\imgui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>vendor\imgui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\RendererModule.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\Buffer.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\Shader.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\VertexArray.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Rendering\RendererAPI.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp" />
-    <ClCompile Include="src\Pulse\TimeData.cpp" />
+    <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
 </Project>

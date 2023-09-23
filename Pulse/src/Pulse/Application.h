@@ -26,6 +26,7 @@ namespace Pulse
 
 		virtual void OnUpdate(const TimeData& timeData) = 0; // Update function to be defined in CLIENT. Gets called in the main loop of the application automatically before updating and rendering.
 		virtual void OnRender() = 0; // Render function to be defined in CLIENT. Gets called in the main loop of the application automatically before rendering and after beginning the scene and after update.
+		virtual void OnImGuiRender() = 0; // ImGui render function to be defined in CLIENT. Gets called in the main loop of the application automatically after rendering and before ending the scene.
 
 		void Run(); // Main loop of the application
 

@@ -45,6 +45,7 @@ namespace Pulse {
 			OnRender();
 			moduleManager_.UpdateModules();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->BeginFrame();
+			OnImGuiRender();
 			moduleManager_.RenderAllToImGui();
 			moduleManager_.GetModule<Modules::ImGuiModule>()->EndFrame();
 			moduleManager_.GetModule<Modules::RendererModule>()->EndScene();
