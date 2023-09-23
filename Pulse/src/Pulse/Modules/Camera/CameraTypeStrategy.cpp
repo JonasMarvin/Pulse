@@ -18,4 +18,5 @@ namespace Pulse::Modules::Camera {
 		camera_.projectionMatrix_ = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, camera_.nearPlane_, camera_.farPlane_);
 	}
 
+
 } // namespace Pulse::Modules::Camera

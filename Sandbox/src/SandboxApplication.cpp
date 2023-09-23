@@ -185,6 +185,40 @@ public:
 		currentRotation = rotationChangeY * currentRotation * rotationChangeX;
 		camera_->SetRotation(currentRotation);
 
+		/* THIS ROTATES THE CAMERA AROUND ITS OWN AXIS (look weird)
+		* glm::quat currentRotation = camera_->GetRotation();
+
+		right = camera_->GetRight();
+		up = camera_->GetUp();
+		front = camera_->GetFront();
+
+		glm::quat rotationChange = glm::quat(1, 0, 0, 0); // Identity quaternion
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
+			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), up);
+		}
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
+			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), up);
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
+			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), right);
+		}
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
+			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), right);
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::PageUp)) {
+			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), front);
+		}
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::PageDown)) {
+			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), front);
+		}
+
+		currentRotation = rotationChange * currentRotation;
+		camera_->SetRotation(currentRotation);
+		*/
+
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
 			squarePosition_.x += squareMoveSpeed * timeData; // Use the updated right vector
 		}
