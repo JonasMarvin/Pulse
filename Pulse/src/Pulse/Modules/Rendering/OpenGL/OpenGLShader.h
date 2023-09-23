@@ -14,6 +14,7 @@ namespace Pulse::Modules::Rendering {
 		void Unbind() const override; // Unbind the shader program from OpenGL
 
 		void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) override; // Upload a 4x4 matrix to the shader
+		void UploadUniformFloat4(const std::string& name, const glm::vec4& values) override; // Upload a 4 float vector to the shader
 
 	private:
 		uint32_t rendererID_ = 0; // The ID of the shader program to be used by OpenGL

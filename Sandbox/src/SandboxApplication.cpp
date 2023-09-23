@@ -54,12 +54,13 @@ public:
 			layout(location = 0) in vec3 a_Position;
 			
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -81,12 +82,13 @@ public:
 			layout(location = 0) in vec3 a_Position;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			out vec3 v_Position;
 
 			void main() {
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
 		)";
 
@@ -95,8 +97,10 @@ public:
 			
 			layout(location = 0) out vec4 color;
 
+			uniform vec4 u_Color;
+
 			void main() {
-				color = vec4(0.8, 0.2, 0.3, 1.0);
+				color = u_Color;
 			}
 		)";
 
@@ -116,37 +120,6 @@ public:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::O)) {
 			camera_->SetType(Pulse::Modules::CameraModule::Type::Orthographic);
 		}
-		// Change the camera settings:
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::K)) {
-			camera_->SetFieldOfView(camera_->GetFieldOfView() + 1.0f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
-			camera_->SetFieldOfView(camera_->GetFieldOfView() - 1.0f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::N)) {
-			camera_->SetAspectRatio(camera_->GetAspectRatio() + 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::M)) {
-			camera_->SetAspectRatio(camera_->GetAspectRatio() - 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::B)) {
-			camera_->SetNearPlane(camera_->GetNearPlane() + 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::V)) {
-			camera_->SetNearPlane(camera_->GetNearPlane() - 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::C)) {
-			camera_->SetFarPlane(camera_->GetFarPlane() + 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::X)) {
-			camera_->SetFarPlane(camera_->GetFarPlane() - 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Z)) {
-			camera_->SetZoomLevel(camera_->GetZoomLevel() + 0.1f * timeData);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::I)) {
-			camera_->SetZoomLevel(camera_->GetZoomLevel() - 0.1f * timeData);
-		}
 
 		// Movement
 		glm::vec3 translation = camera_->GetPosition();
@@ -161,27 +134,27 @@ public:
 			translation += movement;
 		}
 
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
-			movement = -right * (cameraSpeed_ * timeData); // Use the updated right vector
-			translation += movement;
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
+			movement = right * (cameraSpeed_ * timeData); // Use the updated right vector
+			translation -= movement;
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::S)) {
-			movement = -front * (cameraSpeed_ * timeData); // Use the updated front vector
-			translation += movement;
+			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
+			translation -= movement;
 		}
 
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
 			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
 			translation += movement;
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Q)) {
-			movement = -up * (cameraSpeed_ * timeData); // Use the updated up vector
-			translation += movement;
+			movement = up * (cameraSpeed_ * timeData); // Use the updated up vector
+			translation -= movement;
 		}
 
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::E)) {
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::E)) {
 			movement = up * (cameraSpeed_ * timeData); // Use the updated up vector
 			translation += movement;
 		}
@@ -189,32 +162,62 @@ public:
 		camera_->SetPosition(translation);
 		glm::quat currentRotation = camera_->GetRotation();
 
+		glm::quat rotationChangeY = glm::quat(1, 0, 0, 0); // Identity quaternion for Y-axis
+		glm::quat rotationChangeX = glm::quat(1, 0, 0, 0); // Identity quaternion for X-axis
+
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
-			currentRotation = currentRotation * rotationChange;
+			rotationChangeY = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
 		}
 
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
-			currentRotation = currentRotation * rotationChange;
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
+			rotationChangeY = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
 		}
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
-			currentRotation = currentRotation * rotationChange;
+			rotationChangeX = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
 		}
 
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
-			glm::quat rotationChange = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
-			currentRotation = currentRotation * rotationChange;
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
+			rotationChangeX = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
 		}
 
+		currentRotation = rotationChangeY * currentRotation * rotationChangeX;
 		camera_->SetRotation(currentRotation);
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
+			squarePosition_.x += squareMoveSpeed * timeData; // Use the updated right vector
+		}
+
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::J)) {
+			squarePosition_.x -= squareMoveSpeed * timeData; // Use the updated right vector
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::K)) {
+			squarePosition_.y -= squareMoveSpeed * timeData; // Use the updated right vector
+		}
+
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::I)) {
+			squarePosition_.y += squareMoveSpeed * timeData; // Use the updated right vector
+		}
 	}
 
 	void OnRender() override {
 		renderer_->Submit(shader_, vertexArray_);
-		renderer_->Submit(squareShader_, squareVertexArray_);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		glm::vec4 redColor = glm::vec4(0.8f, 0.2f, 0.3f, 1.0f);
+		glm::vec4 blueColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
+		for (int y = 0; y < 20; y++) {
+			for (int x = 0; x < 20; x++) {
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
+				if (x % 2 == 0) {
+					squareShader_->UploadUniformFloat4("u_Color", redColor);
+				}
+				else {
+					squareShader_->UploadUniformFloat4("u_Color", blueColor);
+				}
+				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
+			}
+		}
 	}
 
 	~Sandbox() {
@@ -228,6 +231,10 @@ private:
 
 	float cameraSpeed_ = 0.5f; // speed of the camera
 	float cameraRotationSpeed_ = 100; // rotation speed of the camera
+
+	float squareMoveSpeed = 5; // rotation speed of the camera
+
+	glm::vec3 squarePosition_ = glm::vec3(0.0f); // position of the square
 
 	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object

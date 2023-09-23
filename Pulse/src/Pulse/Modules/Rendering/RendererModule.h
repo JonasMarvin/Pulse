@@ -21,7 +21,7 @@ namespace Pulse::Modules {
 		void ResetViewProjectionMatrixReference(); // function to reset the view projection matrix of the renderer to point to the default matrix. Used by the camera module
 
 		void BeginScene(); // function to begin the frame
-		void Submit(const std::shared_ptr<Rendering::Shader> shader, const std::shared_ptr<Rendering::VertexArray>& vertexArray);
+		void Submit(const std::shared_ptr<Rendering::Shader> shader, const std::shared_ptr<Rendering::VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f)); // function to submit a object to get rendered
 		void EndScene(); // function to end the frame
 
 		void SetContextWindow(void* window); // function to set the context window of the renderer
