@@ -12,23 +12,23 @@ namespace Pulse::Modules::Windows {
 		window_ = static_cast<GLFWwindow*>(ModuleManager::GetInstance().GetModule<WindowModule>()->GetNativeWindow());
 
 		glfwSetKeyCallback(window_, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-			Pulse::Events::Input::KeyEvent->Trigger(static_cast<Pulse::Input::KeyCode>(key), static_cast<Pulse::Input::InputAction>(action));
+			Events::Input::KeyEvent->Trigger(static_cast<Input::KeyCode>(key), static_cast<Input::InputAction>(action));
 		});
 
 		glfwSetMouseButtonCallback(window_, [](GLFWwindow* window, int button, int action, int mods) {
-			Pulse::Events::Input::MouseEvent->Trigger(static_cast<Pulse::Input::MouseCode>(button), static_cast<Pulse::Input::InputAction>(action));
+			Events::Input::MouseEvent->Trigger(static_cast<Input::MouseCode>(button), static_cast<Input::InputAction>(action));
 		});
 
 		glfwSetScrollCallback(window_, [](GLFWwindow* window, double xOffset, double yOffset) {
-			Pulse::Events::Input::ScrollEvent->Trigger(xOffset, yOffset);
+			Events::Input::ScrollEvent->Trigger(xOffset, yOffset);
 		});
 
 		glfwSetCursorPosCallback(window_, [](GLFWwindow* window, double xPos, double yPos) {
-			Pulse::Events::Input::MouseMovedEvent->Trigger(xPos, yPos);
+			Events::Input::MouseMovedEvent->Trigger(xPos, yPos);
 		});
 
 		glfwSetCharCallback(window_, [](GLFWwindow* window, unsigned int character) {
-			Pulse::Events::Input::CharEvent->Trigger(character);
+			Events::Input::CharEvent->Trigger(character);
 		});
 	}
 

@@ -12,7 +12,7 @@ namespace Pulse::Modules::Rendering {
 		void SetClearColor(const glm::vec4& color) override; // set clear color
 		void Clear() override; // clear screen
 
-		void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override; // draw indexed vertex array
+		void DrawIndexed(const Ref<VertexArray>& vertexArray) override; // draw indexed vertex array
 
 		const Type GetAPIType() const override; // get API type
 	private:

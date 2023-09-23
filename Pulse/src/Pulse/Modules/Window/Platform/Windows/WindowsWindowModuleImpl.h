@@ -8,7 +8,7 @@ namespace Pulse::Modules::Windows {
 
 	// Class for a Windows window
 	// Its a module and should only be created and managed by the module manager
-	class WindowsWindowModuleImpl : public Pulse::Modules::WindowModule {
+	class WindowsWindowModuleImpl : public WindowModule {
 	public:
 		void Initialize() override; // function to initialize the window
 		void Update() override; // function to handle the update event of the window

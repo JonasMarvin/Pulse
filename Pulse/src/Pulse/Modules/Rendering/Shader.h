@@ -12,7 +12,7 @@ namespace Pulse::Modules::Rendering {
 		virtual void Bind() const = 0; // bind the vertex buffer
 		virtual void Unbind() const = 0; // unbind the vertex buffer
 
-		static std::shared_ptr<Shader> Create(const std::string& vertexSource, const std::string& fragmentSource); // factory method to create vertex buffer of the current API
+		static Ref<Shader> Create(const std::string& vertexSource, const std::string& fragmentSource); // factory method to create vertex buffer of the current API
 	}; // class Shader
 
 } // namespace Pulse::Modules::Rendering

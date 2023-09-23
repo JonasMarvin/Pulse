@@ -39,14 +39,14 @@ public:
 			-0.2f,  0.2f, 0.0f
 		};
 
-		std::shared_ptr<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		Pulse::Ref<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ Rendering::ShaderDataType::Float3, "a_Position" }
 			});
 		squareVertexArray_->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Rendering::IndexBuffer> squareIB = Rendering::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		Pulse::Ref<Rendering::IndexBuffer> squareIB = Rendering::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		squareVertexArray_->SetIndexBuffer(squareIB);
 
 		std::string vertexSource = R"(
@@ -238,13 +238,13 @@ private:
 	glm::vec3 squarePosition_ = glm::vec3(0.0f); // position of the square
 	glm::vec3 squareColor_ = glm::vec3(1.0f, 0.0f, 0.0f); // color of the square
 
-	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
-	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
-	std::shared_ptr<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
-	std::shared_ptr<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
+	Pulse::Ref<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
+	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
+	Pulse::Ref<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
+	Pulse::Ref<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
 
-	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
-	std::shared_ptr<Pulse::Modules::Rendering::Shader> squareShader_ = nullptr; // pointer to the shader
+	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
+	Pulse::Ref<Pulse::Modules::Rendering::Shader> squareShader_ = nullptr; // pointer to the shader
 };
 
 Pulse::Application* Pulse::CreateApplication() {
