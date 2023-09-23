@@ -2,6 +2,8 @@
 // E.g disabling specific warnings or defining macros.
 #pragma once
 
+#include <memory>
+
 // Asserts
 
 #ifdef PLS_DEBUG
@@ -18,3 +20,26 @@
 
  // Macro to get a bit at a specific position
 #define PLS_BIT(x) (1 << x)
+
+// Types for managing the lifetime of objects
+namespace Pulse {
+
+	// Unique pointer system
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T, typename ... Args>
+	constexpr Scope<T> CreateScope(Args&& ... args) {
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+
+	// Reference counting system
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+	template<typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args) {
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+
+} // namespace Pulse
