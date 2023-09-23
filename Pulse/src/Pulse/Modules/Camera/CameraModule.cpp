@@ -129,14 +129,15 @@ namespace Pulse::Modules {
 	}
 
 	void CameraModule::CalculateViewMatrix() {
-		glm::mat4 translation = glm::translate(glm::mat4(1.0f), position_);
-		glm::mat4 rotation = glm::mat4_cast(rotation_);
+		glm::mat4 translation = glm::translate(glm::mat4(1.0f), -position_);
+		glm::mat4 rotation = glm::mat4_cast(glm::inverse(rotation_));
 
 		up_ = glm::normalize(glm::vec3(rotation * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f)));
 		front_ = glm::normalize(glm::vec3(rotation * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f)));
 		right_ = glm::normalize(glm::vec3(rotation * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f)));
-		viewMatrix_ = translation * rotation;
-		viewMatrix_ = glm::inverse(viewMatrix_);
+
+		viewMatrix_ = rotation * translation;
+
 		CalculateViewProjectionMatrix();
 	}
 
