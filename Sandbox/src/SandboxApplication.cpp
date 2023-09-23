@@ -1,4 +1,5 @@
 #include <Pulse.h>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace Pulse::Modules;
 
@@ -97,10 +98,10 @@ public:
 			
 			layout(location = 0) out vec4 color;
 
-			uniform vec4 u_Color;
+			uniform vec3 u_Color;
 
 			void main() {
-				color = u_Color;
+				color = vec4(u_Color, 1.0);
 			}
 		)";
 
@@ -203,21 +204,21 @@ public:
 
 	void OnRender() override {
 		renderer_->Submit(shader_, vertexArray_);
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->Bind();
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->UploadUniformFloat3("u_Color", squareColor_);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-		glm::vec4 redColor = glm::vec4(0.8f, 0.2f, 0.3f, 1.0f);
-		glm::vec4 blueColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
-				if (x % 2 == 0) {
-					squareShader_->UploadUniformFloat4("u_Color", redColor);
-				}
-				else {
-					squareShader_->UploadUniformFloat4("u_Color", blueColor);
-				}
 				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 			}
 		}
+	}
+
+	void OnImGuiRender() override {
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(squareColor_));
+		ImGui::End();
 	}
 
 	~Sandbox() {
@@ -235,6 +236,7 @@ private:
 	float squareMoveSpeed = 5; // rotation speed of the camera
 
 	glm::vec3 squarePosition_ = glm::vec3(0.0f); // position of the square
+	glm::vec3 squareColor_ = glm::vec3(1.0f, 0.0f, 0.0f); // color of the square
 
 	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object

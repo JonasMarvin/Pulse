@@ -39,8 +39,6 @@ project "Pulse"
 	files{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.cpp",
-		"%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.cpp"
 	}
 
 	defines{
@@ -94,12 +92,13 @@ project "Sandbox"
 
 	files{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
 	}
 
 	includedirs{
 		"Pulse/vendor/spdlog/include",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGui}",
 		"Pulse/src",
 		"Pulse/vendor"
 	}

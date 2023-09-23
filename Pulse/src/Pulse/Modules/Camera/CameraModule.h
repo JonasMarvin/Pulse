@@ -66,8 +66,8 @@ namespace Pulse::Modules {
 		glm::mat4 viewProjectionMatrix_ = glm::mat4(1.0f); // view projection matrix of the camera
 
 		float fieldOfView_ = 60.0f; // field of view of the camera in degree
-		float aspectRatio_ = 1.0f; // aspect ratio of the camera
-		float nearPlane_ = 0; // near plane of the camera
+		float aspectRatio_ = 1.77777777778f; // aspect ratio of the camera TODO: Get aspect ratio from window
+		float nearPlane_ = 0.1f; // near plane of the camera
 		float farPlane_ = 100.0f; // far plane of the camera
 		float zoomLevel_ = 1.0f; // zoom level of the camera
 		
