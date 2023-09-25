@@ -11,6 +11,8 @@
 #include "Pulse/Utility/UnicodeConverter.h"
 #include "Pulse/Modules/Rendering/RendererModule.h"
 #include "Pulse/Modules/Rendering/OpenGL/OpenGLShader.h"
+#include "Pulse/Modules/Rendering/Texture.h"
+#include "Pulse/Modules/Rendering/OpenGL/OpenGLTexture.h"
 #include "Pulse/Modules/Input/InputModule.h"
 #include "Pulse/Modules/Window/WindowModule.h"
 #include "Pulse/Modules/Camera/CameraModule.h"

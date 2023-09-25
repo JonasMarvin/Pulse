@@ -32,16 +32,17 @@ public:
 
 		squareVertexArray_ = Rendering::VertexArray::Create();
 
-		float squareVertices[3 * 4] = {
-			-0.2f, -0.2f, 0.0f,
-			 0.2f, -0.2f, 0.0f,
-			 0.2f,  0.2f, 0.0f,
-			-0.2f,  0.2f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.2f, -0.2f, 0.0f, 0.0f, 0.0f,
+			 0.2f, -0.2f, 0.0f, 1.0f, 0.0f,
+			 0.2f,  0.2f, 0.0f, 1.0f, 1.0f,
+			-0.2f,  0.2f, 0.0f ,0.0f, 1.0f
 		};
 
 		Pulse::Ref<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
-			{ Rendering::ShaderDataType::Float3, "a_Position" }
+			{ Rendering::ShaderDataType::Float3, "a_Position" },
+			{ Rendering::ShaderDataType::Float2, "a_TexCoord" }
 			});
 		squareVertexArray_->AddVertexBuffer(squareVB);
 
@@ -81,14 +82,15 @@ public:
 			#version 430 core
 			
 			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
 
 			uniform mat4 u_ViewProjection;
 			uniform mat4 u_Transform;
 
-			out vec3 v_Position;
+			out vec2 v_TexCoord;
 
 			void main() {
-				v_Position = a_Position;
+				v_TexCoord = a_TexCoord;
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 			}
 		)";
@@ -98,15 +100,22 @@ public:
 			
 			layout(location = 0) out vec4 color;
 
-			uniform vec3 u_Color;
+			in vec2 v_TexCoord;
+
+			uniform sampler2D u_Texture;
 
 			void main() {
-				color = vec4(u_Color, 1.0);
+				color = texture(u_Texture, v_TexCoord);
 			}
 		)";
 
 		shader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource, fragmentSource);
 		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
+
+		texture_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/Test.png");
+
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->Bind();
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(const Pulse::TimeData& timeData) override {
@@ -238,12 +247,12 @@ public:
 
 	void OnRender() override {
 		renderer_->Submit(shader_, vertexArray_);
-		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->Bind();
-		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->UploadUniformFloat3("u_Color", squareColor_);
+		
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
+				texture_->Bind();
 				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 			}
 		}
@@ -276,6 +285,7 @@ private:
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
 	Pulse::Ref<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
 	Pulse::Ref<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
+	Pulse::Ref<Pulse::Modules::Rendering::Texture2D> texture_ = nullptr; // pointer to the texture
 
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
 	Pulse::Ref<Pulse::Modules::Rendering::Shader> squareShader_ = nullptr; // pointer to the shader

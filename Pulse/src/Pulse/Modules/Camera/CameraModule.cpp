@@ -13,7 +13,7 @@ namespace Pulse::Modules {
 	void CameraModule::Initialize() {
 		renderer_ = ModuleManager::GetInstance().GetModule<RendererModule>();
 		renderer_->SetViewProjectionMatrixReference(&viewProjectionMatrix_);
-		SetType(Type::Orthographic); // TODO: Make this configurable
+		SetType(Type::Perspective); // TODO: Make this configurable
 	}
 
 	void CameraModule::Shutdown() {
