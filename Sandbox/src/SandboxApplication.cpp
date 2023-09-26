@@ -78,14 +78,14 @@ public:
 			}
 		)";
 
-		shader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource, fragmentSource);
-		squareShader_ = Pulse::Modules::Rendering::Shader::Create("assets/shaders/Texture.glsl");
+		shaderLibrary_.Add(Pulse::Modules::Rendering::OpenGLShader::Create("VertexPosColor", vertexSource, fragmentSource));
+		auto textureShader = shaderLibrary_.Load("assets/shaders/Texture.glsl");
 
 		texture_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/Test.png");
 		textureAlphaChannel_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/TestAlpha.png");
 
-		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->Bind();
-		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->UploadUniformInt("u_Texture", 0);
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(textureShader)->Bind();
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(const Pulse::TimeData& timeData) override {
@@ -216,16 +216,18 @@ public:
 	}
 
 	void OnRender() override {
-		renderer_->Submit(shader_, vertexArray_);
-		
+		auto vertexPosColorShader = shaderLibrary_.Get("VertexPosColor");
+		renderer_->Submit(vertexPosColorShader, vertexArray_);
+
+		auto textureShader = shaderLibrary_.Get("Texture");
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
 				texture_->Bind();
-				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
+				renderer_->Submit(textureShader, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 				textureAlphaChannel_->Bind();
-				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
+				renderer_->Submit(textureShader, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 			}
 		}
 	}
@@ -252,8 +254,8 @@ private:
 
 	glm::vec3 squarePosition_ = glm::vec3(0.0f); // position of the square
 	glm::vec3 squareColor_ = glm::vec3(1.0f, 0.0f, 0.0f); // color of the square
+	Pulse::Modules::Rendering::ShaderLibrary shaderLibrary_; // shader library
 
-	Pulse::Ref<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
 	Pulse::Ref<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
 	Pulse::Ref<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
@@ -261,7 +263,6 @@ private:
 	Pulse::Ref<Pulse::Modules::Rendering::Texture2D> textureAlphaChannel_ = nullptr; // pointer to the texture
 
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
-	Pulse::Ref<Pulse::Modules::Rendering::Shader> squareShader_ = nullptr; // pointer to the shader
 };
 
 Pulse::Application* Pulse::CreateApplication() {

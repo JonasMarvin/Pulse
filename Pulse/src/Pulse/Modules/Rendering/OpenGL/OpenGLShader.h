@@ -11,12 +11,14 @@ namespace Pulse::Modules::Rendering {
 	// class to represent the OpenGL shader program
 	class OpenGLShader : public Shader {
 	public:
-		OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource); // creating, compiling and linking the shader program from strings
+		OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource); // creating, compiling and linking the shader program from strings
 		OpenGLShader(const std::string& filepath); // creating, compiling and linking the shader program from a file
+		OpenGLShader(const std::string& name, const std::string& filepath); // creating, compiling and linking the shader program from a file
 		~OpenGLShader(); // Destructor to destroy the shader program
 
 		void Bind() const override; // Bind the shader program to OpenGL
 		void Unbind() const override; // Unbind the shader program from OpenGL
+		const std::string& GetName() const override; // get the name of the shader
 
 		void UploadUniformInt(const std::string& name, int value); // Upload an integer to the shader
 
@@ -36,6 +38,8 @@ namespace Pulse::Modules::Rendering {
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources); // Compile the shader program
 
 		uint32_t rendererID_ = 0; // The ID of the shader program to be used by OpenGL
+		std::string name_; // The name of the shader program
+
 	}; // class OpenGLShader
 
 } // namespace Pulse::Modules::Rendering

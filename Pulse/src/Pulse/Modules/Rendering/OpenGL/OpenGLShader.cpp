@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include <filesystem>
 #include <fstream>
 
 #include "Pulse/Modules/Rendering/OpenGL/OpenGLShader.h"
@@ -9,7 +10,7 @@
 
 namespace Pulse::Modules::Rendering {
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource) {
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : name_(name) {
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSource;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSource;
@@ -17,7 +18,19 @@ namespace Pulse::Modules::Rendering {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& filepath) {
-		std::string shaderSource = ReadFile(filepath);
+		std::filesystem::path canonicalPath = std::filesystem::canonical(filepath);
+
+		std::string shaderSource = ReadFile(canonicalPath.string());
+		auto shaderSources = ProcessShaderSource(shaderSource);
+		Compile(shaderSources);
+
+		name_ = canonicalPath.stem().string();
+	}
+
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& filepath) : name_(name) {
+		std::filesystem::path canonicalPath = std::filesystem::canonical(filepath);
+
+		std::string shaderSource = ReadFile(canonicalPath.string());
 		auto shaderSources = ProcessShaderSource(shaderSource);
 		Compile(shaderSources);
 	}
@@ -32,6 +45,10 @@ namespace Pulse::Modules::Rendering {
 
 	void OpenGLShader::Unbind() const {
 		glUseProgram(0);
+	}
+
+	const std::string& OpenGLShader::GetName() const {
+		return name_;
 	}
 
 	void OpenGLShader::UploadUniformInt(const std::string& name, int value) {
@@ -70,18 +87,18 @@ namespace Pulse::Modules::Rendering {
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath) {
-		std::ifstream in(filepath, std::ios::in | std::ios::binary);
+		std::filesystem::path canonicalPath = std::filesystem::canonical(filepath);
+
+		std::ifstream in(canonicalPath, std::ios::in | std::ios::binary);
 		
 		if (!in) {
-			PLS_CORE_ERROR("Could not open file '{0}'", filepath);
+			PLS_CORE_ERROR("Could not open file '{0}'", canonicalPath.string());
 			PLS_CORE_ASSERT(false, "Could not open file!");
 			return "";
 		}
 
 		std::string result;
-		in.seekg(0, std::ios::end);
-		result.resize(in.tellg());
-		in.seekg(0, std::ios::beg);
+		result.resize(std::filesystem::file_size(canonicalPath));
 		in.read(&result[0], result.size());
 		in.close();
 
