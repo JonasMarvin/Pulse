@@ -70,7 +70,7 @@ namespace Pulse::Modules::Rendering {
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath) {
-		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		
 		if (!in) {
 			PLS_CORE_ERROR("Could not open file '{0}'", filepath);
@@ -120,7 +120,9 @@ namespace Pulse::Modules::Rendering {
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		PLS_CORE_ASSERT(shaderSources.size() <= 2, "Only two shaders are supported for now!");
+		std::array<GLenum, 2> glShaderIDs = { 0, 0 };
+		int glShaderIDIndex = 0;
 		for (auto& keyValue : shaderSources) {
 			GLenum shaderType = keyValue.first;
 			const std::string& shaderSource = keyValue.second;
@@ -148,7 +150,7 @@ namespace Pulse::Modules::Rendering {
 				break;
 			}
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 		
 		glLinkProgram(program);
