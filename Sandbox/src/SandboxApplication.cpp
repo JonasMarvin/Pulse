@@ -113,6 +113,7 @@ public:
 		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
 
 		texture_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/Test.png");
+		textureAlphaChannel_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/TestAlpha.png");
 
 		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->Bind();
 		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->UploadUniformInt("u_Texture", 0);
@@ -254,6 +255,8 @@ public:
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
 				texture_->Bind();
 				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
+				textureAlphaChannel_->Bind();
+				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 			}
 		}
 	}
@@ -286,6 +289,7 @@ private:
 	Pulse::Ref<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
 	Pulse::Ref<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
 	Pulse::Ref<Pulse::Modules::Rendering::Texture2D> texture_ = nullptr; // pointer to the texture
+	Pulse::Ref<Pulse::Modules::Rendering::Texture2D> textureAlphaChannel_ = nullptr; // pointer to the texture
 
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
 	Pulse::Ref<Pulse::Modules::Rendering::Shader> squareShader_ = nullptr; // pointer to the shader
