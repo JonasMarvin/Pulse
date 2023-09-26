@@ -36,11 +36,11 @@ namespace Pulse::Modules::Windows {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			data.height = height;
 			data.width = width;
-			Pulse::Events::Window::WindowResizeEvent->Trigger(width, height);
+			Events::Window::WindowResizeEvent->Trigger(width, height);
 		});
 
 		glfwSetWindowCloseCallback(window_, [](GLFWwindow* window) {
-			Pulse::Events::Window::WindowCloseEvent->Trigger();
+			Events::Window::WindowCloseEvent->Trigger();
 		});
 	}
 

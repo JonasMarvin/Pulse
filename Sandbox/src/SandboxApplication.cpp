@@ -32,21 +32,22 @@ public:
 
 		squareVertexArray_ = Rendering::VertexArray::Create();
 
-		float squareVertices[3 * 4] = {
-			-0.2f, -0.2f, 0.0f,
-			 0.2f, -0.2f, 0.0f,
-			 0.2f,  0.2f, 0.0f,
-			-0.2f,  0.2f, 0.0f
+		float squareVertices[5 * 4] = {
+			-0.2f, -0.2f, 0.0f, 0.0f, 0.0f,
+			 0.2f, -0.2f, 0.0f, 1.0f, 0.0f,
+			 0.2f,  0.2f, 0.0f, 1.0f, 1.0f,
+			-0.2f,  0.2f, 0.0f ,0.0f, 1.0f
 		};
 
-		std::shared_ptr<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		Pulse::Ref<Rendering::VertexBuffer> squareVB = Rendering::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
-			{ Rendering::ShaderDataType::Float3, "a_Position" }
+			{ Rendering::ShaderDataType::Float3, "a_Position" },
+			{ Rendering::ShaderDataType::Float2, "a_TexCoord" }
 			});
 		squareVertexArray_->AddVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Rendering::IndexBuffer> squareIB = Rendering::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		Pulse::Ref<Rendering::IndexBuffer> squareIB = Rendering::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		squareVertexArray_->SetIndexBuffer(squareIB);
 
 		std::string vertexSource = R"(
@@ -77,36 +78,14 @@ public:
 			}
 		)";
 
-		std::string vertexSource2 = R"(
-			#version 430 core
-			
-			layout(location = 0) in vec3 a_Position;
+		shaderLibrary_.Add(Pulse::Modules::Rendering::OpenGLShader::Create("VertexPosColor", vertexSource, fragmentSource));
+		auto textureShader = shaderLibrary_.Load("assets/shaders/Texture.glsl");
 
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
+		texture_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/Test.png");
+		textureAlphaChannel_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/TestAlpha.png");
 
-			out vec3 v_Position;
-
-			void main() {
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string fragmentSource2 = R"(
-			#version 430 core
-			
-			layout(location = 0) out vec4 color;
-
-			uniform vec3 u_Color;
-
-			void main() {
-				color = vec4(u_Color, 1.0);
-			}
-		)";
-
-		shader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource, fragmentSource);
-		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(textureShader)->Bind();
+		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(const Pulse::TimeData& timeData) override {
@@ -185,6 +164,40 @@ public:
 		currentRotation = rotationChangeY * currentRotation * rotationChangeX;
 		camera_->SetRotation(currentRotation);
 
+		/* THIS ROTATES THE CAMERA AROUND ITS OWN AXIS (look weird)
+		* glm::quat currentRotation = camera_->GetRotation();
+
+		right = camera_->GetRight();
+		up = camera_->GetUp();
+		front = camera_->GetFront();
+
+		glm::quat rotationChange = glm::quat(1, 0, 0, 0); // Identity quaternion
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
+			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), up);
+		}
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
+			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), up);
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
+			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), right);
+		}
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
+			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), right);
+		}
+
+		if (input_->IsKeyPressed(Pulse::Input::KeyCode::PageUp)) {
+			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), front);
+		}
+		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::PageDown)) {
+			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), front);
+		}
+
+		currentRotation = rotationChange * currentRotation;
+		camera_->SetRotation(currentRotation);
+		*/
+
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
 			squarePosition_.x += squareMoveSpeed * timeData; // Use the updated right vector
 		}
@@ -203,14 +216,18 @@ public:
 	}
 
 	void OnRender() override {
-		renderer_->Submit(shader_, vertexArray_);
-		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->Bind();
-		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(squareShader_)->UploadUniformFloat3("u_Color", squareColor_);
+		auto vertexPosColorShader = shaderLibrary_.Get("VertexPosColor");
+		renderer_->Submit(vertexPosColorShader, vertexArray_);
+
+		auto textureShader = shaderLibrary_.Get("Texture");
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		for (int y = 0; y < 20; y++) {
 			for (int x = 0; x < 20; x++) {
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f)) * scale;
-				renderer_->Submit(squareShader_, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
+				texture_->Bind();
+				renderer_->Submit(textureShader, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
+				textureAlphaChannel_->Bind();
+				renderer_->Submit(textureShader, squareVertexArray_, glm::translate(glm::mat4(1.0f), squarePosition_) * transform);
 			}
 		}
 	}
@@ -237,14 +254,15 @@ private:
 
 	glm::vec3 squarePosition_ = glm::vec3(0.0f); // position of the square
 	glm::vec3 squareColor_ = glm::vec3(1.0f, 0.0f, 0.0f); // color of the square
+	Pulse::Modules::Rendering::ShaderLibrary shaderLibrary_; // shader library
 
-	std::shared_ptr<Pulse::Modules::Rendering::Shader> shader_ = nullptr; // pointer to the shader
-	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
-	std::shared_ptr<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
-	std::shared_ptr<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
+	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> vertexArray_ = nullptr; // vertex array object
+	Pulse::Ref<Pulse::Modules::Rendering::VertexBuffer> vertexBuffer_ = nullptr; // pointer to the vertex buffer
+	Pulse::Ref<Pulse::Modules::Rendering::IndexBuffer> indexBuffer_ = nullptr; // pointer to the index buffer
+	Pulse::Ref<Pulse::Modules::Rendering::Texture2D> texture_ = nullptr; // pointer to the texture
+	Pulse::Ref<Pulse::Modules::Rendering::Texture2D> textureAlphaChannel_ = nullptr; // pointer to the texture
 
-	std::shared_ptr<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
-	std::shared_ptr<Pulse::Modules::Rendering::Shader> squareShader_ = nullptr; // pointer to the shader
+	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
 };
 
 Pulse::Application* Pulse::CreateApplication() {

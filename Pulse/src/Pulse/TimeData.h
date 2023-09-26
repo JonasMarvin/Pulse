@@ -16,7 +16,7 @@ namespace Pulse {
 		float GetDeltaTimeMinutes() const; // Get the delta time in minutes
 
 	private:
-		Pulse::Utility::Stopwatch stopwatch_; // Stopwatch to measure the time between frames
+		Utility::Stopwatch stopwatch_; // Stopwatch to measure the time between frames
 		double deltaTime_ = 0.0; // Delta time between frames
 		double lastFrameTime_ = 0.0; // Time of the last frame
 		double currentFrameTime_ = 0.0; // Time of the current frame

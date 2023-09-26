@@ -15,6 +15,7 @@ IncludeDir["GLFW"] = "Pulse/vendor/GLFW/include"
 IncludeDir["Glad"] = "Pulse/vendor/Glad/include"
 IncludeDir["ImGui"] = "Pulse/vendor/imgui"
 IncludeDir["glm"] = "Pulse/vendor/glm"
+IncludeDir["stb_image"] = "Pulse/vendor/stb_image"
 
 group "Dependencies"
 	include "Pulse/vendor/GLFW"
@@ -39,6 +40,8 @@ project "Pulse"
 	files{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h"
 	}
 
 	defines{
@@ -51,7 +54,8 @@ project "Pulse"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links

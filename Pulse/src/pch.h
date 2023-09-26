@@ -15,9 +15,14 @@
 // Data structures
 #include <string>
 #include <vector>
+#include <array>
 #include <unordered_map>
 #include <unordered_set>
 #include <tuple>
+
+// File system
+#include <filesystem>
+#include <fstream>
 
 // Platform specific includes
 #ifdef PLS_PLATFORM_WINDOWS

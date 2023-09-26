@@ -77,7 +77,7 @@ namespace Pulse::Modules::Rendering {
 		virtual const BufferLayout& GetLayout() const = 0; // get the buffer layout of the vertex buffer
 		virtual void SetLayout(const BufferLayout& layout) = 0; // set the buffer layout of the vertex buffer
 
-		static std::shared_ptr<VertexBuffer> Create(float* vertices, uint32_t size); // factory method to create vertex buffer of the current API
+		static Ref<VertexBuffer> Create(float* vertices, uint32_t size); // factory method to create vertex buffer of the current API
 	}; // class VertexBuffer
 
 	// interface class for index buffer. Implementation is API specific
@@ -90,7 +90,7 @@ namespace Pulse::Modules::Rendering {
 		
 		virtual uint32_t GetCount() const = 0; // get the number of indices in the index buffer
 
-		static std::shared_ptr<IndexBuffer> Create(uint32_t* indices, uint32_t size); // factory method to create index buffer of the current API
+		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t size); // factory method to create index buffer of the current API
 	}; // class IndexBuffer
 
 } // namespace Pulse::Modules::Rendering

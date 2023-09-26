@@ -18,11 +18,8 @@
     <ClCompile Include="src\SandboxApplication.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="vendor\imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>vendor\imgui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>vendor\imgui\backends</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\Texture.glsl" />
   </ItemGroup>
 </Project>

@@ -23,7 +23,7 @@ namespace Pulse::Modules::Rendering {
 		glBindVertexArray(0);
 	}
 	
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer) {
+	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
 		glBindVertexArray(rendererID_);
 		vertexBuffer->Bind();
 
@@ -46,18 +46,18 @@ namespace Pulse::Modules::Rendering {
 		vertexBuffers_.push_back(vertexBuffer);
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) {
+	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
 		glBindVertexArray(rendererID_);
 		indexBuffer->Bind();
 
 		indexBuffer_ = indexBuffer;
 	}
 
-	const std::vector<std::shared_ptr<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const {
+	const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const {
 		return vertexBuffers_;
 	}
 
-	const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const {
+	const Ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const {
 		return indexBuffer_;
 	}
 

@@ -8,10 +8,10 @@
 
 namespace Pulse::Modules::Rendering {
 
-	std::shared_ptr<VertexArray> VertexArray::Create() {
+	Ref<VertexArray> VertexArray::Create() {
 		switch (ModuleManager::GetInstance().GetModule<RendererModule>()->GetRendererAPIType()) {
 			case RendererAPI::Type::None:	PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by VertexArray!");	return nullptr;
-			case RendererAPI::Type::OpenGL:																							return std::make_shared<OpenGLVertexArray>();
+			case RendererAPI::Type::OpenGL:																							return CreateRef<OpenGLVertexArray>();
 		}
 
 		PLS_CORE_ASSERT(false, "Unknown renderer API!");

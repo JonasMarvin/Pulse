@@ -21,15 +21,15 @@ namespace Pulse {
 	}
 
 	Application::Application() :
-		moduleManager_(Pulse::Modules::ModuleManager::GetInstance()),
+		moduleManager_(Modules::ModuleManager::GetInstance()),
 		applicationEventListener_(Events::IEventListener<ApplicationEventListener>::Create(*this)) {
 		
 		// Registering core modules
-		moduleManager_.RegisterModule<Pulse::Modules::RendererModule>();
-		moduleManager_.RegisterModule<Pulse::Modules::WindowModule, Pulse::Modules::Windows::WindowsWindowModuleImpl>();
-		moduleManager_.RegisterModule<Pulse::Modules::InputModule, Pulse::Modules::Windows::WindowsInputModuleImpl>();
-		moduleManager_.RegisterModule<Pulse::Modules::ImGuiModule>();
-		moduleManager_.RegisterModule<Pulse::Modules::CameraModule>();
+		moduleManager_.RegisterModule<Modules::RendererModule>();
+		moduleManager_.RegisterModule<Modules::WindowModule, Modules::Windows::WindowsWindowModuleImpl>();
+		moduleManager_.RegisterModule<Modules::InputModule, Modules::Windows::WindowsInputModuleImpl>();
+		moduleManager_.RegisterModule<Modules::ImGuiModule>();
+		moduleManager_.RegisterModule<Modules::CameraModule>();
 	}
 
 	Application::~Application() {
@@ -40,7 +40,7 @@ namespace Pulse {
 	void Application::Run() {
 		timeData_.Initialize();
 		while (isRunning_) {
-			moduleManager_.GetModule < Modules::RendererModule>()->BeginScene();
+			moduleManager_.GetModule <Modules::RendererModule>()->BeginScene();
 			OnUpdate(timeData_);
 			OnRender();
 			moduleManager_.UpdateModules();

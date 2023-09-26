@@ -19,7 +19,7 @@ namespace Pulse::Modules::Rendering {
 		virtual void SetClearColor(const glm::vec4& color) = 0; // virtual function for setting the clear color
 		virtual void Clear() = 0; // virtual function for clearing the screen
 
-		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) = 0; // virtual function for drawing the indexed vertex array
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0; // virtual function for drawing the indexed vertex array
 
 		virtual const Type GetAPIType() const = 0; // virtual function for getting the render API
 
