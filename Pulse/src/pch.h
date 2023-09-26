@@ -19,6 +19,9 @@
 #include <unordered_set>
 #include <tuple>
 
+// File system
+#include <fstream>
+
 // Platform specific includes
 #ifdef PLS_PLATFORM_WINDOWS
 	#include <Windows.h>

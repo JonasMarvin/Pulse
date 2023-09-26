@@ -78,39 +78,8 @@ public:
 			}
 		)";
 
-		std::string vertexSource2 = R"(
-			#version 430 core
-			
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec2 v_TexCoord;
-
-			void main() {
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string fragmentSource2 = R"(
-			#version 430 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main() {
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)";
-
 		shader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource, fragmentSource);
-		squareShader_ = Pulse::Modules::Rendering::Shader::Create(vertexSource2, fragmentSource2);
+		squareShader_ = Pulse::Modules::Rendering::Shader::Create("assets/shaders/Texture.glsl");
 
 		texture_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/Test.png");
 		textureAlphaChannel_ = Pulse::Modules::Rendering::Texture2D::Create("assets/textures/TestAlpha.png");

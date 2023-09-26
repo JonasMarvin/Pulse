@@ -18,4 +18,14 @@ namespace Pulse::Modules::Rendering {
 		return nullptr;
 	}
 
+	Ref<Shader> Shader::Create(const std::string& filepath) {
+		switch (ModuleManager::GetInstance().GetModule<RendererModule>()->GetRendererAPIType()) {
+		case RendererAPI::Type::None:		PLS_CORE_ASSERT(false, "RendererAPI::None is currently not supported by Shader!");	return nullptr;
+		case RendererAPI::Type::OpenGL:																							return CreateRef<OpenGLShader>(filepath);
+		}
+
+		PLS_CORE_ASSERT(false, "Unknown renderer API!");
+		return nullptr;
+	}
+
 } // namespace Pulse::Modules::Rendering
