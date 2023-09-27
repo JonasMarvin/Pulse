@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pulse/Modules/IRenderImGuiModule.h"
+#include "Pulse/Modules/IImGuiRenderableModule.h"
 
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -8,7 +8,7 @@
 namespace Pulse::Modules {
 
 	// class to manage the imgui functionality
-	class ImGuiModule : public IRenderImGuiModule {
+	class ImGuiModule : public IImGuiRenderableModule {
 	public:
 		void Initialize() override; // function to initialize the module
 		void Shutdown() override; // function to shutdown the module

@@ -48,7 +48,7 @@ namespace Pulse::Modules {
 	}
 
 	void ImGuiModule::RenderImGui() {
-		
+		// Maybe we can use this to render ImGui in a different thread
 	}
 
 	void ImGuiModule::BeginFrame() {

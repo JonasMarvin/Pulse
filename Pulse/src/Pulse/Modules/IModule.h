@@ -21,7 +21,7 @@ namespace Pulse::Modules {
 		IModule() = default; // Default constructor is protected as modules should only be created by the module manager
 		virtual ~IModule() = default; // Default destructor is protected as modules should only be destroyed by the module manager
 
-		friend class ModuleManager; // The module manager is befriended with the module to allow it to call the Initialize, Update and Shutdown functions
+		friend class ModuleManager; // The module manager is befriended with the module to allow it to call the Initialize and Shutdown functions
 	}; // class IModule
 
 } // namespace Pulse::Modules

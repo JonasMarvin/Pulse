@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "ModuleManager.h"
+#include "Pulse/Modules/ModuleManager.h"
 
 namespace Pulse::Modules {
 
@@ -19,7 +19,7 @@ namespace Pulse::Modules {
 		}
 	}
 
-	void ModuleManager::RenderAllToImGui() {
+	void ModuleManager::RenderImGuiModules() {
 		for (auto it = imGuiRenderableModules_.rbegin(); it != imGuiRenderableModules_.rend(); ++it) {
 			(*it)->RenderImGui();
 		}

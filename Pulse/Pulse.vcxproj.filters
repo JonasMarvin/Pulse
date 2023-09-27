@@ -96,7 +96,7 @@
     <ClInclude Include="src\Pulse\Modules\IModule.h">
       <Filter>src\Pulse\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Modules\IRenderImGuiModule.h">
+    <ClInclude Include="src\Pulse\Modules\IImGuiRenderableModule.h">
       <Filter>src\Pulse\Modules</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\IUpdatableModule.h">
@@ -189,6 +189,11 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Pulse\Layers\ILayer.h" />
+    <ClInclude Include="src\Pulse\Layers\IImGuiRenderableLayer.h" />
+    <ClInclude Include="src\Pulse\Layers\IRenderableLayer.h" />
+    <ClInclude Include="src\Pulse\Layers\IUpdatableLayer.h" />
+    <ClInclude Include="src\Pulse\Layers\LayerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Application.cpp">
@@ -278,5 +283,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Pulse\Layers\LayerManager.cpp" />
   </ItemGroup>
 </Project>
