@@ -31,6 +31,12 @@ namespace Pulse::Layers {
 		template <typename Base, typename Derived>
 		void AttachLayer();
 
+		// Registers a interface layer Base to the layer manager by using the passed downcasted pointer and initializes it by calling the layers OnAttach() function
+		// This is used for layers which are defined by the user and not by the engine dont use this for engine defined layers.
+		// If you still do that he Log message will state that a user defined layer is added.
+		template <typename Base>
+		void AttachLayerByPointer(Base* layer);
+
 		// Returns a layer of type T if it exists, otherwise returns nullptr
 		template <typename T>
 		T* GetLayer();

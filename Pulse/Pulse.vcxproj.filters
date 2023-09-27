@@ -63,7 +63,7 @@
     <ClInclude Include="src\Pulse.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Application.h">
+    <ClInclude Include="src\Pulse\Layers\Application\Application.h">
       <Filter>src\Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Core\Core.h">
@@ -72,7 +72,7 @@
     <ClInclude Include="src\Pulse\Core\Logging\Log.h">
       <Filter>src\Pulse\Core\Logging</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\EntryPoint.h">
+    <ClInclude Include="src\Pulse\Core\EntryPoint.h">
       <Filter>src\Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Events\Event.h">
@@ -174,7 +174,7 @@
     <ClInclude Include="src\Pulse\Modules\Window\WindowModule.h">
       <Filter>src\Pulse\Modules\Window</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\TimeData.h">
+    <ClInclude Include="src\Pulse\Core\TimeData.h">
       <Filter>src\Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Utility\Stopwatch.h">
@@ -194,9 +194,10 @@
     <ClInclude Include="src\Pulse\Layers\IRenderableLayer.h" />
     <ClInclude Include="src\Pulse\Layers\IUpdatableLayer.h" />
     <ClInclude Include="src\Pulse\Layers\LayerManager.h" />
+    <ClInclude Include="src\Pulse\Core\Engine.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Pulse\Application.cpp">
+    <ClCompile Include="src\Pulse\Layers\Application\Application.cpp">
       <Filter>src\Pulse</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp">
@@ -268,7 +269,7 @@
     <ClCompile Include="src\Pulse\Modules\Window\Platform\Windows\WindowsWindowModuleImpl.cpp">
       <Filter>src\Pulse\Modules\Window\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\TimeData.cpp">
+    <ClCompile Include="src\Pulse\Core\TimeData.cpp">
       <Filter>src\Pulse</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Utility\Stopwatch.cpp">
@@ -284,5 +285,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Layers\LayerManager.cpp" />
+    <ClCompile Include="src\Pulse\Core\Engine.cpp" />
   </ItemGroup>
 </Project>

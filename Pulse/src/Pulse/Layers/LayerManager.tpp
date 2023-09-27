@@ -31,6 +31,20 @@ namespace Pulse::Layers {
         PLS_CORE_INFO("Layer {0} has been attached.", typeIndex.name());
     }
 
+    template<typename Base>
+    void LayerManager::AttachLayerByPointer(Base* layer) {
+    std::type_index typeIndex(typeid(Base));
+		Base* existingLayer = _GetLayer<Base>(typeIndex);
+		if (existingLayer) {
+			PLS_CORE_ERROR("Layer {0} already attached!", typeIndex.name());
+			return;
+		}
+
+		_AddLayerToSpecificMaps<Base>(layer, typeIndex);
+		layer->OnAttach();
+		PLS_CORE_INFO("User defined Layer {0} has been attached.", typeIndex.name());
+    }
+
     template<typename T>
     T* LayerManager ::GetLayer() {
         std::type_index typeIndex(typeid(T));

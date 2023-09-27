@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Pulse/Layers/ILayer.h"
-#include <Pulse/TimeData.h>
+#include "Pulse/Core/TimeData.h"
 
 namespace Pulse::Layers {
 

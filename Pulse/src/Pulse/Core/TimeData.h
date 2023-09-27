@@ -24,7 +24,7 @@ namespace Pulse {
 		void Initialize(); // Initialize the time data
 		void Update(); // Update the time data
 
-		friend class Application; // To allow the application to access the private members of the time data
+		friend class Engine; // To allow the application to access the private members of the time data
 
 	}; // class TimeData
 

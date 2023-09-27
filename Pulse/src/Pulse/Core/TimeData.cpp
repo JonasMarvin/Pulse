@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "Pulse/TimeData.h"
+#include "Pulse/Core/TimeData.h"
 
 namespace Pulse {
 

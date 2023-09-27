@@ -3,7 +3,7 @@
 
 using namespace Pulse::Modules;
 
-class Sandbox : public Pulse::Application {
+class Sandbox : public Pulse::Layers::Application {
 public:
 	Sandbox() {
 
@@ -88,7 +88,7 @@ public:
 		std::static_pointer_cast<Pulse::Modules::Rendering::OpenGLShader>(textureShader)->UploadUniformInt("u_Texture", 0);
 	}
 
-	void OnUpdate(const Pulse::TimeData& timeData) override {
+	void Update(const Pulse::TimeData& timeData) override {
 		// Print FPS:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::F)) {
 			PLS_INFO("FPS: {0}", 1.0f / timeData);
@@ -215,7 +215,7 @@ public:
 		}
 	}
 
-	void OnRender() override {
+	void Render(const Pulse::TimeData& timeData) override {
 		auto vertexPosColorShader = shaderLibrary_.Get("VertexPosColor");
 		renderer_->Submit(vertexPosColorShader, vertexArray_);
 
@@ -232,7 +232,7 @@ public:
 		}
 	}
 
-	void OnImGuiRender() override {
+	void RenderImGui(const Pulse::TimeData& timeData) override {
 		ImGui::Begin("Settings");
 		ImGui::ColorEdit3("Square Color", glm::value_ptr(squareColor_));
 		ImGui::End();
@@ -265,6 +265,6 @@ private:
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
 };
 
-Pulse::Application* Pulse::CreateApplication() {
+Pulse::Layers::Application* Pulse::Layers::CreateApplication() {
 	return new Sandbox();
 }
