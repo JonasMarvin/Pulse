@@ -39,6 +39,7 @@ namespace Pulse {
 		layerManager_ = &Layers::LayerManager::GetInstance();
 		layerManager_->AttachLayerByPointer<Pulse::Layers::Application>(Pulse::Layers::CreateApplication());
 
+		// Initialize self:
 		isRunning_ = true;
 		timeData_.Initialize();
 		PLS_CORE_INFO("Engine initialized.");
