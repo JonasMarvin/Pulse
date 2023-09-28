@@ -139,7 +139,7 @@
   <ItemGroup>
     <ClInclude Include="src\Pulse.h" />
     <ClInclude Include="src\Pulse\Core\Engine.h" />
-    <ClInclude Include="src\Pulse\Layers\Application\Application.h" />
+    <ClInclude Include="src\Pulse\Layers\Application\ApplicationLayer.h" />
     <ClInclude Include="src\Pulse\Core\Core.h" />
     <ClInclude Include="src\Pulse\Core\Logging\Log.h" />
     <ClInclude Include="src\Pulse\Core\EntryPoint.h" />
@@ -147,13 +147,17 @@
     <ClInclude Include="src\Pulse\Events\EventListener.h" />
     <ClInclude Include="src\Pulse\Events\Events.h" />
     <ClInclude Include="src\Pulse\Events\IEventListener.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\ICamera.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\CameraData.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\CameraLayer.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\Editor\EditorCamera.h" />
     <ClInclude Include="src\Pulse\Layers\ILayer.h" />
     <ClInclude Include="src\Pulse\Layers\IImGuiRenderableLayer.h" />
     <ClInclude Include="src\Pulse\Layers\IRenderableLayer.h" />
     <ClInclude Include="src\Pulse\Layers\IUpdatableLayer.h" />
     <ClInclude Include="src\Pulse\Layers\LayerManager.h" />
     <ClInclude Include="src\Pulse\Modules\Camera\CameraModule.h" />
-    <ClInclude Include="src\Pulse\Modules\Camera\CameraTypeStrategy.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\CameraTypeStrategy.h" />
     <ClInclude Include="src\Pulse\Modules\IModule.h" />
     <ClInclude Include="src\Pulse\Modules\IImGuiRenderableModule.h" />
     <ClInclude Include="src\Pulse\Modules\IUpdatableModule.h" />
@@ -189,16 +193,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pulse\Core\Engine.cpp" />
-    <ClCompile Include="src\Pulse\Layers\Application\Application.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Application\ApplicationLayer.cpp" />
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp" />
     <ClCompile Include="src\Pulse\Events\EventListener.cpp" />
     <ClCompile Include="src\Pulse\Events\IEventListener.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\CameraData.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\CameraLayer.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\Editor\EditorCamera.cpp" />
     <ClCompile Include="src\Pulse\Layers\LayerManager.cpp" />
     <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\CameraTypeStrategy.cpp" />
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp" />
-    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModule.cpp" />
+    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModuleImpl.cpp" />
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\Buffer.cpp" />
     <ClCompile Include="src\Pulse\Modules\Rendering\GraphicsContext.cpp" />

@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <glm/glm.hpp>
 
 // Asserts
 

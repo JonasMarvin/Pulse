@@ -4,6 +4,9 @@
 #include "Pulse/Core/Logging/Log.h"
 #include "Pulse/Events/Events.h"
 
+// Libraries
+#include <glm/glm.hpp>
+
 // STL includes
 #include <type_traits>
 #include <typeindex>

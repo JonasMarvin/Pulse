@@ -4,7 +4,7 @@
 #include "Pulse/Core/Core.h"
 #include "Pulse/Core/Logging/Log.h"
 #include "Pulse/Modules/ModuleManager.h"
-#include "Pulse/Layers/Application/Application.h"
+#include "Pulse/Layers/Application/ApplicationLayer.h"
 #include "Pulse/Core/TimeData.h"
 #include "Pulse/Core/EntryPoint.h"
 #include "Pulse/Events/Events.h"

@@ -11,11 +11,12 @@
 #include "Pulse/Modules/Camera/CameraModule.h"
 
 // Layers:
-#include "Pulse/Layers/Application/Application.h"
+#include "Pulse/Layers/Camera/CameraLayer.h"
+#include "Pulse/Layers/Application/ApplicationLayer.h"
 
 namespace Pulse {
 
-	extern Layers::Application* Layers::CreateApplication(); // Defined in the CLIENT
+	extern Layers::ApplicationLayer* Layers::CreateApplication(); // Defined in the CLIENT
 
 	// Initialize the static members
 	Modules::ModuleManager* Engine::moduleManager_ = nullptr;
@@ -37,7 +38,8 @@ namespace Pulse {
 
 		// Layers:
 		layerManager_ = &Layers::LayerManager::GetInstance();
-		layerManager_->AttachLayerByPointer<Pulse::Layers::Application>(Pulse::Layers::CreateApplication());
+		layerManager_->AttachLayer<Layers::CameraLayer>();
+		layerManager_->AttachLayerByPointer(Layers::CreateApplication());
 
 		// Initialize self:
 		isRunning_ = true;
@@ -47,14 +49,14 @@ namespace Pulse {
 
 	void Engine::Run() {
 		while (isRunning_) {
-			moduleManager_->GetModule<Modules::RendererModule>()->BeginScene();
 			layerManager_->UpdateLayers(timeData_);
 			moduleManager_->UpdateModules();
+			moduleManager_->GetModule<Modules::RendererModule>()->BeginScene();
+			layerManager_->RenderLayers(timeData_);
 			moduleManager_->GetModule<Modules::ImGuiModule>()->BeginFrame();
 			layerManager_->RenderImGuiLayers(timeData_);
 			moduleManager_->RenderImGuiModules();
 			moduleManager_->GetModule<Modules::ImGuiModule>()->EndFrame();
-			layerManager_->RenderLayers(timeData_);
 			moduleManager_->GetModule<Modules::RendererModule>()->EndScene();
 			timeData_.Update();
 		}
@@ -63,11 +65,12 @@ namespace Pulse {
 	void Engine::Shutdown() {
 		layerManager_->DetachAllLayers();
 		moduleManager_->ShutdownModules();
+		PLS_CORE_INFO("Engine shutdown.");
 	}
 
 	void Engine::Stop(){
 		isRunning_ = false;
-		PLS_CORE_INFO("Engine stopped");
+		PLS_CORE_INFO("Engine shutting down...");
 	}
 
 } // namespace Pulse

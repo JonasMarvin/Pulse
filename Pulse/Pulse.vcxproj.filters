@@ -63,7 +63,7 @@
     <ClInclude Include="src\Pulse.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Layers\Application\Application.h">
+    <ClInclude Include="src\Pulse\Layers\Application\ApplicationLayer.h">
       <Filter>src\Pulse</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Core\Core.h">
@@ -90,7 +90,7 @@
     <ClInclude Include="src\Pulse\Modules\Camera\CameraModule.h">
       <Filter>src\Pulse\Modules\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\Pulse\Modules\Camera\CameraTypeStrategy.h">
+    <ClInclude Include="src\Pulse\Layers\Camera\CameraTypeStrategy.h">
       <Filter>src\Pulse\Modules\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Pulse\Modules\IModule.h">
@@ -195,9 +195,13 @@
     <ClInclude Include="src\Pulse\Layers\IUpdatableLayer.h" />
     <ClInclude Include="src\Pulse\Layers\LayerManager.h" />
     <ClInclude Include="src\Pulse\Core\Engine.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\CameraLayer.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\CameraData.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\ICamera.h" />
+    <ClInclude Include="src\Pulse\Layers\Camera\Editor\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Pulse\Layers\Application\Application.cpp">
+    <ClCompile Include="src\Pulse\Layers\Application\ApplicationLayer.cpp">
       <Filter>src\Pulse</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Core\Logging\Log.cpp">
@@ -212,7 +216,7 @@
     <ClCompile Include="src\Pulse\Modules\Camera\CameraModule.cpp">
       <Filter>src\Pulse\Modules\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Modules\Camera\CameraTypeStrategy.cpp">
+    <ClCompile Include="src\Pulse\Layers\Camera\CameraTypeStrategy.cpp">
       <Filter>src\Pulse\Modules\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiBuild.cpp">
@@ -221,7 +225,7 @@
     <ClCompile Include="src\Pulse\Modules\ImGui\ImGuiModule.cpp">
       <Filter>src\Pulse\Modules\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModule.cpp">
+    <ClCompile Include="src\Pulse\Modules\Input\Platform\Windows\WindowsInputModuleImpl.cpp">
       <Filter>src\Pulse\Modules\Input\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Pulse\Modules\ModuleManager.cpp">
@@ -286,5 +290,8 @@
     </ClCompile>
     <ClCompile Include="src\Pulse\Layers\LayerManager.cpp" />
     <ClCompile Include="src\Pulse\Core\Engine.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\CameraLayer.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\CameraData.cpp" />
+    <ClCompile Include="src\Pulse\Layers\Camera\Editor\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

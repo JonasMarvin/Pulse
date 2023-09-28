@@ -9,10 +9,10 @@
 namespace Pulse::Layers {
 
 	// This is the base class for all Pulse applications and a layer. Can not be used as a layer directly due to pure virtual functions. Use the CLIENT class instead.
-	class Application : public IUpdatableLayer, public IRenderableLayer, public IImGuiRenderableLayer{
+	class ApplicationLayer : public IUpdatableLayer, public IRenderableLayer, public IImGuiRenderableLayer{
 	public:
-		Application() = default; // Default constructor
-		virtual ~Application() = default; // default virtual destructor for proper cleanup
+		ApplicationLayer() = default; // Default constructor
+		virtual ~ApplicationLayer() = default; // default virtual destructor for proper cleanup
 
 		void OnAttach() final override; // Attach function. Final override to prevent overriding in CLIENT. Use the constructor for initialization logic instead.
 		void OnDetach() final override; // Detach function. Final override to prevent overriding in CLIENT. Use the destructor for cleanup logic instead.
@@ -33,8 +33,8 @@ namespace Pulse::Layers {
 
 		std::shared_ptr<ApplicationEventListener> applicationEventListener_; // Shared pointer to the application event listener to allow lifetime management of the application by the event system
 
-	}; // class Application
+	}; // class ApplicationLayer
 
-	Application* CreateApplication(); // Defined in the CLIENT
+	ApplicationLayer* CreateApplication(); // Defined in the CLIENT
 
-} // namespace Pulse
+} // namespace Pulse::Layers

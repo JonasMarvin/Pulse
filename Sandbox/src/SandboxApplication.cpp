@@ -3,7 +3,7 @@
 
 using namespace Pulse::Modules;
 
-class Sandbox : public Pulse::Layers::Application {
+class Sandbox : public Pulse::Layers::ApplicationLayer {
 public:
 	Sandbox() {
 
@@ -93,110 +93,6 @@ public:
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::F)) {
 			PLS_INFO("FPS: {0}", 1.0f / timeData);
 		}
-		// Toggle Perspective and Orthographic:
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::P)) {
-			camera_->SetType(Pulse::Modules::CameraModule::Type::Perspective);
-		}
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::O)) {
-			camera_->SetType(Pulse::Modules::CameraModule::Type::Orthographic);
-		}
-
-		// Movement
-		glm::vec3 translation = camera_->GetPosition();
-
-		glm::vec3 right = camera_->GetRight();
-		glm::vec3 up = camera_->GetUp();
-		glm::vec3 front = camera_->GetFront();
-
-		glm::vec3 movement;
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::D)) {
-			movement = right * (cameraSpeed_ * timeData); // Use the updated right vector
-			translation += movement;
-		}
-
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::A)) {
-			movement = right * (cameraSpeed_ * timeData); // Use the updated right vector
-			translation -= movement;
-		}
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::S)) {
-			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
-			translation -= movement;
-		}
-
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::W)) {
-			movement = front * (cameraSpeed_ * timeData); // Use the updated front vector
-			translation += movement;
-		}
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Q)) {
-			movement = up * (cameraSpeed_ * timeData); // Use the updated up vector
-			translation -= movement;
-		}
-
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::E)) {
-			movement = up * (cameraSpeed_ * timeData); // Use the updated up vector
-			translation += movement;
-		}
-
-		camera_->SetPosition(translation);
-		glm::quat currentRotation = camera_->GetRotation();
-
-		glm::quat rotationChangeY = glm::quat(1, 0, 0, 0); // Identity quaternion for Y-axis
-		glm::quat rotationChangeX = glm::quat(1, 0, 0, 0); // Identity quaternion for X-axis
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
-			rotationChangeY = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
-		}
-
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
-			rotationChangeY = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(0, 1, 0));
-		}
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
-			rotationChangeX = glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
-		}
-
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
-			rotationChangeX = glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), glm::vec3(1, 0, 0));
-		}
-
-		currentRotation = rotationChangeY * currentRotation * rotationChangeX;
-		camera_->SetRotation(currentRotation);
-
-		/* THIS ROTATES THE CAMERA AROUND ITS OWN AXIS (look weird)
-		* glm::quat currentRotation = camera_->GetRotation();
-
-		right = camera_->GetRight();
-		up = camera_->GetUp();
-		front = camera_->GetFront();
-
-		glm::quat rotationChange = glm::quat(1, 0, 0, 0); // Identity quaternion
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Left)) {
-			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), up);
-		}
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Right)) {
-			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), up);
-		}
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::Up)) {
-			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), right);
-		}
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::Down)) {
-			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), right);
-		}
-
-		if (input_->IsKeyPressed(Pulse::Input::KeyCode::PageUp)) {
-			rotationChange *= glm::angleAxis(glm::radians(cameraRotationSpeed_ * timeData), front);
-		}
-		else if (input_->IsKeyPressed(Pulse::Input::KeyCode::PageDown)) {
-			rotationChange *= glm::angleAxis(glm::radians(-cameraRotationSpeed_ * timeData), front);
-		}
-
-		currentRotation = rotationChange * currentRotation;
-		camera_->SetRotation(currentRotation);
-		*/
 
 		if (input_->IsKeyPressed(Pulse::Input::KeyCode::L)) {
 			squarePosition_.x += squareMoveSpeed * timeData; // Use the updated right vector
@@ -247,9 +143,6 @@ private:
 	RendererModule* renderer_ = nullptr; // renderer module
 	CameraModule * camera_ = nullptr; // renderer module
 
-	float cameraSpeed_ = 0.5f; // speed of the camera
-	float cameraRotationSpeed_ = 100; // rotation speed of the camera
-
 	float squareMoveSpeed = 5; // rotation speed of the camera
 
 	glm::vec3 squarePosition_ = glm::vec3(0.0f); // position of the square
@@ -265,6 +158,6 @@ private:
 	Pulse::Ref<Pulse::Modules::Rendering::VertexArray> squareVertexArray_ = nullptr; // vertex array object
 };
 
-Pulse::Layers::Application* Pulse::Layers::CreateApplication() {
+Pulse::Layers::ApplicationLayer* Pulse::Layers::CreateApplication() {
 	return new Sandbox();
 }

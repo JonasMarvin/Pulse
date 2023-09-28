@@ -17,6 +17,7 @@ namespace Pulse::Modules {
 	void RendererModule::Shutdown() {
 		delete(graphicsContext_);
 		graphicsContext_ = nullptr;
+		ResetViewProjectionMatrixReference();
 	}
 
 	void RendererModule::SetViewProjectionMatrixReference(const glm::mat4* viewProjectionMatrix) {
